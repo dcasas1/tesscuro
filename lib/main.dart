@@ -36,11 +36,11 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: <Widget>[
+          children: const <Widget>[
             Padding(
-              padding: const EdgeInsets.all(25),
+              padding: EdgeInsets.all(25),
               child: Center(
-                child: Container(
+                child: SizedBox(
                   width: 200,
                   height: 150,
                 ),
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               height: 60,
               width: 200,
               child: ElevatedButton(
