@@ -49,11 +49,32 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: EdgeInsets.all(10),
               child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Username',
+                  hintText: 'Enter Username',
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: TextField(
                 obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
-                  hintText: 'Enter secure password',
+                  hintText: 'Enter password',
+                ),
+              ),
+            ),
+            Container(
+              height: 60,
+              width: 200,
+              child: ElevatedButton(
+                onPressed: null,
+                child: Text(
+                  'Login',
+                  style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
               ),
             ),
