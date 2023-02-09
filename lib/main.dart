@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 130, bottom: 50),
+              padding: const EdgeInsets.only(top: 110, bottom: 50),
               child: Center(
                 child: SizedBox(
                   child: Image.asset(
@@ -78,6 +78,20 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text(
                   'Login',
                   style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: SizedBox(
+                height: 60,
+                width: 200,
+                child: ElevatedButton(
+                  onPressed: null,
+                  child: Text(
+                    'Create Account',
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                  ),
                 ),
               ),
             ),
