@@ -62,6 +62,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_aes_ecb_pkcs5:
+    dependency: "direct main"
+    description:
+      name: flutter_aes_ecb_pkcs5
+      sha256: "616e42db8aed2975920bec580bd42f16e96c8eea7b3ccc2558724ad50ec324fc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -185,4 +193,5 @@ packages:
     source: hosted
     version: "2.1.4"
 sdks:
-  dart: ">=2.19.0 <4.0.0"
+  dart: ">=2.19.0 <3.0.0"
+  flutter: ">=1.17.0"

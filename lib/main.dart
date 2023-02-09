@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tesscuro',
       theme: ThemeData(
+        canvasColor: Colors.white,
         primarySwatch: Colors.blue,
       ),
       home: const LoginPage(title: 'Login Page'),
@@ -36,18 +37,20 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: const <Widget>[
+          children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(25),
+              padding: const EdgeInsets.only(top: 130, bottom: 50),
               child: Center(
                 child: SizedBox(
-                  width: 200,
-                  height: 150,
+                  child: Image.asset(
+                    'assets/img/tesscuro_logo.png',
+                    scale: 3,
+                  ),
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(10),
+            const Padding(
+              padding: EdgeInsets.only(left: 10, right: 10, bottom: 20),
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -56,8 +59,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(10),
+            const Padding(
+              padding: EdgeInsets.only(left: 10, right: 10, bottom: 30),
               child: TextField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -67,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 60,
               width: 200,
               child: ElevatedButton(
