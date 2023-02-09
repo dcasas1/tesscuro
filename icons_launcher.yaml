@@ -1,0 +1,6 @@
+flutter_icons:
+  image_path: 'assets/img/tesscuro_icon.png'
+  ios: true
+  android: true  
+
+
