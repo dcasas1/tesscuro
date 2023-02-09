@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tesscuro',
       theme: ThemeData(
+        canvasColor: Colors.white,
         primarySwatch: Colors.blue,
       ),
       home: const LoginPage(title: 'Login Page'),
