@@ -36,17 +36,18 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: const <Widget>[
+          children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(25),
+              padding: const EdgeInsets.all(25),
               child: Center(
                 child: SizedBox(
                   width: 200,
                   height: 150,
+                  child: Image.asset('assets/img/tesscuro_logo.png'),
                 ),
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(10),
               child: TextField(
                 decoration: InputDecoration(
@@ -56,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(10),
               child: TextField(
                 obscureText: true,
@@ -67,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 60,
               width: 200,
               child: ElevatedButton(
