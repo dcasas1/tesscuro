@@ -38,6 +38,7 @@ dependencies:
   flutter_aes_ecb_pkcs5: ^0.1.2
 
 dev_dependencies:
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
   icons_launcher: ^1.2.0
