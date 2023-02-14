@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './createaccount.dart';
 
 void main() {
   runApp(const MyApp());
@@ -81,14 +82,23 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
               child: SizedBox(
                 height: 60,
                 width: 200,
                 child: ElevatedButton(
-                  onPressed: null,
-                  child: Text(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CreateAccount(
+                          title: 'CreateAccount',
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text(
                     'Create Account',
                     style: TextStyle(color: Colors.black, fontSize: 20),
                   ),
