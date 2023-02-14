@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './createaccount.dart';
+import './homepage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -71,12 +72,19 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            const SizedBox(
+            SizedBox(
               height: 60,
               width: 200,
               child: ElevatedButton(
-                onPressed: null,
-                child: Text(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(),
+                    ),
+                  );
+                },
+                child: const Text(
                   'Login',
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
