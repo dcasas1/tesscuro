@@ -47,7 +47,7 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
             ),*/
             Padding(
-              padding: EdgeInsets.only(top: 50, left: 10, right: 10),
+              padding: EdgeInsets.only(top: 40, left: 10, right: 10),
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -57,7 +57,7 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 50, left: 10, right: 10),
+              padding: EdgeInsets.only(top: 40, left: 10, right: 10),
               child: TextField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -68,7 +68,7 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 50, left: 10, right: 10),
+              padding: EdgeInsets.only(top: 40, left: 10, right: 10),
               child: TextField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -79,7 +79,7 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 50, left: 10, right: 10, bottom: 50),
+              padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 50),
               child: TextField(
                 obscureText: true,
                 decoration: InputDecoration(

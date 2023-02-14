@@ -90,7 +90,7 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom:50),
+              padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom:50),
               child: TextField(
                 obscureText: true,
                 decoration: InputDecoration(
