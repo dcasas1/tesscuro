@@ -52,29 +52,27 @@ class _CreateAccountState extends State<CreateAccount> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Name of Site',
-                  hintText: '-------------',
+                  hintText: 'Site Name',
                 ),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(top: 40, left: 10, right: 10),
               child: TextField(
-                obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'URL',
-                  hintText: '-----------',
+                  hintText: 'URL',
                 ),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(top: 40, left: 10, right: 10),
               child: TextField(
-                obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Username of Site',
-                  hintText: '-----------',
+                  hintText: 'URL',
                 ),
               ),
             ),
@@ -85,7 +83,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
-                  hintText: '-----------',
+                  hintText: 'Password',
                 ),
               ),
             ),
