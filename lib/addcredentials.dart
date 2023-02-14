@@ -59,7 +59,6 @@ class _CreateAccountState extends State<CreateAccount> {
             Padding(
               padding: EdgeInsets.only(top: 30, left: 10, right: 10),
               child: TextField(
-                obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'URL',
@@ -70,7 +69,6 @@ class _CreateAccountState extends State<CreateAccount> {
             Padding(
               padding: EdgeInsets.only(top: 30, left: 10, right: 10),
               child: TextField(
-                obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Username for Site',
