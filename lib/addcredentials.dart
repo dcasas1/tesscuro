@@ -14,20 +14,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const CreateAccount(title: 'Add Site Settings'),
+      home: const AddCredentials(title: 'Add Site Settings'),
     );
   }
 }
 
-class CreateAccount extends StatefulWidget {
-  const CreateAccount({super.key, required this.title});
+class AddCredentials extends StatefulWidget {
+  const AddCredentials({super.key, required this.title});
   final String title;
 
   @override
-  State<CreateAccount> createState() => _CreateAccountState();
+  State<AddCredentials> createState() => _AddCredentialsState();
 }
 
-class _CreateAccountState extends State<CreateAccount> {
+class _AddCredentialsState extends State<AddCredentials> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
