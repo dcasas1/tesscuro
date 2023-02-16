@@ -62,6 +62,18 @@ class _MyStatefulWidgetState extends State<HomePage> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: const FloatingActionButton(
+        onPressed: null,
+        tooltip: 'Add',
+        autofocus: true,
+        elevation: 15,
+        mouseCursor: MaterialStateMouseCursor.textable,
+        child: Icon(
+          Icons.add,
+          size: 40,
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
