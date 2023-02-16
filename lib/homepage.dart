@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './addcredentials.dart';
 
 void main() => runApp(const MyApp());
 
@@ -63,13 +64,20 @@ class _MyStatefulWidgetState extends State<HomePage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: const FloatingActionButton(
-        onPressed: null,
-        tooltip: 'Add',
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  const AddCredentials(title: "Add Site Settings"),
+            ),
+          );
+        },
         autofocus: true,
         elevation: 15,
         mouseCursor: MaterialStateMouseCursor.textable,
-        child: Icon(
+        child: const Icon(
           Icons.add,
           size: 40,
         ),
