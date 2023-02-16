@@ -39,11 +39,6 @@ class _MyStatefulWidgetState extends State<HomePage> {
           title: Text("Youtube"),
           subtitle: Text("Last Login: XX-XX-XXXX"),
         ),
-        child: ListTile(
-          leading: Icon(Icons.play_circle_outline),
-          title: Text("Youtube"),
-          subtitle: Text("Last Login: XX-XX-XXXX"),
-        ),
       ),
     ),
     Text(
