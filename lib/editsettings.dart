@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './homepage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,7 +37,7 @@ class _EditSettingsState extends State<EditSettings> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: const <Widget>[
+          children: <Widget>[
             /*Padding(
               padding: EdgeInsets.all(25),
               child: Center(
@@ -46,7 +47,7 @@ class _EditSettingsState extends State<EditSettings> {
                 ),
               ),
             ),*/
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 40, left: 10, right: 10),
               child: TextField(
                 decoration: InputDecoration(
@@ -56,7 +57,7 @@ class _EditSettingsState extends State<EditSettings> {
                 ),
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 40, left: 10, right: 10),
               child: TextField(
                 decoration: InputDecoration(
@@ -66,7 +67,7 @@ class _EditSettingsState extends State<EditSettings> {
                 ),
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 40, left: 10, right: 10),
               child: TextField(
                 decoration: InputDecoration(
@@ -76,7 +77,7 @@ class _EditSettingsState extends State<EditSettings> {
                 ),
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 40, left: 10, right: 10, bottom: 50),
               child: TextField(
                 obscureText: true,
@@ -91,8 +92,15 @@ class _EditSettingsState extends State<EditSettings> {
               height: 60,
               width: 200,
               child: ElevatedButton(
-                onPressed: null,
-                child: Text(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(), 
+                      ),
+                    );
+                },
+                child: const Text(
                   'Submit',
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
