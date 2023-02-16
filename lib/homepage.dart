@@ -29,15 +29,25 @@ class _MyStatefulWidgetState extends State<HomePage> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
-      'Index 0: Settings',
+      'Settings',
       style: optionStyle,
     ),
-    Text(
-      'Index 1: Home',
-      style: optionStyle,
+    Center(
+      child: Card(
+        child: ListTile(
+          leading: Icon(Icons.play_circle_outline),
+          title: Text("Youtube"),
+          subtitle: Text("Last Login: XX-XX-XXXX"),
+        ),
+        child: ListTile(
+          leading: Icon(Icons.play_circle_outline),
+          title: Text("Youtube"),
+          subtitle: Text("Last Login: XX-XX-XXXX"),
+        ),
+      ),
     ),
     Text(
-      'Index 2: Filters',
+      'Filters',
       style: optionStyle,
     ),
   ];
