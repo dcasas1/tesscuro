@@ -78,26 +78,25 @@ class _MyStatefulWidgetState extends State<HomePage> {
           ),
         ],
       ),
-
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) =>
-      //             const AddCredentials(title: "Add Site Settings"),
-      //       ),
-      //     );
-      //   },
-      // autofocus: true,
-      // elevation: 15,
-      // mouseCursor: MaterialStateMouseCursor.textable,
-      // child: const Icon(
-      //   Icons.add,
-      //   size: 40,
-      // ),
-
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  const AddCredentials(title: "Add Site Settings"),
+            ),
+          );
+        },
+        autofocus: true,
+        elevation: 15,
+        mouseCursor: MaterialStateMouseCursor.textable,
+        child: const Icon(
+          Icons.add,
+          size: 40,
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
