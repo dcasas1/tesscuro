@@ -28,21 +28,26 @@ class _MyStatefulWidgetState extends State<HomePage> {
   int _selectedIndex = 1;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
+  static List<Widget> widgetOptions = <Widget>[
+    const Text(
       'Settings',
       style: optionStyle,
     ),
-    Center(
-      child: Card(
-        child: ListTile(
-          leading: Icon(Icons.play_circle_outline),
-          title: Text("Youtube"),
-          subtitle: Text("Last Login: XX-XX-XXXX"),
+    Scaffold(
+      body: Container(
+        padding: EdgeInsets.all(10),
+        height: 100,
+        width: double.maxFinite,
+        child: const Card(
+          child: ListTile(
+            leading: Icon(Icons.play_circle_outline),
+            title: Text("Youtube"),
+            subtitle: Text("Last Login Date: XX-XX-XXXX"),
+          ),
         ),
       ),
     ),
-    Text(
+    const Text(
       'Filters',
       style: optionStyle,
     ),
@@ -61,7 +66,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
         title: const Text('Homepage'),
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: widgetOptions.elementAt(_selectedIndex),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
