@@ -28,30 +28,18 @@ class _MyStatefulWidgetState extends State<HomePage> {
   int _selectedIndex = 1;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> widgetOptions = <Widget>[
-    const Text(
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
       'Settings',
       style: optionStyle,
     ),
-    Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(10),
-        height: 100,
-        width: double.maxFinite,
-        child: const Card(
-          child: ListTile(
-            leading: Icon(Icons.play_circle_outline),
-            title: Text("Youtube"),
-            subtitle: Text("Last Login Date: XX-XX-XXXX"),
-          ),
-        ),
-      ),
-    ),
-    const Text(
+    Text(
       'Filters',
       style: optionStyle,
     ),
   ];
+
+  get floatingActionButtonLocation => null;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -65,28 +53,47 @@ class _MyStatefulWidgetState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Homepage'),
       ),
-      body: Center(
-        child: widgetOptions.elementAt(_selectedIndex),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  const AddCredentials(title: "Add Site Settings"),
+      body: Column(
+        children: [
+          Center(
+            child: _widgetOptions.elementAt(_selectedIndex),
+          ),
+          const Card(
+            child: ListTile(
+              leading: Icon(Icons.play_circle_outline),
+              title: Text("Youtube"),
+              subtitle: Text("Last Login: XX-XX-XXXX"),
             ),
-          );
-        },
-        autofocus: true,
-        elevation: 15,
-        mouseCursor: MaterialStateMouseCursor.textable,
-        child: const Icon(
-          Icons.add,
-          size: 40,
-        ),
+          ),
+          const Card(
+            child: ListTile(
+              leading: Icon(Icons.play_circle_outline),
+              title: Text("FaceBook"),
+              subtitle: Text("Last Login: XX-XX-XXXX"),
+            ),
+          ),
+        ],
       ),
+
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) =>
+      //             const AddCredentials(title: "Add Site Settings"),
+      //       ),
+      //     );
+      //   },
+      // autofocus: true,
+      // elevation: 15,
+      // mouseCursor: MaterialStateMouseCursor.textable,
+      // child: const Icon(
+      //   Icons.add,
+      //   size: 40,
+      // ),
+
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
