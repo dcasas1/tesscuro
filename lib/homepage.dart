@@ -34,6 +34,10 @@ class _MyStatefulWidgetState extends State<HomePage> {
       style: optionStyle,
     ),
     Text(
+      'Home',
+      style: optionStyle,
+    ),
+    Text(
       'Filters',
       style: optionStyle,
     ),
