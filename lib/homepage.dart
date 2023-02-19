@@ -1,33 +1,26 @@
 import 'package:flutter/material.dart';
 import './addcredentials.dart';
 
-void main() => runApp(const MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  static const String _title = 'Homepage';
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: _title,
-      home: HomePage(),
-    );
-  }
-}
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  static const routeName = '/home-page';
+
   @override
-  State<HomePage> createState() => _MyStatefulWidgetState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyStatefulWidgetState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
+  void addRoute(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(AddCredentials.routeName);
+  }
+
+  //Nav Bar options
   int _selectedIndex = 1;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const TextStyle optionStyle = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.bold,
+  );
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
       'Settings',
@@ -43,8 +36,6 @@ class _MyStatefulWidgetState extends State<HomePage> {
     ),
   ];
 
-  get floatingActionButtonLocation => null;
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -57,6 +48,8 @@ class _MyStatefulWidgetState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Homepage'),
       ),
+
+      //Main Screen List
       body: Column(
         children: [
           Center(
@@ -78,17 +71,11 @@ class _MyStatefulWidgetState extends State<HomePage> {
           ),
         ],
       ),
+
+      //Add Entry Button
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  const AddCredentials(title: "Add Site Settings"),
-            ),
-          );
-        },
+        onPressed: () => addRoute(context),
         autofocus: true,
         elevation: 15,
         mouseCursor: MaterialStateMouseCursor.textable,
@@ -97,6 +84,8 @@ class _MyStatefulWidgetState extends State<HomePage> {
           size: 40,
         ),
       ),
+
+      //Nav Bar
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
