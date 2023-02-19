@@ -1,54 +1,31 @@
 import 'package:flutter/material.dart';
 import './homepage.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+class EditSettings extends StatelessWidget {
+  const EditSettings({super.key});
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  static const routeName = 'edit-settings';
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Tesscuro',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const EditSettings(title: 'Edit Settings'),
-    );
+  void homeRoute(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(HomePage.routeName);
   }
-}
 
-class EditSettings extends StatefulWidget {
-  const EditSettings({super.key, required this.title});
-  final String title;
-
-  @override
-  State<EditSettings> createState() => _EditSettingsState();
-}
-
-class _EditSettingsState extends State<EditSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('Edit Settings'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            /*Padding(
-              padding: EdgeInsets.all(25),
-              child: Center(
-                child: SizedBox(
-                  width: 200,
-                  height: 150,
-                ),
-              ),
-            ),*/
+            //Site name field
             const Padding(
-              padding: EdgeInsets.only(top: 40, left: 10, right: 10),
+              padding: EdgeInsets.only(
+                top: 40,
+                left: 10,
+                right: 10,
+              ),
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -57,8 +34,14 @@ class _EditSettingsState extends State<EditSettings> {
                 ),
               ),
             ),
+
+            //URL Field
             const Padding(
-              padding: EdgeInsets.only(top: 40, left: 10, right: 10),
+              padding: EdgeInsets.only(
+                top: 40,
+                left: 10,
+                right: 10,
+              ),
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -67,18 +50,31 @@ class _EditSettingsState extends State<EditSettings> {
                 ),
               ),
             ),
+
+            //Username Field
             const Padding(
-              padding: EdgeInsets.only(top: 40, left: 10, right: 10),
+              padding: EdgeInsets.only(
+                top: 40,
+                left: 10,
+                right: 10,
+              ),
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Username of Site',
-                  hintText: 'URL',
+                  hintText: 'Username',
                 ),
               ),
             ),
+
+            //Password Field
             const Padding(
-              padding: EdgeInsets.only(top: 40, left: 10, right: 10, bottom: 50),
+              padding: EdgeInsets.only(
+                top: 40,
+                left: 10,
+                right: 10,
+                bottom: 50,
+              ),
               child: TextField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -88,21 +84,19 @@ class _EditSettingsState extends State<EditSettings> {
                 ),
               ),
             ),
+
+            //Submit Button
             SizedBox(
               height: 60,
               width: 200,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(), 
-                      ),
-                    );
-                },
+                onPressed: () => homeRoute(context),
                 child: const Text(
                   'Submit',
-                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
                 ),
               ),
             ),
