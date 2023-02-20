@@ -4,6 +4,7 @@ import './homepage.dart';
 import './login.dart';
 import './addcredentials.dart';
 import './editsettings.dart';
+import './nav_bar.dart';
 
 
 void main() {
@@ -19,7 +20,13 @@ class MyApp extends StatelessWidget {
       title: 'Tesscuro',
       theme: ThemeData(
         canvasColor: Colors.white,
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.blue,
+        ).copyWith(
+          secondary: Colors.red,
+        )
+        
+         
       ),
       //home: const LoginPage(title: 'Login Page'),
       routes: {
@@ -29,6 +36,7 @@ class MyApp extends StatelessWidget {
         LoginPage.routeName: (ctx) => const LoginPage(),
         AddCredentials.routeName:(ctx) => const AddCredentials(),
         EditSettings.routeName:(ctx) => const EditSettings(),
+        NavBar.routeName:(ctx) => const NavBar(),
       },
     );
   }

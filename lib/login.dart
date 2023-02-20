@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './homepage.dart';
 import './createaccount.dart';
+import 'nav_bar.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -9,7 +9,7 @@ class LoginPage extends StatelessWidget {
 
   //Homepage route
   void homeRoute(BuildContext ctx) {
-    Navigator.of(ctx).pushReplacementNamed(HomePage.routeName);
+    Navigator.of(ctx).pushReplacementNamed(NavBar.routeName);
   }
 
   //Create Account Route
