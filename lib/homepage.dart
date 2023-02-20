@@ -15,33 +15,6 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(ctx).pushNamed(AddCredentials.routeName);
   }
 
-  // //Nav Bar options
-  // int _selectedIndex = 1;
-  // static const TextStyle optionStyle = TextStyle(
-  //   fontSize: 30,
-  //   fontWeight: FontWeight.bold,
-  // );
-  // static const List<Widget> _widgetOptions = <Widget>[
-  //   Text(
-  //     'Settings',
-  //     style: optionStyle,
-  //   ),
-  //   Text(
-  //     'Home',
-  //     style: optionStyle,
-  //   ),
-  //   Text(
-  //     'Filters',
-  //     style: optionStyle,
-  //   ),
-  // ];
-
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
