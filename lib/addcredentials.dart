@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './homepage.dart';
+//import './homepage.dart';
 
 class AddCredentials extends StatelessWidget {
   const AddCredentials({super.key});
@@ -8,7 +8,7 @@ class AddCredentials extends StatelessWidget {
 
   //Homepage route
   void homeRoute(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(HomePage.routeName);
+    Navigator.of(ctx).pop();
   }
 
   @override

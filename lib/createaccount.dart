@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import './login.dart';
+//import './login.dart';
 
 class CreateAccount extends StatelessWidget {
   const CreateAccount({super.key});
 
   static const routeName = '/create-account';
 
-  //Login Page Route
+  //Login Page Route popping
   void loginRoute(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(LoginPage.routeName);
+    Navigator.of(ctx).pop();
   }
 
   @override
