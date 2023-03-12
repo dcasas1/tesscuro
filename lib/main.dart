@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import './createaccount.dart';
-import './homepage.dart';
-import './login.dart';
-import './addcredentials.dart';
-import './editsettings.dart';
-import './nav_bar.dart';
+import './screens/createaccount.dart';
+import './screens/homepage.dart';
+import './screens/login.dart';
+import './screens/addcredentials.dart';
+import './screens/editsettings.dart';
+import './screens/nav_bar.dart';
 
 
 void main() {
