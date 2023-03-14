@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import './createaccount.dart';
 import './nav_bar.dart';
+import '../providers/credentials.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   static const routeName = '/login';
+
+  Future<void> _setAccounts(BuildContext context) async {
+    await Provider.of<Credentials>(context, listen: false).fetchAccounts();
+  }
 
   //Homepage route
   void homeRoute(BuildContext ctx) {
@@ -38,7 +44,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-      
+
             //Adds Username Field
             const Padding(
               padding: EdgeInsets.only(left: 10, right: 10, bottom: 20),
@@ -50,7 +56,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-      
+
             //Adds Password Field
             const Padding(
               padding: EdgeInsets.only(left: 10, right: 10, bottom: 30),
@@ -63,20 +69,23 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-      
+
             //Login Button
             SizedBox(
               height: 60,
               width: 200,
               child: ElevatedButton(
-                onPressed: () => homeRoute(context),
+                onPressed: () {
+                  _setAccounts(context);
+                  homeRoute(context);
+                },
                 child: const Text(
                   'Login',
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
               ),
             ),
-      
+
             //Create Account Button
             Padding(
               padding: const EdgeInsets.only(top: 20),
@@ -84,7 +93,9 @@ class LoginPage extends StatelessWidget {
                 height: 60,
                 width: 200,
                 child: ElevatedButton(
-                  onPressed: () => createRoute(context),
+                  onPressed: () {
+                    createRoute(context);
+                  },
                   child: const Text(
                     'Create Account',
                     style: TextStyle(color: Colors.black, fontSize: 20),

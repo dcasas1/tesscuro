@@ -8,5 +8,14 @@ import './user_credentials_struct.dart';
 class Credentials with ChangeNotifier {
   List<Accounts> _items = [];
 
-  
+  Future<void> fetchAccounts() async {
+    final selectAccountUrl =
+        Uri.parse('https://cs.csub.edu/~tesscuro/database/selectAccounts.php');
+    try {
+      final response = await http.get(selectAccountUrl);
+      print(jsonDecode(response.body));
+    } catch (error) {
+      rethrow;
+    }
+  }
 }
