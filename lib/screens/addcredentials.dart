@@ -107,7 +107,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                       },
                     ),
                     Container(
-                      padding: const EdgeInsets.all(25),
+                      padding: const EdgeInsets.all(20),
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
@@ -122,7 +122,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                       },
                     ),
                     Container(
-                      padding: const EdgeInsets.all(25),
+                      padding: const EdgeInsets.all(20),
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
@@ -137,7 +137,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                       },
                     ),
                     Container(
-                      padding: const EdgeInsets.all(25),
+                      padding: const EdgeInsets.all(20),
                     ),
                     TextFormField(
                       obscureText: true,
@@ -154,7 +154,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                       },
                     ),
                     Container(
-                      padding: const EdgeInsets.all(25),
+                      padding: const EdgeInsets.all(20),
                     ),
                     TextFormField(
                       obscureText: true,
@@ -163,30 +163,34 @@ class _AddCredentialsState extends State<AddCredentials> {
                         labelText: 'Confirm Password',
                         hintText: 'Confirm Password for Site',
                       ),
+                      textInputAction: TextInputAction.done,
                       focusNode: _confirmPassFocusNode,
                       onFieldSubmitted: (_) {
                         _saveForm();
                       },
                     ),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                    ),
+                    SizedBox(
+                      height: 60,
+                      width: 200,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _saveForm();
+                        },
+                        child: const Text(
+                          'Submit',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-
-              //Submit Button
-              // SizedBox(
-              //   height: 60,
-              //   width: 200,
-              //   child: ElevatedButton(
-              //     onPressed: () => homeRoute(context),
-              //     child: const Text(
-              //       'Submit',
-              //       style: TextStyle(
-              //         color: Colors.black,
-              //         fontSize: 20,
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ),
     );
   }
