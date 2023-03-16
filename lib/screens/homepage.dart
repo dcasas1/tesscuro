@@ -44,11 +44,30 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isLoaded
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : const AccountsGrid(),
+      body: //Column(
+          //   children: const [
+          //     Card(
+          //       child: ListTile(
+          //         leading: Icon(Icons.play_circle_outline),
+          //         title: Text("Youtube"),
+          //         subtitle: Text("Last Login: XX-XX-XXXX"),
+          //       ),
+          //     ),
+          //     Card(
+          //       child: ListTile(
+          //         leading: Icon(Icons.play_circle_outline),
+          //         title: Text("FaceBook"),
+          //         subtitle: Text("Last Login: XX-XX-XXXX"),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+
+          _isLoaded
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : const AccountsGrid(),
 
       //Add entry Button
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
