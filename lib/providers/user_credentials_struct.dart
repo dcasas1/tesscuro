@@ -6,10 +6,10 @@ class Accounts with ChangeNotifier {
   final String password;
   final String userName;
 
-  Accounts(
-    this.id,
-    this.siteUrl,
-    this.password,
-    this.userName,
-  );
+  Accounts({
+    required this.id,
+    required this.siteUrl,
+    required this.password,
+    required this.userName,
+  });
 }
