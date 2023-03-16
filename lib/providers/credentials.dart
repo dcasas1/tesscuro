@@ -36,4 +36,22 @@ class Credentials with ChangeNotifier {
       rethrow;
     }
   }
+
+  Future<void> addAccount(Accounts account) async {
+    final addUrl =
+        Uri.parse('https://cs.csub.edu/~tesscuro/database/addAccount.php');
+    try {
+      final response = await http.post(
+        addUrl,
+        body: json.encode({
+          'cID': account.id,
+          'url': account.siteUrl,
+          'username': account.userName,
+          'password': account.password,
+        }),
+      );
+    } catch (error) {
+      rethrow;
+    }
+  }
 }
