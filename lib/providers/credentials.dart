@@ -24,6 +24,7 @@ class Credentials with ChangeNotifier {
         loadedData.add(
           Accounts(
             id: data['cID'],
+            siteName: data['siteName'],
             siteUrl: data['url'],
             password: data['password'],
             userName: data['username'],

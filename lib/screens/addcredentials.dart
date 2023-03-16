@@ -27,6 +27,7 @@ class _AddCredentialsState extends State<AddCredentials> {
   var _isLoading = false;
   var _editedAccount = Accounts(
     id: '',
+    siteName: '',
     siteUrl: '',
     password: '',
     userName: '',
@@ -105,6 +106,20 @@ class _AddCredentialsState extends State<AddCredentials> {
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_urlFocusNode);
                       },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please provide a value.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _editedAccount = Accounts(
+                            id: _editedAccount.id,
+                            siteName: value!,
+                            siteUrl: _editedAccount.siteUrl,
+                            password: _editedAccount.password,
+                            userName: _editedAccount.userName);
+                      },
                     ),
                     Container(
                       padding: const EdgeInsets.all(20),
@@ -120,6 +135,14 @@ class _AddCredentialsState extends State<AddCredentials> {
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_usernameFocusNode);
                       },
+                      onSaved: (value) {
+                        _editedAccount = Accounts(
+                            id: _editedAccount.id,
+                            siteName: _editedAccount.siteName,
+                            siteUrl: value!,
+                            password: _editedAccount.password,
+                            userName: _editedAccount.userName);
+                      },
                     ),
                     Container(
                       padding: const EdgeInsets.all(20),
@@ -134,6 +157,14 @@ class _AddCredentialsState extends State<AddCredentials> {
                       focusNode: _usernameFocusNode,
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_passwordFocusNode);
+                      },
+                      onSaved: (value) {
+                        _editedAccount = Accounts(
+                            id: _editedAccount.id,
+                            siteName: _editedAccount.siteName,
+                            siteUrl: _editedAccount.siteUrl,
+                            password: _editedAccount.password,
+                            userName: value!);
                       },
                     ),
                     Container(
@@ -151,6 +182,14 @@ class _AddCredentialsState extends State<AddCredentials> {
                       onFieldSubmitted: (_) {
                         FocusScope.of(context)
                             .requestFocus(_confirmPassFocusNode);
+                      },
+                      onSaved: (value) {
+                        _editedAccount = Accounts(
+                            id: _editedAccount.id,
+                            siteName: _editedAccount.siteName,
+                            siteUrl: _editedAccount.siteUrl,
+                            password: value!,
+                            userName: _editedAccount.userName);
                       },
                     ),
                     Container(
