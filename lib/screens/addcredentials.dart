@@ -26,7 +26,7 @@ class _AddCredentialsState extends State<AddCredentials> {
   final _form = GlobalKey<FormState>();
   var _isLoading = false;
   var _editedAccount = Accounts(
-    id: '',
+    id: null,
     siteName: '',
     siteUrl: '',
     password: '',

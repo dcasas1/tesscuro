@@ -17,21 +17,12 @@ class Credentials with ChangeNotifier {
         Uri.parse('https://cs.csub.edu/~tesscuro/database/selectAccounts.php');
     try {
       final response = await http.get(selectAccountUrl);
-      Map<String, dynamic> receivedData =
-          Map<String, dynamic>.from(json.decode(response.body));
-      final List<Accounts> loadedData = [];
-      receivedData.forEach((accountID, data) {
-        loadedData.add(
-          Accounts(
-            id: data['cID'],
-            siteName: data['siteName'],
-            siteUrl: data['url'],
-            password: data['password'],
-            userName: data['username'],
-          ),
-        );
-      });
-      _items = loadedData;
+      final receivedData = jsonDecode(response.body);
+      print(receivedData);
+      final accountList = List<Accounts>.from(
+        receivedData.map((x) => Accounts.fromJson(x)),
+      );
+      _items = accountList;
       notifyListeners();
     } catch (error) {
       rethrow;
@@ -51,6 +42,7 @@ class Credentials with ChangeNotifier {
           'password': account.password,
         }),
       );
+      print('body: [${response.body}]');
     } catch (error) {
       rethrow;
     }
