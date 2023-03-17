@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tesscuro/providers/credentials.dart';
+import './providers/credentials.dart';
 import './screens/createaccount.dart';
 import './screens/homepage.dart';
 import './screens/login.dart';

@@ -22,12 +22,6 @@ class _HomePageState extends State<HomePage> {
   var _isLoaded = false;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     if (_isInit) {
       setState(() {
