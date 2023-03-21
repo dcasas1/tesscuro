@@ -29,13 +29,23 @@ class _AccountViewState extends State<AccountView> {
               "Username: ${account.userName}\nPassword: ${account.password.replaceAll(account.password, "********")}")
           : Text(
               "Username: ${account.userName}\nPassword: ${account.password}"),
-      trailing: IconButton(
-        icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility),
-        onPressed: () {
-          setState(() {
-            _passwordVisible = !_passwordVisible;
-          });
-        },
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: Icon(
+                _passwordVisible ? Icons.visibility_off : Icons.visibility),
+            onPressed: () {
+              setState(() {
+                _passwordVisible = !_passwordVisible;
+              });
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
