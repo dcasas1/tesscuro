@@ -64,7 +64,7 @@ class _AddCredentialsState extends State<AddCredentials> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(ctx).pop;
+                Navigator.of(ctx, rootNavigator: true).pop('dialog');
               },
               child: const Text('Ok'),
             )
@@ -204,6 +204,14 @@ class _AddCredentialsState extends State<AddCredentials> {
                       ),
                       textInputAction: TextInputAction.done,
                       focusNode: _confirmPassFocusNode,
+                      onSaved: (value) {
+                        _editedAccount = Accounts(
+                            id: value!,
+                            siteName: _editedAccount.siteName,
+                            siteUrl: _editedAccount.siteUrl,
+                            password: _editedAccount.password,
+                            userName: _editedAccount.userName);
+                      },
                       onFieldSubmitted: (_) {
                         _saveForm();
                       },

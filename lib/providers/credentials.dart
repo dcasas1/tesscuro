@@ -32,15 +32,22 @@ class Credentials with ChangeNotifier {
   Future<void> addAccount(Accounts account) async {
     final addUrl =
         Uri.parse('https://cs.csub.edu/~tesscuro/database/addAccount.php');
+    var body = json.encode({
+      'cID': account.id,
+      'url': account.siteUrl,
+      'username': account.userName,
+      'password': account.password,
+      'siteName': account.siteName,
+    });
+    print(body);
     try {
-      final response = await http.post(
+      final http.Response response = await http.post(
         addUrl,
-        body: json.encode({
-          'cID': account.id,
-          'url': account.siteUrl,
-          'username': account.userName,
-          'password': account.password,
-        }),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'accept': 'application/json'
+        },
+        body: body,
       );
       print('body: [${response.body}]');
     } catch (error) {

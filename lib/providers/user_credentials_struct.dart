@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class Accounts with ChangeNotifier {
-  final int? id;
+  final String? id;
   final String siteName;
   final String siteUrl;
   final String password;
@@ -23,11 +23,11 @@ class Accounts with ChangeNotifier {
         userName: json['username'],
       );
 
-  Map<String, dynamic> toJson() => {
-        "cID": id,
-        "siteName": siteName,
-        "url": siteUrl,
-        "password": password,
-        "username": userName,
+  Map<String, dynamic> toJson(Accounts value) => {
+        "cID": value.id,
+        "siteName": value.siteName,
+        "url": value.siteUrl,
+        "password": value.password,
+        "username": value.userName,
       };
 }
