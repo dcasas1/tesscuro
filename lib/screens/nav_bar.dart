@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './homepage.dart';
 import './editsettings.dart';
+import './addcredentials.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -16,6 +17,9 @@ class _NavBarState extends State<NavBar> {
     {'page': HomePage(), 'title': 'Homepage'},
     {'page': EditSettings(), 'title': 'Settings'},
   ];
+  void addRoute(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(AddCredentials.routeName);
+  }
 
   int _selectedPageIndex = 0;
 
@@ -30,20 +34,23 @@ class _NavBarState extends State<NavBar> {
     return Scaffold(
       appBar: (_selectedPageIndex == 0)
           ? AppBar(
-              leading: Icon(Icons.menu),
+              leading: const Icon(Icons.menu),
               title: Text(_pages[_selectedPageIndex]['title'] as String),
               actions: [
-                Icon(
-                  Icons.add,
-                  size: 31,
+                IconButton(
+                  onPressed: () => addRoute(context),
+                  icon: const Icon(
+                    Icons.add,
+                    size: 31,
+                  ),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 14),
                 ),
               ],
             )
           : AppBar(
-              leading: Icon(Icons.menu),
+              leading: const Icon(Icons.menu),
               title: Text(_pages[_selectedPageIndex]['title'] as String),
             ),
       body: _pages[_selectedPageIndex]['page'] as Widget,
