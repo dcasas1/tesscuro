@@ -4,7 +4,7 @@ import './editsettings.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
-  
+
   static const routeName = '/nav-bar';
 
   @override
@@ -28,9 +28,24 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_pages[_selectedPageIndex]['title'] as String),
-      ),
+      appBar: (_selectedPageIndex == 0)
+          ? AppBar(
+              leading: Icon(Icons.menu),
+              title: Text(_pages[_selectedPageIndex]['title'] as String),
+              actions: [
+                Icon(
+                  Icons.add,
+                  size: 31,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 14),
+                ),
+              ],
+            )
+          : AppBar(
+              leading: Icon(Icons.menu),
+              title: Text(_pages[_selectedPageIndex]['title'] as String),
+            ),
       body: _pages[_selectedPageIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
