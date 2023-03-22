@@ -93,20 +93,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-
-      //Add entry Button
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => addRoute(context),
-        autofocus: true,
-        elevation: 15,
-        mouseCursor: MaterialStateMouseCursor.textable,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        child: const Icon(
-          Icons.add,
-          size: 40,
-        ),
-      ),
     );
   }
 }
