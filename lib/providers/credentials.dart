@@ -50,6 +50,16 @@ class Credentials with ChangeNotifier {
         body: body,
       );
       print('body: [${response.body}]');
+
+      final newAccount = Accounts(
+        id: account.id,
+        siteName: account.siteName,
+        siteUrl: account.siteUrl,
+        password: account.password,
+        userName: account.userName,
+      );
+      _items.insert(0, newAccount);
+      notifyListeners();
     } catch (error) {
       rethrow;
     }
