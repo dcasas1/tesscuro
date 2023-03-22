@@ -46,19 +46,43 @@ class _HomePageState extends State<HomePage> {
               child: CircularProgressIndicator(),
             )
           : listLength > 0
-              ? ListView.separated(
-                  padding: const EdgeInsets.all(10.0),
-                  separatorBuilder: (context, index) => const Divider(
-                    thickness: 2,
-                    color: Colors.grey,
-                  ),
-                  itemCount: accounts.length,
-                  itemBuilder: ((context, index) =>
-                      ChangeNotifierProvider.value(
-                        value: accounts[index],
-                        key: ValueKey(accounts),
-                        child: const AccountView(),
-                      )),
+              ? LayoutBuilder(
+                  builder: (
+                    context,
+                    constraints,
+                  ) {
+                    return Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: ListView.separated(
+                            padding: const EdgeInsets.all(10.0),
+                            separatorBuilder: (context, index) => const Divider(
+                              thickness: 2,
+                              color: Colors.grey,
+                            ),
+                            itemCount: accounts.length,
+                            itemBuilder: ((context, index) =>
+                                ChangeNotifierProvider.value(
+                                  value: accounts[index],
+                                  key: ValueKey(accounts),
+                                  child: const AccountView(),
+                                )),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.all(5),
+                          child: Text(
+                            'Tap \'+\' to add another account!',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 )
               : Center(
                   child: ClipRRect(
