@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tesscuro/widgets/account_grids.dart';
+import '../widgets/account_item.dart';
 import './addcredentials.dart';
 import '../providers/credentials.dart';
 
@@ -37,12 +37,62 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final accountsData = Provider.of<Credentials>(context);
+    final accounts = accountsData.items;
+    var listLength = accounts.length;
     return Scaffold(
-      body:_isLoaded
-              ? const Center(
-                  child: CircularProgressIndicator(),
+      body: _isLoaded
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : listLength > 0
+              ? ListView.separated(
+                  padding: const EdgeInsets.all(10.0),
+                  separatorBuilder: (context, index) => const Divider(
+                    thickness: 2,
+                    color: Colors.grey,
+                  ),
+                  itemCount: accounts.length,
+                  itemBuilder: ((context, index) =>
+                      ChangeNotifierProvider.value(
+                        value: accounts[index],
+                        key: ValueKey(accounts),
+                        child: const AccountView(),
+                      )),
                 )
-              : const AccountsGrid(),
+              : Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned.fill(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: <Color>[
+                                  Color(0xFF0D47A1),
+                                  Color(0xFF1976D2),
+                                  Color(0xFF42A5F5),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => addRoute(context),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.all(16),
+                            textStyle: const TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                          child: const Text('Tap Here To Add An Account'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
 
       //Add entry Button
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
