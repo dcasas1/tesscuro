@@ -12,7 +12,6 @@ class EditSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //new
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Settings')),
       body: Column(
