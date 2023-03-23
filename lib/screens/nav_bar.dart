@@ -37,6 +37,13 @@ class _NavBarState extends State<NavBar> {
               leading: const Icon(Icons.menu),
               title: Text(_pages[_selectedPageIndex]['title'] as String),
               actions: [
+                const Icon(
+                  Icons.refresh,
+                  size: 31,
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4),
+                ),
                 IconButton(
                   onPressed: () => addRoute(context),
                   icon: const Icon(
