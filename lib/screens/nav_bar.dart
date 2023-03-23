@@ -56,10 +56,10 @@ class _NavBarState extends State<NavBar> {
                 ),
               ],
             )
-          : AppBar(
-              leading: const Icon(Icons.menu),
-              title: Text(_pages[_selectedPageIndex]['title'] as String),
-            ),
+          : null,//AppBar(
+              //leading: const Icon(Icons.menu),
+              //title: Text(_pages[_selectedPageIndex]['title'] as String),
+            
       body: _pages[_selectedPageIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
