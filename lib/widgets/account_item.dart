@@ -91,10 +91,6 @@ class _AccountViewState extends State<AccountView> {
                 });
               },
             ),
-            IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () => editRoute(context),
-            ),
           ],
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../widgets/account_item.dart';
 import './addcredentials.dart';
 import '../providers/credentials.dart';
+import './editsettings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +17,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   void addRoute(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(AddCredentials.routeName);
+  }
+  void editRoute(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(EditSettings.routeName);
   }
 
   var _isInit = true;
@@ -41,6 +45,7 @@ class _HomePageState extends State<HomePage> {
     final accounts = accountsData.items;
     var listLength = accounts.length;
     return Scaffold(
+      //Waits for accounts to be grabbed from backend before loading
       body: _isLoaded
           ? const Center(
               child: CircularProgressIndicator(),
@@ -53,6 +58,7 @@ class _HomePageState extends State<HomePage> {
                   ) {
                     return Column(
                       children: <Widget>[
+                        //Passes the data into individual cards
                         Expanded(
                           child: ListView.separated(
                             padding: const EdgeInsets.all(10.0),
@@ -61,14 +67,16 @@ class _HomePageState extends State<HomePage> {
                               color: Colors.grey,
                             ),
                             itemCount: accounts.length,
-                            itemBuilder: ((context, index) =>
-                                ChangeNotifierProvider.value(
+                            itemBuilder: ((context, index) => InkWell(
+                              onTap: () => editRoute(context),
+                              child: ChangeNotifierProvider.value(
                                   value: accounts[index],
                                   key: ValueKey(accounts),
                                   child: const AccountView(),
-                                )),
+                            ))),
                           ),
                         ),
+                        //Text below the list view
                         Container(
                           padding: const EdgeInsets.all(5),
                           margin: const EdgeInsets.all(5),
@@ -84,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                 )
-              : Center(
+              : Center(     //Button to add account if no accounts are in db
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: Stack(
