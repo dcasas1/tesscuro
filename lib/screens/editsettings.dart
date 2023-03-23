@@ -12,7 +12,9 @@ class EditSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+      appBar: AppBar(title: const Text('Edit Settings')),
+      body: Column(
       children: <Widget>[
         //Site name field
         const Padding(
@@ -96,6 +98,7 @@ class EditSettings extends StatelessWidget {
           ),
         ),
       ],
+    ),
     );
   }
 }
