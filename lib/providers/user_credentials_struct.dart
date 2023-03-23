@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class Accounts with ChangeNotifier {
-  final String? id;
+  final String id;
   final String siteName;
   final String siteUrl;
   final String password;
@@ -16,7 +16,7 @@ class Accounts with ChangeNotifier {
   });
 
   factory Accounts.fromJson(Map<String, dynamic> json) => Accounts(
-        id: json["cID"],
+        id: json["acc_id"],
         siteName: json["siteName"],
         siteUrl: json["url"],
         password: json["password"],
@@ -24,7 +24,7 @@ class Accounts with ChangeNotifier {
       );
 
   Map<String, dynamic> toJson(Accounts value) => {
-        "cID": value.id,
+        "acc_id": value.id,
         "siteName": value.siteName,
         "url": value.siteUrl,
         "password": value.password,

@@ -26,7 +26,7 @@ class _AddCredentialsState extends State<AddCredentials> {
   final _form = GlobalKey<FormState>();
   var _isLoading = false;
   var _editedAccount = Accounts(
-    id: null,
+    id: '',
     siteName: '',
     siteUrl: '',
     password: '',
@@ -178,10 +178,11 @@ class _AddCredentialsState extends State<AddCredentials> {
                         hintText: 'Enter Password for Site',
                       ),
                       focusNode: _passwordFocusNode,
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) {
-                        FocusScope.of(context)
-                            .requestFocus(_confirmPassFocusNode);
+                        // FocusScope.of(context)
+                        //     .requestFocus(_confirmPassFocusNode);
+                        _saveForm();
                       },
                       onSaved: (value) {
                         _editedAccount = Accounts(
@@ -195,27 +196,27 @@ class _AddCredentialsState extends State<AddCredentials> {
                     Container(
                       padding: const EdgeInsets.all(20),
                     ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Confirm Password',
-                        hintText: 'Confirm Password for Site',
-                      ),
-                      textInputAction: TextInputAction.done,
-                      focusNode: _confirmPassFocusNode,
-                      onSaved: (value) {
-                        _editedAccount = Accounts(
-                            id: value!,
-                            siteName: _editedAccount.siteName,
-                            siteUrl: _editedAccount.siteUrl,
-                            password: _editedAccount.password,
-                            userName: _editedAccount.userName);
-                      },
-                      onFieldSubmitted: (_) {
-                        _saveForm();
-                      },
-                    ),
+                    // TextFormField(
+                    //   obscureText: true,
+                    //   decoration: const InputDecoration(
+                    //     border: OutlineInputBorder(),
+                    //     labelText: 'Confirm Password',
+                    //     hintText: 'Confirm Password for Site',
+                    //   ),
+                    //   textInputAction: TextInputAction.done,
+                    //   focusNode: _confirmPassFocusNode,
+                    //   onSaved: (value) {
+                    //     _editedAccount = Accounts(
+                    //         id: value!,
+                    //         siteName: _editedAccount.siteName,
+                    //         siteUrl: _editedAccount.siteUrl,
+                    //         password: _editedAccount.password,
+                    //         userName: _editedAccount.userName);
+                    //   },
+                    //   onFieldSubmitted: (_) {
+                    //     _saveForm();
+                    //   },
+                    // ),
                     Container(
                       padding: const EdgeInsets.all(20),
                     ),

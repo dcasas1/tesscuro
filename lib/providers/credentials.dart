@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -33,7 +34,6 @@ class Credentials with ChangeNotifier {
     final addUrl =
         Uri.parse('https://cs.csub.edu/~tesscuro/database/addAccount.php');
     var body = json.encode({
-      'cID': account.id,
       'url': account.siteUrl,
       'username': account.userName,
       'password': account.password,
@@ -58,10 +58,49 @@ class Credentials with ChangeNotifier {
         password: account.password,
         userName: account.userName,
       );
-      _items.insert(0, newAccount);
+      _items.add(newAccount);
       notifyListeners();
     } catch (error) {
       rethrow;
     }
+  }
+
+  Future<void> deleteAccount(String id) async {
+    final delurl =
+        Uri.parse('https://cs.csub.edu/~tesscuro/database/deleteAccount.php');
+
+    //Matches account in current list of accounts based on index
+    final existingAccountIndex =
+        _items.indexWhere((account) => account.id == id);
+
+    //Grabs the entire account to remove from list
+    Accounts? existingAccount = _items[existingAccountIndex];
+
+    //Removes account from list
+    _items.removeAt(existingAccountIndex);
+    notifyListeners();
+
+    //Grabs ID and encodes as JSON
+    var body = json.encode({
+      'acc_id': id,
+    });
+
+    //Removes account from DB
+    final response = await http.post(
+      delurl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'accept': 'application/json'
+      },
+      body: body,
+    );
+
+    //Error handling if unable to delete from DB
+    if (response.statusCode >= 400) {
+      _items.insert(existingAccountIndex, existingAccount);
+      notifyListeners();
+      throw const HttpException('Could not delete account.');
+    }
+    existingAccount = null;
   }
 }

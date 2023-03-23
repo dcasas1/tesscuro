@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/credentials.dart';
 
 import '../providers/user_credentials_struct.dart';
 import '../screens/editsettings.dart';
@@ -26,6 +27,7 @@ class _AccountViewState extends State<AccountView> {
   @override
   Widget build(BuildContext context) {
     final account = Provider.of<Accounts>(context, listen: false);
+    final scaffold = ScaffoldMessenger.of(context);
     return Dismissible(
       key: ValueKey(account.siteUrl),
       direction: DismissDirection.endToStart,
@@ -72,6 +74,21 @@ class _AccountViewState extends State<AccountView> {
           size: 40,
         ),
       ),
+      onDismissed: (direction) async {
+        try {
+          await Provider.of<Credentials>(context, listen: false)
+              .deleteAccount(account.id);
+        } catch (error) {
+          scaffold.showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Failed to delete Account',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
+      },
       child: ListTile(
         title: Text(account.siteName),
         subtitle: _passwordVisible
