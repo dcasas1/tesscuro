@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_credentials_struct.dart';
+import '../screens/editsettings.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
@@ -12,6 +13,9 @@ class AccountView extends StatefulWidget {
 
 class _AccountViewState extends State<AccountView> {
   var _passwordVisible = true;
+  void editRoute(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(EditSettings.routeName);
+  }
 
   @override
   void initState() {
@@ -89,7 +93,7 @@ class _AccountViewState extends State<AccountView> {
             ),
             IconButton(
               icon: const Icon(Icons.edit),
-              onPressed: () {},
+              onPressed: () => editRoute(context),
             ),
           ],
         ),
