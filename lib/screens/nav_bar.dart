@@ -37,9 +37,14 @@ class _NavBarState extends State<NavBar> {
               leading: const Icon(Icons.menu),
               title: Text(_pages[_selectedPageIndex]['title'] as String),
               actions: [
-                const Icon(
-                  Icons.refresh,
-                  size: 31,
+                // once you put the route make sure to put const on the
+                // icon: <const> Icon()
+                const IconButton(
+                  onPressed: null,
+                  icon: Icon(
+                    Icons.refresh,
+                    size: 31,
+                  ),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4),
@@ -56,10 +61,10 @@ class _NavBarState extends State<NavBar> {
                 ),
               ],
             )
-          : null,//AppBar(
-              //leading: const Icon(Icons.menu),
-              //title: Text(_pages[_selectedPageIndex]['title'] as String),
-            
+          : null, //AppBar(
+      //leading: const Icon(Icons.menu),
+      //title: Text(_pages[_selectedPageIndex]['title'] as String),
+
       body: _pages[_selectedPageIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
