@@ -76,7 +76,9 @@ class _HomePageState extends State<HomePage> {
                               ),
                               itemCount: accounts.length,
                               itemBuilder: ((context, index) => InkWell(
-                                  onTap: () => editRoute(context),
+                                  onTap: () => Navigator.of(context).pushNamed(
+                                      EditSettings.routeName,
+                                      arguments: accounts[index].id),
                                   child: ChangeNotifierProvider.value(
                                     value: accounts[index],
                                     key: ValueKey(accounts),

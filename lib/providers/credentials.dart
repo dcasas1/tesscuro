@@ -13,16 +13,22 @@ class Credentials with ChangeNotifier {
     return [..._items];
   }
 
+  Accounts findById(String id) {
+    return _items.firstWhere((account) => account.id == id);
+  }
+
   Future<void> fetchAccounts() async {
     final selectAccountUrl =
         Uri.parse('https://cs.csub.edu/~tesscuro/database/selectAccounts.php');
+    //Error handling
     try {
       final response = await http.get(selectAccountUrl);
       final receivedData = jsonDecode(response.body);
-      print(receivedData);
+      //Grabs json data from DB and maps it to a list
       final accountList = List<Accounts>.from(
         receivedData.map((x) => Accounts.fromJson(x)),
       );
+      //Grabs the list and insert into the item list to display to screen
       _items = accountList;
       notifyListeners();
     } catch (error) {
@@ -39,9 +45,8 @@ class Credentials with ChangeNotifier {
       'password': account.password,
       'siteName': account.siteName,
     });
-    print(body);
     try {
-      final http.Response response = await http.post(
+      await http.post(
         addUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -49,8 +54,6 @@ class Credentials with ChangeNotifier {
         },
         body: body,
       );
-      print('body: [${response.body}]');
-
       final newAccount = Accounts(
         id: account.id,
         siteName: account.siteName,
@@ -102,5 +105,26 @@ class Credentials with ChangeNotifier {
       throw const HttpException('Could not delete account.');
     }
     existingAccount = null;
+  }
+
+  Future<void> updateProduct(String id, Accounts newAccount) async {
+    final accountIndex = _items.indexWhere((account) => account.id == id);
+    if (accountIndex >= 0) {
+      final url =
+          Uri.parse('https://cs.csub.edu/~tesscuro/database/editAccount.php');
+      await http.patch(
+        url,
+        body: json.encode({
+          'url': newAccount.siteUrl,
+          'username': newAccount.userName,
+          'password': newAccount.password,
+          'siteName': newAccount.siteName,
+        }),
+      );
+      _items[accountIndex] = newAccount;
+      notifyListeners();
+    } else {
+      print('...');
+    }
   }
 }
