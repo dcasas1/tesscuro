@@ -40,7 +40,7 @@ class _NavBarState extends State<NavBar> {
     return Scaffold(
       appBar: (_selectedPageIndex == 0)
           ? AppBar(
-              leading: const Icon(Icons.menu),
+              //leading: const Icon(Icons.menu),
               title: Text(_pages[_selectedPageIndex]['title'] as String),
               actions: [
                 IconButton(
@@ -68,6 +68,46 @@ class _NavBarState extends State<NavBar> {
           : null, //AppBar(
       //leading: const Icon(Icons.menu),
       //title: Text(_pages[_selectedPageIndex]['title'] as String),
+
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Center(
+                child: Text(
+                  'Tesscuro',
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.star_border_outlined,
+              ),
+              title: const Text('Favorites'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.circle_outlined,
+              ),
+              title: const Text('Other Page For Now'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
 
       body: _pages[_selectedPageIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
