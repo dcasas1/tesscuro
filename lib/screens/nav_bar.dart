@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import './homepage.dart';
 import './editsettings.dart';
 import './addcredentials.dart';
+import '../providers/credentials.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -29,6 +31,10 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
+  Future<void> _refreshAccounts(BuildContext context) async {
+    await Provider.of<Credentials>(context, listen: false).fetchAccounts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,11 +43,9 @@ class _NavBarState extends State<NavBar> {
               leading: const Icon(Icons.menu),
               title: Text(_pages[_selectedPageIndex]['title'] as String),
               actions: [
-                // once you put the route make sure to put const on the
-                // icon: <const> Icon()
-                const IconButton(
-                  onPressed: null,
-                  icon: Icon(
+                IconButton(
+                  onPressed: () => _refreshAccounts(context),
+                  icon: const Icon(
                     Icons.refresh,
                     size: 31,
                   ),
