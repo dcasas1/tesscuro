@@ -18,8 +18,13 @@ class _HomePageState extends State<HomePage> {
   void addRoute(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(AddCredentials.routeName);
   }
+
   void editRoute(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(EditSettings.routeName);
+  }
+
+  Future<void> _refreshAccounts(BuildContext context) async {
+    await Provider.of<Credentials>(context, listen: false).fetchAccounts();
   }
 
   var _isInit = true;
@@ -51,48 +56,53 @@ class _HomePageState extends State<HomePage> {
               child: CircularProgressIndicator(),
             )
           : listLength > 0
-              ? LayoutBuilder(
-                  builder: (
-                    context,
-                    constraints,
-                  ) {
-                    return Column(
-                      children: <Widget>[
-                        //Passes the data into individual cards
-                        Expanded(
-                          child: ListView.separated(
-                            padding: const EdgeInsets.all(10.0),
-                            separatorBuilder: (context, index) => const Divider(
-                              thickness: 2,
-                              color: Colors.grey,
-                            ),
-                            itemCount: accounts.length,
-                            itemBuilder: ((context, index) => InkWell(
-                              onTap: () => editRoute(context),
-                              child: ChangeNotifierProvider.value(
-                                  value: accounts[index],
-                                  key: ValueKey(accounts),
-                                  child: const AccountView(),
-                            ))),
-                          ),
-                        ),
-                        //Text below the list view
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          margin: const EdgeInsets.all(5),
-                          child: Text(
-                            'Tap \'+\' to add another account!',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Theme.of(context).colorScheme.primary,
+              ? RefreshIndicator(
+                  onRefresh: () => _refreshAccounts(context),
+                  child: LayoutBuilder(
+                    builder: (
+                      context,
+                      constraints,
+                    ) {
+                      return Column(
+                        children: <Widget>[
+                          //Passes the data into individual cards
+                          Expanded(
+                            child: ListView.separated(
+                              padding: const EdgeInsets.all(10.0),
+                              separatorBuilder: (context, index) =>
+                                  const Divider(
+                                thickness: 2,
+                                color: Colors.grey,
+                              ),
+                              itemCount: accounts.length,
+                              itemBuilder: ((context, index) => InkWell(
+                                  onTap: () => editRoute(context),
+                                  child: ChangeNotifierProvider.value(
+                                    value: accounts[index],
+                                    key: ValueKey(accounts),
+                                    child: const AccountView(),
+                                  ))),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
+                          //Text below the list view
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            margin: const EdgeInsets.all(5),
+                            child: Text(
+                              'Tap \'+\' to add another account!',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 )
-              : Center(     //Button to add account if no accounts are in db
+              : Center(
+                  //Button to add account if no accounts are in db
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: Stack(
