@@ -89,7 +89,8 @@ class _NavBarState extends State<NavBar> {
             ),
             ListTile(
               leading: const Icon(
-                Icons.star_border_outlined,
+                Icons.star,
+                color: Colors.yellow,
               ),
               title: const Text('Favorites'),
               onTap: () {
