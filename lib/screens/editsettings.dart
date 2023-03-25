@@ -55,7 +55,6 @@ class _EditSettingsState extends State<EditSettings> {
     if (_isInit) {
       if (ModalRoute.of(context)!.settings.arguments != null) {
         final accountId = ModalRoute.of(context)!.settings.arguments as String;
-        print(accountId);
         if (accountId.isNotEmpty) {
           final account = Provider.of<Credentials>(context).findById(accountId);
           _editedAccount = account;
@@ -78,7 +77,7 @@ class _EditSettingsState extends State<EditSettings> {
       return;
     }
     _form.currentState?.save();
-    if (_editedAccount.id != null) {
+    if (_editedAccount.id.isNotEmpty) {
       await Provider.of<Credentials>(context, listen: false)
           .updateProduct(_editedAccount.id, _editedAccount);
     } else {

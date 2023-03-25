@@ -112,9 +112,10 @@ class Credentials with ChangeNotifier {
     if (accountIndex >= 0) {
       final url =
           Uri.parse('https://cs.csub.edu/~tesscuro/database/editAccount.php');
-      await http.patch(
+      await http.post(
         url,
         body: json.encode({
+          'acc_id': newAccount.id,
           'url': newAccount.siteUrl,
           'username': newAccount.userName,
           'password': newAccount.password,
