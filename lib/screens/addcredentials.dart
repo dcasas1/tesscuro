@@ -42,7 +42,7 @@ class _AddCredentialsState extends State<AddCredentials> {
     super.dispose();
   }
 
-  Future<void> _saveForm() async {
+  Future<void> _saveForm(BuildContext context) async {
     final isValid = _form.currentState?.validate();
     if (!isValid!) {
       return;
@@ -75,7 +75,10 @@ class _AddCredentialsState extends State<AddCredentials> {
     setState(() {
       _isLoading = false;
     });
+    
+    if (context.mounted) {
     Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -182,7 +185,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                       onFieldSubmitted: (_) {
                         // FocusScope.of(context)
                         //     .requestFocus(_confirmPassFocusNode);
-                        _saveForm();
+                        _saveForm(context);
                       },
                       onSaved: (value) {
                         _editedAccount = Accounts(
@@ -225,7 +228,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                       width: 200,
                       child: ElevatedButton(
                         onPressed: () {
-                          _saveForm();
+                          _saveForm(context);
                         },
                         child: const Text(
                           'Submit',
