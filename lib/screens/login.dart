@@ -36,10 +36,13 @@ class LoginPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 110, bottom: 50),
               child: Center(
-                child: SizedBox(
-                  child: Image.asset(
-                    'assets/img/tesscuro_logo.png',
-                    scale: 3,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: SizedBox(
+                    child: Image.asset(
+                      'assets/img/tesscuro_logo.png',
+                      scale: 3,
+                    ),
                   ),
                 ),
               ),
