@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../providers/credentials.dart';
 import '../providers/user_credentials_struct.dart';
 
+import './nav_bar.dart';
+
 class AddCredentials extends StatefulWidget {
   const AddCredentials({super.key});
 
@@ -75,9 +77,9 @@ class _AddCredentialsState extends State<AddCredentials> {
     setState(() {
       _isLoading = false;
     });
-    
+
     if (context.mounted) {
-    Navigator.of(context).pop();
+      Navigator.of(context).pushReplacementNamed(NavBar.routeName);
     }
   }
 

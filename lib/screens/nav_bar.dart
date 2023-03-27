@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './homepage.dart';
-import './editsettings.dart';
 import './addcredentials.dart';
 import '../providers/credentials.dart';
+import './settings.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -17,7 +17,7 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   final List<Map<String, Object>> _pages = const [
     {'page': HomePage(), 'title': 'Homepage'},
-    {'page': EditSettings(), 'title': 'Settings'},
+    {'page': Settings(), 'title': 'Settings'},
   ];
   void addRoute(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(AddCredentials.routeName);
@@ -38,34 +38,39 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (_selectedPageIndex == 0)
-          ? AppBar(
-              //leading: const Icon(Icons.menu),
-              title: Text(_pages[_selectedPageIndex]['title'] as String),
-              actions: [
-                IconButton(
-                  onPressed: () => _refreshAccounts(context),
-                  icon: const Icon(
-                    Icons.refresh,
-                    size: 31,
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                ),
-                IconButton(
-                  onPressed: () => addRoute(context),
-                  icon: const Icon(
-                    Icons.add,
-                    size: 31,
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 14),
-                ),
-              ],
-            )
-          : null, //AppBar(
+      appBar: AppBar(
+        //leading: const Icon(Icons.menu),
+        title: Text(_pages[_selectedPageIndex]['title'] as String),
+        actions: [
+          IconButton(
+            onPressed: () {
+              if (_selectedPageIndex == 0) {
+                _refreshAccounts(context);
+              } else {
+                _refreshAccounts(context);
+                Navigator.of(context).pushReplacementNamed(NavBar.routeName);
+              }
+            },
+            icon: const Icon(
+              Icons.refresh,
+              size: 31,
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4),
+          ),
+          IconButton(
+            onPressed: () => addRoute(context),
+            icon: const Icon(
+              Icons.add,
+              size: 31,
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 14),
+          ),
+        ],
+      ), //AppBar(
       //leading: const Icon(Icons.menu),
       //title: Text(_pages[_selectedPageIndex]['title'] as String),
 

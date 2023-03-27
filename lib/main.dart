@@ -7,6 +7,7 @@ import './screens/login.dart';
 import './screens/addcredentials.dart';
 import './screens/editsettings.dart';
 import './screens/nav_bar.dart';
+import './screens/settings.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           AddCredentials.routeName: (ctx) => const AddCredentials(),
           EditSettings.routeName: (ctx) => const EditSettings(),
           NavBar.routeName: (ctx) => const NavBar(),
+          Settings.routeName: (ctx) => const Settings(),
         },
       ),
     );
