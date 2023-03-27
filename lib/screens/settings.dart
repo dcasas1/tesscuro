@@ -9,11 +9,26 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  bool light = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Text("Hey"),
+        child: Column(
+          children: [
+            (light == true)
+                ? Text("Dark Mode Enabled")
+                : Text("Dark Mode Disabled"),
+            Switch(
+              value: light,
+              onChanged: (bool value) {
+                setState(() {
+                  light = value;
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
