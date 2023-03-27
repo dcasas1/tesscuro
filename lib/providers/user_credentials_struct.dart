@@ -4,7 +4,7 @@ class Accounts with ChangeNotifier {
   final String id;
   final String siteName;
   final String siteUrl;
-  final String password;
+  String password;
   final String userName;
 
   Accounts({
@@ -14,6 +14,11 @@ class Accounts with ChangeNotifier {
     required this.password,
     required this.userName,
   });
+
+  @override
+  toString() {
+    return '{acc_id: $id, siteName: $siteName, url: $siteUrl, password: $password, username: $userName}';
+  }
 
   factory Accounts.fromJson(Map<String, dynamic> json) => Accounts(
         id: json["acc_id"],

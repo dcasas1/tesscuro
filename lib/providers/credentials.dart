@@ -3,10 +3,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:encrypt/encrypt.dart' as enc;
 
 import './user_credentials_struct.dart';
 
 class Credentials with ChangeNotifier {
+  //Grabs a random key and Initial Vector for AES
+  final key = enc.Key.fromSecureRandom(32);
+  final iv = enc.IV.fromSecureRandom(16);
+
+  //List of accounts
   List<Accounts> _items = [];
 
   List<Accounts> get items {
@@ -20,6 +26,7 @@ class Credentials with ChangeNotifier {
   Future<void> fetchAccounts() async {
     final selectAccountUrl =
         Uri.parse('https://cs.csub.edu/~tesscuro/database/selectAccounts.php');
+    final encrypter = enc.Encrypter(enc.AES(key));
     //Error handling
     try {
       final response = await http.get(selectAccountUrl);
@@ -29,6 +36,10 @@ class Credentials with ChangeNotifier {
         receivedData.map((x) => Accounts.fromJson(x)),
       );
       //Grabs the list and insert into the item list to display to screen
+      for (int i = 0; i < accountList.length; i++) {
+      final encrypted = enc.Encrypted.fromBase16(accountList.asMap()[i]!.password);
+      accountList.asMap()[i]!.password = encrypter.decrypt(encrypted, iv: iv);
+      }
       _items = accountList;
       notifyListeners();
     } catch (error) {
@@ -39,10 +50,12 @@ class Credentials with ChangeNotifier {
   Future<void> addAccount(Accounts account) async {
     final addUrl =
         Uri.parse('https://cs.csub.edu/~tesscuro/database/addAccount.php');
+    final encrypter = enc.Encrypter(enc.AES(key));
+    final encrypted = encrypter.encrypt(account.password, iv: iv);
     var body = json.encode({
       'url': account.siteUrl,
       'username': account.userName,
-      'password': account.password,
+      'password': encrypted.base16,
       'siteName': account.siteName,
     });
     try {
@@ -63,6 +76,9 @@ class Credentials with ChangeNotifier {
       );
       _items.add(newAccount);
       notifyListeners();
+      // if (check == 0) {
+      //   return encrypted;
+      // }
     } catch (error) {
       rethrow;
     }
