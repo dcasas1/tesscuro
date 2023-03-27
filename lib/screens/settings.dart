@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -10,20 +11,38 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   bool light = true;
+  // bool _darkModeEnabled = false;
+
+  // void _checkIfDarkModeEnabled() {
+  //   final ThemeData theme = Theme.of(context);
+  //   theme.brightness == ThemeData().brightness
+  //       ? _darkModeEnabled = true
+  //       : _darkModeEnabled = false;
+  // }
+
+  // bool dark = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         child: Column(
           children: [
-            (light == true)
-                ? Text("Dark Mode Enabled")
-                : Text("Dark Mode Disabled"),
+            if (light == false)
+              Text("Dark Mode Disabled")
+            else
+              Text("Dark Mode Enabled"),
             Switch(
               value: light,
-              onChanged: (bool value) {
+              onChanged: (value) {
                 setState(() {
                   light = value;
+                  if (light) {
+                    print("Dark Mode");
+                    MyApp.of(context)?.changeTheme(ThemeMode.dark);
+                  } else {
+                    print("Light Mode");
+                    MyApp.of(context)?.changeTheme(ThemeMode.light);
+                  }
                 });
               },
             ),
