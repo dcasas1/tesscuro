@@ -253,7 +253,7 @@ class _EditSettingsState extends State<EditSettings> {
                   child: const Text(
                     'Submit',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 20,
                     ),
                   ),
