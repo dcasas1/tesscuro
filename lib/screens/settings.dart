@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:tesscuro/screens/generator.dart';
 import 'package:tesscuro/screens/login.dart';
@@ -34,43 +36,63 @@ class _SettingsState extends State<Settings> {
     return _darkModeEnabled;
   }
 
-  // bool dark = false;
   @override
   Widget build(BuildContext context) {
     bool response = _checkIfDarkModeEnabled();
-    print(response);
+    //print(response);
     bool check = response;
-    print(response);
+    //print(response);
     return Scaffold(
       body: (response == false)
           ? Container(
+              padding: const EdgeInsets.only(top: 75),
               child: Column(
                 children: [
-                  if (check == false) Text("Dark Mode Disabled"),
-                  if (check == true) Text("Dark Mode Enabled"),
-                  Switch(
-                    value: check,
-                    onChanged: (value) {
-                      setState(() {
-                        check = value;
-                        if (light == true) {
-                          print("Dark Mode");
-                          MyApp.of(context)?.changeTheme(ThemeMode.dark);
-                        }
-                        if (light == false) {
-                          print("Light Mode");
-                          MyApp.of(context)?.changeTheme(ThemeMode.light);
-                        }
-                      });
-                    },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      if (check == false)
+                        const Text(
+                          "Dark Mode Disabled",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      if (check == true) const Text("Dark Mode Enabled"),
+                      Transform.scale(
+                        scale: 1.5,
+                        child: Switch(
+                          value: check,
+                          onChanged: (value) {
+                            setState(() {
+                              check = value;
+                              if (light == true) {
+                                print("Dark Mode");
+                                MyApp.of(context)?.changeTheme(ThemeMode.dark);
+                              }
+                              if (light == false) {
+                                print("Light Mode");
+                                MyApp.of(context)?.changeTheme(ThemeMode.light);
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 75,
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(elevation: 10),
                     onPressed: () => generateRoute(context),
-                    child: const Text(
-                      'Generate Password',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 17,
+                    child: const Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        'Generate Password',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
                       ),
                     ),
                   ),
@@ -78,33 +100,54 @@ class _SettingsState extends State<Settings> {
               ),
             )
           : Container(
+              padding: const EdgeInsets.only(top: 75),
               child: Column(
                 children: [
-                  if (check == false) Text("Dark Mode Disabled"),
-                  if (check == true) Text("Dark Mode Enabled"),
-                  Switch(
-                    value: check,
-                    onChanged: (value) {
-                      setState(() {
-                        check = value;
-                        if (light == false) {
-                          print("Dark Mode");
-                          MyApp.of(context)?.changeTheme(ThemeMode.dark);
-                        }
-                        if (light == true) {
-                          print("Light Mode");
-                          MyApp.of(context)?.changeTheme(ThemeMode.light);
-                        }
-                      });
-                    },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      if (check == false) const Text("Dark Mode Disabled"),
+                      if (check == true)
+                        const Text(
+                          "Dark Mode Enabled",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      Transform.scale(
+                        scale: 1.5,
+                        child: Switch(
+                          value: check,
+                          onChanged: (value) {
+                            setState(() {
+                              check = value;
+                              if (light == false) {
+                                //print("Dark Mode");
+                                MyApp.of(context)?.changeTheme(ThemeMode.dark);
+                              }
+                              if (light == true) {
+                                //print("Light Mode");
+                                MyApp.of(context)?.changeTheme(ThemeMode.light);
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 75,
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(elevation: 10),
                     onPressed: () => generateRoute(context),
-                    child: const Text(
-                      'Generate Password',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 17,
+                    child: const Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        'Generate Password',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
                       ),
                     ),
                   ),
