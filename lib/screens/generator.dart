@@ -31,7 +31,7 @@ class _GeneratePasswordState extends State<GeneratePassword> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(name),
-        Checkbox(value: value, onChanged:(value) {
+        Checkbox(activeColor: Colors.blue, value: value, onChanged:(value) {
           onTap(value);
         },),
       ],
@@ -88,21 +88,37 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                 controller: _passwordLength,
                 decoration: InputDecoration(
                   border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(),
+                    //borderRadius: BorderRadius.circular(25.0),
+                    //borderSide: BorderSide(),
                   ),
-                  filled: true,
-                  fillColor: Colors.grey[300],
-                  labelText: 'Enter Length',
-                  labelStyle: TextStyle(color: Colors.blue),
+                  //filled: true,
+                  //fillColor: Colors.grey[300],
+                  labelText: '(Optional) Password Length',
+                  hintText: 'Enter Length',
+                  labelStyle: const TextStyle(color: Colors.blue),
                 ),
-                keyboardType: TextInputType.number,
               ),
             ),
+              /*padding: EdgeInsets.only(
+                top: 20,
+                left: 10,
+                right: 10,
+                bottom: 10,
+              ),
+              child: TextField(
+                controller: _passwordLength,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '(Optional) Password Length',
+                  hintText: 'Enter Length',
+                ),
+              ),
+            ),*/
             SizedBox(
               height: 20,
             ),
-            FloatingActionButton(
+            FloatingActionButton.large(
+              backgroundColor: Colors.blue,
                 onPressed: () {
                   if (_passwordLength.text.trim().isNotEmpty)
                     _numberCharPassword =
@@ -136,8 +152,8 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Make',
-                      style: TextStyle(color: Colors.white, fontSize: 13),
+                      'Generate',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
                   ),
                 )),
