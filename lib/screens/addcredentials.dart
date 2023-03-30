@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/credentials.dart';
 import '../providers/user_credentials_struct.dart';
+import './generator.dart';
 
 import './nav_bar.dart';
 
@@ -20,6 +21,11 @@ class _AddCredentialsState extends State<AddCredentials> {
   void homeRoute(BuildContext ctx) {
     Navigator.of(ctx).pop();
   }
+
+  //Generator route
+  void generateRoute(BuildContext ctx) {
+  Navigator.of(ctx).pushNamed(GeneratePassword.routeName);
+}
 
   final _urlFocusNode = FocusNode();
   final _usernameFocusNode = FocusNode();
@@ -199,7 +205,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                       },
                     ),
                     Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(10),
                     ),
                     // TextFormField(
                     //   obscureText: true,
@@ -223,7 +229,30 @@ class _AddCredentialsState extends State<AddCredentials> {
                     //   },
                     // ),
                     Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.only(
+                        top: 5,
+                        bottom: 10,
+                        ),
+                    ),
+                    SizedBox.square(
+                      //height: 50,
+                      //width: 150,
+                      child: ElevatedButton(
+                        onPressed: () => generateRoute(context),
+                        child: const Text(
+                          'Generate Random Password',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 5,
+                        bottom: 15,
+                        ),
                     ),
                     SizedBox(
                       height: 60,
