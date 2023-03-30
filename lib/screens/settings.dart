@@ -60,10 +60,8 @@ class _SettingsState extends State<Settings> {
               },
             ),
 
-            SizedBox(
-              height: 60,
-              width: 200,
-              child: ElevatedButton(
+            
+              ElevatedButton(
                 onPressed: () => generateRoute(context),
                 child: const Text(
                   'Generate Password',
@@ -73,7 +71,6 @@ class _SettingsState extends State<Settings> {
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),
