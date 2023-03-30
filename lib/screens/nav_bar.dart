@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './homepage.dart';
@@ -26,6 +28,10 @@ class _NavBarState extends State<NavBar> {
 
   void loginRoute(BuildContext ctx) {
     Navigator.of(ctx).pushReplacementNamed(LoginPage.routeName);
+  }
+
+  void homeRoute(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(HomePage.routeName);
   }
 
   int _selectedPageIndex = 0;
@@ -96,6 +102,16 @@ class _NavBarState extends State<NavBar> {
                   ),
                 ),
               ),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.home,
+                color: Colors.grey,
+              ),
+              title: const Text('Home Page'),
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
             ListTile(
               leading: const Icon(
