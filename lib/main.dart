@@ -8,6 +8,7 @@ import './screens/addcredentials.dart';
 import './screens/editsettings.dart';
 import './screens/nav_bar.dart';
 import './screens/settings.dart';
+import './screens/generator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -61,6 +62,7 @@ class _MyAppState extends State<MyApp> {
           EditSettings.routeName: (ctx) => const EditSettings(),
           NavBar.routeName: (ctx) => const NavBar(),
           Settings.routeName: (ctx) => const Settings(),
+          GeneratePassword.routeName: (ctx) => GeneratePassword(),
         },
       ),
     );
