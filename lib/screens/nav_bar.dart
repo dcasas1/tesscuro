@@ -4,6 +4,7 @@ import './homepage.dart';
 import './addcredentials.dart';
 import '../providers/credentials.dart';
 import './settings.dart';
+import './login.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -21,6 +22,10 @@ class _NavBarState extends State<NavBar> {
   ];
   void addRoute(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(AddCredentials.routeName);
+  }
+
+  void loginRoute(BuildContext ctx) {
+    Navigator.of(ctx).pushReplacementNamed(LoginPage.routeName);
   }
 
   int _selectedPageIndex = 0;
@@ -109,8 +114,6 @@ class _NavBarState extends State<NavBar> {
               ),
               title: const Text('Password Generator'),
               onTap: () => generateRoute(context),
-                //Navigator.pop(context);
-              
             ),
             ListTile(
               leading: const Icon(
@@ -120,6 +123,14 @@ class _NavBarState extends State<NavBar> {
               onTap: () {
                 Navigator.pop(context);
               },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.logout,
+                color: Colors.grey,
+              ),
+              title: const Text('Logout'),
+              onTap: () => loginRoute(context)
             ),
           ],
         ),
