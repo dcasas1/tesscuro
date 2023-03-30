@@ -84,7 +84,7 @@ class LoginPage extends StatelessWidget {
                 },
                 child: const Text(
                   'Login',
-                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
             ),
@@ -101,7 +101,7 @@ class LoginPage extends StatelessWidget {
                   },
                   child: const Text(
                     'Create Account',
-                    style: TextStyle(color: Colors.black, fontSize: 20),
+                    style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
               ),
