@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tesscuro/screens/generator.dart';
+import 'package:tesscuro/screens/login.dart';
 import '../main.dart';
+import './createaccount.dart';
+import './generator.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -8,6 +12,15 @@ class Settings extends StatefulWidget {
   @override
   State<Settings> createState() => _SettingsState();
 }
+
+//generate password route
+void generateRoute(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(GeneratePassword.routeName);
+  }
+
+void createRoute(BuildContext ctx) {
+   Navigator.of(ctx).pushNamed(CreateAccount.routeName);
+  }
 
 class _SettingsState extends State<Settings> {
   bool light = true;
@@ -45,6 +58,21 @@ class _SettingsState extends State<Settings> {
                   }
                 });
               },
+            ),
+
+            SizedBox(
+              height: 60,
+              width: 200,
+              child: ElevatedButton(
+                onPressed: () => generateRoute(context),
+                child: const Text(
+                  'Generate Password',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
