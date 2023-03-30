@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './providers/credentials.dart';
+import './providers/accounts.dart';
 import './screens/createaccount.dart';
 import './screens/homepage.dart';
 import './screens/login.dart';
@@ -39,6 +40,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: ((ctx) => Credentials()),
         ),
+        ChangeNotifierProvider(
+          create: ((ctx) => UserAccounts()),
+        )
       ],
       child: MaterialApp(
         title: 'Tesscuro',
