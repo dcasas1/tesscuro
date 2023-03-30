@@ -104,6 +104,16 @@ class _NavBarState extends State<NavBar> {
             ),
             ListTile(
               leading: const Icon(
+                Icons.lock_reset_outlined,
+                color: Colors.grey,
+              ),
+              title: const Text('Password Generator'),
+              onTap: () => generateRoute(context),
+                //Navigator.pop(context);
+              
+            ),
+            ListTile(
+              leading: const Icon(
                 Icons.circle_outlined,
               ),
               title: const Text('Other Page For Now'),
