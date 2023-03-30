@@ -1,11 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:tesscuro/screens/generator.dart';
-import 'package:tesscuro/screens/login.dart';
+import './generator.dart';
 import '../main.dart';
 import './createaccount.dart';
-import './generator.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -66,11 +62,9 @@ class _SettingsState extends State<Settings> {
                             setState(() {
                               check = value;
                               if (light == true) {
-                                print("Dark Mode");
                                 MyApp.of(context)?.changeTheme(ThemeMode.dark);
                               }
                               if (light == false) {
-                                print("Light Mode");
                                 MyApp.of(context)?.changeTheme(ThemeMode.light);
                               }
                             });

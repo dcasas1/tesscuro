@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:random_password_generator/random_password_generator.dart';
 
 class GeneratePassword extends StatefulWidget {
@@ -102,7 +101,6 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                   labelText: '(Optional) Password Length',
                   hintText: 'Enter Length',
                   //labelStyle: TextStyle(color: Colors.blue),
-                  
                 ),
               ),
             ),
@@ -167,7 +165,7 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                   padding: const EdgeInsets.all(8.0),
                   child: SelectableText(
                     newPassword,
-                    style: TextStyle(color: _color, fontSize: 25), 
+                    style: TextStyle(color: _color, fontSize: 25),
                   ),
                 ),
               ))
