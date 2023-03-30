@@ -29,8 +29,8 @@ class _SettingsState extends State<Settings> {
   bool _checkIfDarkModeEnabled() {
     final ThemeData theme = Theme.of(context);
     theme.brightness == ThemeData().brightness
-        ? _darkModeEnabled = true
-        : _darkModeEnabled = false;
+        ? _darkModeEnabled = false
+        : _darkModeEnabled = true;
     return _darkModeEnabled;
   }
 
@@ -42,12 +42,12 @@ class _SettingsState extends State<Settings> {
     bool check = response;
     print(response);
     return Scaffold(
-      body: (response == true)
+      body: (response == false)
           ? Container(
               child: Column(
                 children: [
-                  if (check == true) Text("Dark Mode Disabled"),
-                  if (check == false) Text("Dark Mode Enabled"),
+                  if (check == false) Text("Dark Mode Disabled"),
+                  if (check == true) Text("Dark Mode Enabled"),
                   Switch(
                     value: check,
                     onChanged: (value) {
@@ -80,8 +80,8 @@ class _SettingsState extends State<Settings> {
           : Container(
               child: Column(
                 children: [
-                  if (check == true) Text("Dark Mode Disabled"),
-                  if (check == false) Text("Dark Mode Enabled"),
+                  if (check == false) Text("Dark Mode Disabled"),
+                  if (check == true) Text("Dark Mode Enabled"),
                   Switch(
                     value: check,
                     onChanged: (value) {
