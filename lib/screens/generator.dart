@@ -1,106 +1,173 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'dart:math';
+import 'package:random_password_generator/random_password_generator.dart';
 
-
-class GeneratePassword extends StatelessWidget {
-  const GeneratePassword({super.key});
+class GeneratePassword extends StatefulWidget {
 
   static const routeName = '/generate-password';
 
-  //Login Page Route popping
-  void loginRoute(BuildContext ctx) {
-    Navigator.of(ctx).pop();
+  @override
+  _GeneratePasswordState createState() => _GeneratePasswordState();
+  //const GeneratePassword({super.key});
+}
+
+class _GeneratePasswordState extends State<GeneratePassword> {
+  bool _isWithLetters = true;
+  bool _isWithUppercase = false;
+  bool _isWithNumbers = false;
+  bool _isWithSpecial = false;
+  double _numberCharPassword = 8;
+  String newPassword = '';
+  Color _color = Colors.blue;
+  String isOk = '';
+  TextEditingController _passwordLength = TextEditingController();
+  final password = RandomPasswordGenerator();
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  checkBox(String name, Function onTap, bool value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(name),
+        Checkbox(value: value, onChanged:(value) {
+          onTap(value);
+        },),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Generate Password'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-
-            //Submit Button
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Random Password Generator'),
+        ),
+        body: Center(
+            child: Column(
+          children: [
             SizedBox(
-              height: 60,
-              width: 200,
-              child: ElevatedButton(
-                onPressed: () => loginRoute(context),
-                child: const Text(
-                  'Generate Password',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                checkBox('Upper Case', (bool value) {
+                  _isWithUppercase = value;
+                  setState(() {});
+                }, _isWithUppercase),
+                checkBox('Lower Case', (bool value) {
+                  _isWithLetters = value;
+                  setState(() {});
+                }, _isWithLetters)
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                checkBox('Symbols', (bool value) {
+                  _isWithSpecial = value;
+                  setState(() {});
+                }, _isWithSpecial),
+                checkBox('Numbers', (bool value) {
+                  _isWithNumbers = value;
+                  setState(() {});
+                }, _isWithNumbers)
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: TextField(
+                controller: _passwordLength,
+                decoration: InputDecoration(
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: new BorderSide(),
                   ),
+                  filled: true,
+                  fillColor: Colors.grey[300],
+                  labelText: 'Enter Length',
+                  labelStyle: TextStyle(color: Colors.blue),
                 ),
+                keyboardType: TextInputType.number,
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            FloatingActionButton(
+                onPressed: () {
+                  if (_passwordLength.text.trim().isNotEmpty)
+                    _numberCharPassword =
+                        double.parse(_passwordLength.text.trim());
+
+                  newPassword = password.randomPassword(
+                      letters: _isWithLetters,
+                      numbers: _isWithNumbers,
+                      passwordLength: _numberCharPassword,
+                      specialChar: _isWithSpecial,
+                      uppercase: _isWithUppercase);
+
+                  print(newPassword);
+                  double passwordstrength =
+                      password.checkPassword(password: newPassword);
+                  if (passwordstrength < 0.3) {
+                    _color = Colors.red;
+                    isOk = 'This password is weak!';
+                  } else if (passwordstrength < 0.7) {
+                    _color = Colors.blue;
+                    isOk = 'This password is Good';
+                  } else {
+                    _color = Colors.green;
+                    isOk = 'This passsword is Strong';
+                  }
+
+                  setState(() {});
+                },
+                child: Container(
+                  //color: Colors.red,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Make',
+                      style: TextStyle(color: Colors.white, fontSize: 13),
+                    ),
+                  ),
+                )),
+            SizedBox(
+              height: 20,
+            ),
+            if (newPassword.isNotEmpty && newPassword != null)
+              Center(
+                  child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    isOk,
+                    style: TextStyle(color: _color, fontSize: 25),
+                  ),
+                ),
+              )),
+            if (newPassword.isNotEmpty && newPassword != null)
+              Center(
+                  child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    newPassword,
+                    style: TextStyle(color: _color, fontSize: 25),
+                  ),
+                ),
+              ))
           ],
-        ),
-      ),
+        )),
     );
   }
 }
-
-
-
-
-
-
-
-/*class GeneratePassword extends StatelessWidget {
-   GeneratePassword({super.key});
-
-  static const routeName = '/generate-password';
-
-final _controller = TextEditingController();
-  
-  //Login Page Route popping
-  void loginRoute(BuildContext ctx) {
-    Navigator.of(ctx).pop();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Generate Password'),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(32),
-        child: Column(
-          children: const <Widget>[
-           Text("Generate Random Password", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          ],
-        ),  
-      ),
-    );
-
-  }
-      
-      
-            
-            Submit Button
-            SizedBox(
-              height: 60,
-              width: 250,
-              child: ElevatedButton(
-                onPressed: () => loginRoute(context),
-                child: const Text(
-                  'Generate Random Password',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 17,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }*/
