@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
           EditSettings.routeName: (ctx) => const EditSettings(),
           NavBar.routeName: (ctx) => const NavBar(),
           Settings.routeName: (ctx) => const Settings(),
-          GeneratePassword.routeName: (ctx) => GeneratePassword(),
+          GeneratePassword.routeName: (ctx) => const GeneratePassword(),
         },
       ),
     );
