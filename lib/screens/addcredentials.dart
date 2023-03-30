@@ -242,7 +242,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                         child: const Text(
                           'Generate Random Password',
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontSize: 18,
                           ),
                         ),
@@ -264,7 +264,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                         child: const Text(
                           'Submit',
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontSize: 20,
                           ),
                         ),
