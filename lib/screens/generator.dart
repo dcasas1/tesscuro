@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:random_password_generator/random_password_generator.dart';
 
 class GeneratePassword extends StatefulWidget {
@@ -100,25 +101,11 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                   //fillColor: Colors.grey[300],
                   labelText: '(Optional) Password Length',
                   hintText: 'Enter Length',
-                  labelStyle: TextStyle(color: Colors.blue),
+                  //labelStyle: TextStyle(color: Colors.blue),
+                  
                 ),
               ),
             ),
-            /*padding: EdgeInsets.only(
-                  top: 20,
-                  left: 10,
-                  right: 10,
-                  bottom: 10,
-                ),
-                child: TextField(
-                  controller: _passwordLength,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '(Optional) Password Length',
-                    hintText: 'Enter Length',
-                  ),
-                ),
-              ),*/
             const SizedBox(
               height: 20,
             ),
@@ -178,9 +165,9 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                   child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
+                  child: SelectableText(
                     newPassword,
-                    style: TextStyle(color: _color, fontSize: 25),
+                    style: TextStyle(color: _color, fontSize: 25), 
                   ),
                 ),
               ))
