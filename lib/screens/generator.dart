@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:random_password_generator/random_password_generator.dart';
 
 class GeneratePassword extends StatefulWidget {
-
   static const routeName = '/generate-password';
 
+  const GeneratePassword({super.key});
+
   @override
-  _GeneratePasswordState createState() => _GeneratePasswordState();
-  //const GeneratePassword({super.key});
+  State<GeneratePassword> createState() => _GeneratePasswordState();
 }
 
 class _GeneratePasswordState extends State<GeneratePassword> {
@@ -19,7 +19,7 @@ class _GeneratePasswordState extends State<GeneratePassword> {
   String newPassword = '';
   Color _color = Colors.blue;
   String isOk = '';
-  TextEditingController _passwordLength = TextEditingController();
+  final TextEditingController _passwordLength = TextEditingController();
   final password = RandomPasswordGenerator();
   @override
   void initState() {
@@ -31,23 +31,28 @@ class _GeneratePasswordState extends State<GeneratePassword> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(name),
-        Checkbox(activeColor: Colors.blue, value: value, onChanged:(value) {
-          onTap(value);
-        },),
+        Checkbox(
+          activeColor: Colors.blue,
+          value: value,
+          onChanged: (value) {
+            onTap(value);
+          },
+        ),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Random Password Generator'),
-        ),
-        body: Center(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Random Password Generator'),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
             child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -63,7 +68,7 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                 }, _isWithLetters)
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -79,50 +84,51 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                 }, _isWithNumbers)
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: TextField(
                 controller: _passwordLength,
-                decoration: InputDecoration(
-                  border: new OutlineInputBorder(
-                    //borderRadius: BorderRadius.circular(25.0),
-                    //borderSide: BorderSide(),
-                  ),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                      //borderRadius: BorderRadius.circular(25.0),
+                      //borderSide: BorderSide(),
+                      ),
                   //filled: true,
                   //fillColor: Colors.grey[300],
                   labelText: '(Optional) Password Length',
                   hintText: 'Enter Length',
-                  labelStyle: const TextStyle(color: Colors.blue),
+                  labelStyle: TextStyle(color: Colors.blue),
                 ),
               ),
             ),
-              /*padding: EdgeInsets.only(
-                top: 20,
-                left: 10,
-                right: 10,
-                bottom: 10,
-              ),
-              child: TextField(
-                controller: _passwordLength,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '(Optional) Password Length',
-                  hintText: 'Enter Length',
+            /*padding: EdgeInsets.only(
+                  top: 20,
+                  left: 10,
+                  right: 10,
+                  bottom: 10,
                 ),
-              ),
-            ),*/
-            SizedBox(
+                child: TextField(
+                  controller: _passwordLength,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: '(Optional) Password Length',
+                    hintText: 'Enter Length',
+                  ),
+                ),
+              ),*/
+            const SizedBox(
               height: 20,
             ),
             FloatingActionButton.large(
-              backgroundColor: Colors.blue,
+                backgroundColor: Colors.blue,
                 onPressed: () {
-                  if (_passwordLength.text.trim().isNotEmpty)
+                  if (_passwordLength.text.trim().isNotEmpty) {
                     _numberCharPassword =
                         double.parse(_passwordLength.text.trim());
+                  }
 
                   newPassword = password.randomPassword(
                       letters: _isWithLetters,
@@ -131,7 +137,6 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                       specialChar: _isWithSpecial,
                       uppercase: _isWithUppercase);
 
-                  print(newPassword);
                   double passwordstrength =
                       password.checkPassword(password: newPassword);
                   if (passwordstrength < 0.3) {
@@ -147,20 +152,17 @@ class _GeneratePasswordState extends State<GeneratePassword> {
 
                   setState(() {});
                 },
-                child: Container(
-                  //color: Colors.red,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Generate',
-                      style: TextStyle(color: Colors.white, fontSize: 17),
-                    ),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Generate',
+                    style: TextStyle(color: Colors.white, fontSize: 17),
                   ),
                 )),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            if (newPassword.isNotEmpty && newPassword != null)
+            if (newPassword.isNotEmpty)
               Center(
                   child: SingleChildScrollView(
                 child: Padding(
@@ -171,7 +173,7 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                   ),
                 ),
               )),
-            if (newPassword.isNotEmpty && newPassword != null)
+            if (newPassword.isNotEmpty)
               Center(
                   child: SingleChildScrollView(
                 child: Padding(
@@ -184,6 +186,7 @@ class _GeneratePasswordState extends State<GeneratePassword> {
               ))
           ],
         )),
+      ),
     );
   }
 }
