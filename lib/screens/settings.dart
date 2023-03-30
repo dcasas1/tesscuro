@@ -84,7 +84,7 @@ class _SettingsState extends State<Settings> {
                       child: Text(
                         'Generate Password',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 20,
                         ),
                       ),
