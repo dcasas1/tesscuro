@@ -1,7 +1,6 @@
-//import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import './generator.dart';
 import './homepage.dart';
 import './addcredentials.dart';
 import '../providers/credentials.dart';
@@ -32,6 +31,10 @@ class _NavBarState extends State<NavBar> {
 
   void homeRoute(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(HomePage.routeName);
+  }
+
+  void generaterRoute(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(GeneratePassword.routeName);
   }
 
   int _selectedPageIndex = 0;
@@ -110,7 +113,7 @@ class _NavBarState extends State<NavBar> {
               ),
               title: const Text('Home Page'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop();
               },
             ),
             ListTile(
@@ -120,7 +123,7 @@ class _NavBarState extends State<NavBar> {
               ),
               title: const Text('Favorites'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop();
               },
             ),
             ListTile(
@@ -129,7 +132,7 @@ class _NavBarState extends State<NavBar> {
                 color: Colors.grey,
               ),
               title: const Text('Password Generator'),
-              onTap: () => generateRoute(context),
+              onTap: () => generaterRoute(context),
             ),
             ListTile(
               leading: const Icon(
@@ -137,7 +140,7 @@ class _NavBarState extends State<NavBar> {
               ),
               title: const Text('Other Page For Now'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop();
               },
             ),
             ListTile(
