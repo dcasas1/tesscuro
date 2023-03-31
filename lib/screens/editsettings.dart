@@ -50,6 +50,14 @@ class _EditSettingsState extends State<EditSettings> {
 
   var _isInit = true;
 
+  bool? _passwordVisible;
+
+  @override
+  void initState() {
+    _passwordVisible = false;
+    super.initState();
+  }
+
   @override
   void didChangeDependencies() {
     if (_isInit) {
@@ -103,7 +111,7 @@ class _EditSettingsState extends State<EditSettings> {
       }
     }
     if (context.mounted) {
-    Navigator.of(context).pop();
+      Navigator.of(context).pop();
     }
   }
 
@@ -194,12 +202,23 @@ class _EditSettingsState extends State<EditSettings> {
               ),
               TextFormField(
                 initialValue: _initValues['password'],
-                obscureText: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password for Site',
-                  hintText: 'Enter Password for Site',
-                ),
+                obscureText: !_passwordVisible!,
+                decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: 'Password for Site',
+                    hintText: 'Enter Password for Site',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible!
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible!;
+                        });
+                      },
+                    )),
                 focusNode: _passwordFocusNode,
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (_) {

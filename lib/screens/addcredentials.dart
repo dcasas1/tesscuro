@@ -24,8 +24,8 @@ class _AddCredentialsState extends State<AddCredentials> {
 
   //Generator route
   void generateRoute(BuildContext ctx) {
-  Navigator.of(ctx).pushNamed(GeneratePassword.routeName);
-}
+    Navigator.of(ctx).pushNamed(GeneratePassword.routeName);
+  }
 
   final _urlFocusNode = FocusNode();
   final _usernameFocusNode = FocusNode();
@@ -87,6 +87,14 @@ class _AddCredentialsState extends State<AddCredentials> {
     if (context.mounted) {
       Navigator.of(context).pushReplacementNamed(NavBar.routeName);
     }
+  }
+
+  bool? _passwordVisible;
+
+  @override
+  void initState() {
+    _passwordVisible = false;
+    super.initState();
   }
 
   @override
@@ -182,11 +190,23 @@ class _AddCredentialsState extends State<AddCredentials> {
                       padding: const EdgeInsets.all(20),
                     ),
                     TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      obscureText: !_passwordVisible!,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
                         labelText: 'Password for Site',
                         hintText: 'Enter Password for Site',
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible!;
+                            });
+                          },
+                          icon: Icon(
+                            _passwordVisible!
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                        ),
                       ),
                       focusNode: _passwordFocusNode,
                       textInputAction: TextInputAction.done,
@@ -232,7 +252,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                       padding: const EdgeInsets.only(
                         top: 5,
                         bottom: 10,
-                        ),
+                      ),
                     ),
                     SizedBox.square(
                       //height: 50,
@@ -252,7 +272,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                       padding: const EdgeInsets.only(
                         top: 5,
                         bottom: 15,
-                        ),
+                      ),
                     ),
                     SizedBox(
                       height: 60,

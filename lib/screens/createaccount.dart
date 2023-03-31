@@ -80,6 +80,16 @@ class _CreateAccountState extends State<CreateAccount> {
     }
   }
 
+  bool? _passwordVisible;
+  bool? _confirmPassVisible;
+
+  @override
+  void initState() {
+    _passwordVisible = false;
+    _confirmPassVisible = false;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,11 +158,23 @@ class _CreateAccountState extends State<CreateAccount> {
                       padding: const EdgeInsets.all(20),
                     ),
                     TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      obscureText: !_passwordVisible!,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
                         labelText: 'Password',
                         hintText: 'Please enter a strong password',
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible!;
+                            });
+                          },
+                          icon: Icon(
+                            _passwordVisible!
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                        ),
                       ),
                       textInputAction: TextInputAction.next,
                       focusNode: _passFocusNode,
@@ -171,11 +193,23 @@ class _CreateAccountState extends State<CreateAccount> {
                       padding: const EdgeInsets.all(20),
                     ),
                     TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      obscureText: !_confirmPassVisible!,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
                         labelText: 'Confirm Password',
                         hintText: 'Please confirm your password',
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _confirmPassVisible = !_confirmPassVisible!;
+                            });
+                          },
+                          icon: Icon(
+                            _confirmPassVisible!
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                        ),
                       ),
                       focusNode: _confirmFocusNode,
                       textInputAction: TextInputAction.done,
