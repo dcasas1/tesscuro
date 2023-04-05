@@ -9,8 +9,11 @@ import './user_credentials_struct.dart';
 
 class Credentials with ChangeNotifier {
   //Grabs a random key and Initial Vector for AES
-  final key = enc.Key.fromSecureRandom(32);
-  final iv = enc.IV.fromSecureRandom(16);
+  //final key = enc.Key.fromSecureRandom(32);
+  //final iv = enc.IV.fromSecureRandom(16);
+
+  final key = enc.Key.fromBase64('HpQm5JQ8ygKEUeQaYw1YfmpqeD55ySNmc1hT7yUoHhs=');
+  final iv = enc.IV.fromBase64('79dKds7g2qXoZEaHzpXokA==');
 
   //List of accounts
   List<Accounts> _items = [];
@@ -36,11 +39,11 @@ class Credentials with ChangeNotifier {
         receivedData.map((x) => Accounts.fromJson(x)),
       );
       //Grabs the list and insert into the item list to display to screen
-      // for (int i = 0; i < accountList.length; i++) {
-      //   final encrypted =
-      //       enc.Encrypted.fromBase16(accountList.asMap()[i]!.password);
-      //   accountList.asMap()[i]!.password = encrypter.decrypt(encrypted, iv: iv);
-      // }
+      for (int i = 0; i < accountList.length; i++) {
+        final encrypted =
+            enc.Encrypted.fromBase16(accountList.asMap()[i]!.password);
+        accountList.asMap()[i]!.password = encrypter.decrypt(encrypted, iv: iv);
+      }
       _items = accountList;
       notifyListeners();
     } catch (error) {
