@@ -135,22 +135,12 @@ class _NavBarState extends State<NavBar> {
               onTap: () => generaterRoute(context),
             ),
             ListTile(
-              leading: const Icon(
-                Icons.circle_outlined,
-              ),
-              title: const Text('Other Page For Now'),
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.logout,
-                color: Colors.grey,
-              ),
-              title: const Text('Logout'),
-              onTap: () => loginRoute(context)
-            ),
+                leading: const Icon(
+                  Icons.logout,
+                  color: Colors.grey,
+                ),
+                title: const Text('Logout'),
+                onTap: () => loginRoute(context)),
           ],
         ),
       ),
