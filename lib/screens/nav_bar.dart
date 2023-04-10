@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import './generator.dart';
 import './homepage.dart';
 import './addcredentials.dart';
-import '../providers/credentials.dart';
 import './settings.dart';
 import './login.dart';
 
@@ -45,10 +44,6 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
-  Future<void> _refreshAccounts(BuildContext context) async {
-    await Provider.of<Credentials>(context, listen: false).fetchAccounts();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,9 +54,9 @@ class _NavBarState extends State<NavBar> {
           IconButton(
             onPressed: () {
               if (_selectedPageIndex == 0) {
-                _refreshAccounts(context);
+                //  _refreshAccounts(context);
               } else {
-                _refreshAccounts(context);
+                //  _refreshAccounts(context);
                 Navigator.of(context).pushReplacementNamed(NavBar.routeName);
               }
             },
@@ -135,12 +130,16 @@ class _NavBarState extends State<NavBar> {
               onTap: () => generaterRoute(context),
             ),
             ListTile(
-                leading: const Icon(
-                  Icons.logout,
-                  color: Colors.grey,
-                ),
-                title: const Text('Logout'),
-                onTap: () => loginRoute(context)),
+              leading: const Icon(
+                Icons.logout,
+                color: Colors.grey,
+              ),
+              title: const Text('Logout'),
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+              },
+            ),
           ],
         ),
       ),

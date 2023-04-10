@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import './createaccount.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'create_user.dart';
 import './nav_bar.dart';
-import '../providers/credentials.dart';
+import '../widgets/login_form.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   static const routeName = '/login';
 
-  Future<void> _setAccounts(BuildContext context) async {
-    await Provider.of<Credentials>(context, listen: false).fetchAccounts();
-  }
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _auth = FirebaseAuth.instance;
+  var _isLoading = false;
 
   //Homepage route
   void homeRoute(BuildContext ctx) {
@@ -23,92 +28,60 @@ class LoginPage extends StatelessWidget {
     Navigator.of(ctx).pushNamed(CreateAccount.routeName);
   }
 
+  void _submitLoginForm(
+    String email,
+    String password,
+    BuildContext ctx,
+  ) async {
+    UserCredential authResult;
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+
+      authResult = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(authResult.user!.uid)
+          .set({
+        'email': email,
+      });
+    } on FirebaseAuthException catch (err) {
+      String message = 'An error occurred, please check your credentials!';
+
+      if (err.message != null) {
+        message = err.message!;
+      }
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Theme.of(ctx).colorScheme.error,
+        ),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (err) {
+      setState(() {
+        _isLoading = false;
+      });
+      print(err);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Page'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            //Adds Logo to login page
-            Padding(
-              padding: const EdgeInsets.only(top: 110, bottom: 50),
-              child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: SizedBox(
-                    child: Image.asset(
-                      'assets/img/tesscuro_logo.png',
-                      scale: 3,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            //Adds Username Field
-            const Padding(
-              padding: EdgeInsets.only(left: 10, right: 10, bottom: 20),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Username',
-                  hintText: 'Enter Username',
-                ),
-              ),
-            ),
-
-            //Adds Password Field
-            const Padding(
-              padding: EdgeInsets.only(left: 10, right: 10, bottom: 30),
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                  hintText: 'Enter password',
-                ),
-              ),
-            ),
-
-            //Login Button
-            SizedBox(
-              height: 60,
-              width: 200,
-              child: ElevatedButton(
-                onPressed: () {
-                  _setAccounts(context);
-                  homeRoute(context);
-                },
-                child: const Text(
-                  'Login',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ),
-            ),
-
-            //Create Account Button
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: SizedBox(
-                height: 60,
-                width: 200,
-                child: ElevatedButton(
-                  onPressed: () {
-                    createRoute(context);
-                  },
-                  child: const Text(
-                    'Create Account',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ),
-              ),
-            ),
-          ],
+        appBar: AppBar(
+          title: const Text('Login Page'),
         ),
-      ),
-    );
+        body: LoginForm(
+          submitFn: _submitLoginForm,
+          isLoading: _isLoading,
+        ));
   }
 }

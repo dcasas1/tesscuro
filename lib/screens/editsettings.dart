@@ -1,11 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import './nav_bar.dart';
-import '../providers/credentials.dart';
-import '../providers/user_credentials_struct.dart';
 
 class EditSettings extends StatefulWidget {
-  const EditSettings({super.key});
+  const EditSettings({
+    super.key,
+  });
   static const routeName = '/edit-settings';
 
   @override
@@ -14,6 +14,10 @@ class EditSettings extends StatefulWidget {
 
 class _EditSettingsState extends State<EditSettings> {
   final _form = GlobalKey<FormState>();
+  String _password = '';
+  String _siteName = '';
+  String _username = '';
+  String _url = '';
 
   void homeRoute(BuildContext ctx) {
     Navigator.of(ctx).pushReplacementNamed(NavBar.routeName);
@@ -24,21 +28,6 @@ class _EditSettingsState extends State<EditSettings> {
   final _passwordFocusNode = FocusNode();
   //final _confirmPassFocusNode = FocusNode();
 
-  var _editedAccount = Accounts(
-    id: '',
-    siteName: '',
-    siteUrl: '',
-    userName: '',
-    password: '',
-  );
-
-  var _initValues = {
-    'siteName': '',
-    'siteUrl': '',
-    'userName': '',
-    'password': '',
-  };
-
   @override
   void dispose() {
     _urlFocusNode.dispose();
@@ -48,9 +37,7 @@ class _EditSettingsState extends State<EditSettings> {
     super.dispose();
   }
 
-  var _isInit = true;
-
-  bool? _passwordVisible;
+  bool _passwordVisible = false;
 
   @override
   void initState() {
@@ -58,60 +45,33 @@ class _EditSettingsState extends State<EditSettings> {
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      if (ModalRoute.of(context)!.settings.arguments != null) {
-        final accountId = ModalRoute.of(context)!.settings.arguments as String;
-        if (accountId.isNotEmpty) {
-          final account = Provider.of<Credentials>(context).findById(accountId);
-          _editedAccount = account;
-          _initValues = {
-            'siteName': _editedAccount.siteName,
-            'siteUrl': _editedAccount.siteUrl,
-            'userName': _editedAccount.userName,
-            'password': _editedAccount.password,
-          };
-        }
-      }
-      _isInit = false;
-    }
-    super.didChangeDependencies();
+  Future<DocumentSnapshot> getData() async {
+    final docId = ModalRoute.of(context)!.settings.arguments as String;
+
+    return await FirebaseFirestore.instance
+        .collection('accounts')
+        .doc(docId)
+        .get();
   }
 
-  Future<void> _saveForm(BuildContext context) async {
+  void _updateAccount(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    final docId = ModalRoute.of(context)!.settings.arguments as String;
     final isValid = _form.currentState?.validate();
-    if (!isValid!) {
+
+    if(!isValid!) {
       return;
     }
     _form.currentState?.save();
-    if (_editedAccount.id.isNotEmpty) {
-      await Provider.of<Credentials>(context, listen: false)
-          .updateProduct(_editedAccount.id, _editedAccount);
-    } else {
-      try {
-        await Provider.of<Credentials>(context, listen: false)
-            .addAccount(_editedAccount);
-      } catch (error) {
-        showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: const Text('An error occurred!'),
-            content: const Text('Something went wrong.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(ctx, rootNavigator: true).pop('dialog');
-                },
-                child: const Text('Okay'),
-              ),
-            ],
-          ),
-        );
-      }
-    }
-    if (context.mounted) {
-      Navigator.of(context).pop();
+    await FirebaseFirestore.instance.collection('accounts').doc(docId).update({
+      'siteName': _siteName,
+      'url': _url,
+      'username': _username,
+      'password': _password,
+    });
+
+    if(context.mounted) {
+      Navigator.of(context).pushReplacementNamed(NavBar.routeName);
     }
   }
 
@@ -125,161 +85,150 @@ class _EditSettingsState extends State<EditSettings> {
           left: 10,
           right: 10,
         ),
-        child: Form(
-          key: _form,
-          child: ListView(
-            children: <Widget>[
-              TextFormField(
-                initialValue: _initValues['siteName'],
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Name of Site',
-                  hintText: 'Site Name',
-                ),
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_urlFocusNode);
-                },
-                onSaved: (value) {
-                  _editedAccount = Accounts(
-                      id: _editedAccount.id,
-                      siteName: value!,
-                      siteUrl: _editedAccount.siteUrl,
-                      password: _editedAccount.password,
-                      userName: _editedAccount.userName);
-                },
-              ),
-              Container(
-                padding: const EdgeInsets.all(20),
-              ),
-              TextFormField(
-                initialValue: _initValues['siteUrl'],
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'URL',
-                  hintText: 'Enter URL',
-                ),
-                textInputAction: TextInputAction.next,
-                focusNode: _urlFocusNode,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_usernameFocusNode);
-                },
-                onSaved: (value) {
-                  _editedAccount = Accounts(
-                      id: _editedAccount.id,
-                      siteName: _editedAccount.siteName,
-                      siteUrl: value!,
-                      password: _editedAccount.password,
-                      userName: _editedAccount.userName);
-                },
-              ),
-              Container(
-                padding: const EdgeInsets.all(20),
-              ),
-              TextFormField(
-                initialValue: _initValues['userName'],
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Username',
-                  hintText: 'Enter Username',
-                ),
-                textInputAction: TextInputAction.next,
-                focusNode: _usernameFocusNode,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_passwordFocusNode);
-                },
-                onSaved: (value) {
-                  _editedAccount = Accounts(
-                      id: _editedAccount.id,
-                      siteName: _editedAccount.siteName,
-                      siteUrl: _editedAccount.siteUrl,
-                      password: _editedAccount.password,
-                      userName: value!);
-                },
-              ),
-              Container(
-                padding: const EdgeInsets.all(20),
-              ),
-              TextFormField(
-                initialValue: _initValues['password'],
-                obscureText: !_passwordVisible!,
-                decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    labelText: 'Password for Site',
-                    hintText: 'Enter Password for Site',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _passwordVisible!
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
+        child: FutureBuilder(
+          future: getData(),
+          builder: (context, querySnapshot) {
+            if (querySnapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return Form(
+              key: _form,
+              child: ListView(
+                children: <Widget>[
+                  TextFormField(
+                    initialValue: querySnapshot.data!['siteName'],
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Name of Site',
+                      hintText: 'Site Name',
+                    ),
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(_urlFocusNode);
+                    },
+                    onSaved: (value) {
+                      _siteName = value!;
+                    },
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                  ),
+                  TextFormField(
+                    initialValue: querySnapshot.data!['url'],
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'URL',
+                      hintText: 'Enter URL',
+                    ),
+                    textInputAction: TextInputAction.next,
+                    focusNode: _urlFocusNode,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(_usernameFocusNode);
+                    },
+                    onSaved: (value) {
+                      _url = value!;
+                    },
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                  ),
+                  TextFormField(
+                    initialValue: querySnapshot.data!['username'],
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Username',
+                      hintText: 'Enter Username',
+                    ),
+                    textInputAction: TextInputAction.next,
+                    focusNode: _usernameFocusNode,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(_passwordFocusNode);
+                    },
+                    onSaved: (value) {
+                      _username = value!;
+                    },
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                  ),
+                  TextFormField(
+                    initialValue: querySnapshot.data!['password'],
+                    obscureText: !_passwordVisible,
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        labelText: 'Password for Site',
+                        hintText: 'Enter Password for Site',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        )),
+                    focusNode: _passwordFocusNode,
+                    textInputAction: TextInputAction.done,
+                    onFieldSubmitted: (_) {
+                      // FocusScope.of(context)
+                      //     .requestFocus(_confirmPassFocusNode);
+                    },
+                    onSaved: (value) {
+                      _password = value!;
+                    },
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                  ),
+                  // TextFormField(
+                  //   obscureText: true,
+                  //   decoration: const InputDecoration(
+                  //     border: OutlineInputBorder(),
+                  //     labelText: 'Confirm Password',
+                  //     hintText: 'Confirm Password for Site',
+                  //   ),
+                  //   textInputAction: TextInputAction.done,
+                  //   focusNode: _confirmPassFocusNode,
+                  //   onSaved: (value) {
+                  //     _editedAccount = Accounts(
+                  //         id: value!,
+                  //         siteName: _editedAccount.siteName,
+                  //         siteUrl: _editedAccount.siteUrl,
+                  //         password: _editedAccount.password,
+                  //         userName: _editedAccount.userName);
+                  //   },
+                  //   onFieldSubmitted: (_) {
+                  //     _saveForm();
+                  //   },
+                  // ),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                  ),
+                  SizedBox(
+                    height: 60,
+                    width: 200,
+                    child: ElevatedButton(
                       onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible!;
-                        });
+                        _updateAccount(context);
                       },
-                    )),
-                focusNode: _passwordFocusNode,
-                textInputAction: TextInputAction.done,
-                onFieldSubmitted: (_) {
-                  // FocusScope.of(context)
-                  //     .requestFocus(_confirmPassFocusNode);
-                  _saveForm(context);
-                },
-                onSaved: (value) {
-                  _editedAccount = Accounts(
-                      id: _editedAccount.id,
-                      siteName: _editedAccount.siteName,
-                      siteUrl: _editedAccount.siteUrl,
-                      password: value!,
-                      userName: _editedAccount.userName);
-                },
-              ),
-              Container(
-                padding: const EdgeInsets.all(20),
-              ),
-              // TextFormField(
-              //   obscureText: true,
-              //   decoration: const InputDecoration(
-              //     border: OutlineInputBorder(),
-              //     labelText: 'Confirm Password',
-              //     hintText: 'Confirm Password for Site',
-              //   ),
-              //   textInputAction: TextInputAction.done,
-              //   focusNode: _confirmPassFocusNode,
-              //   onSaved: (value) {
-              //     _editedAccount = Accounts(
-              //         id: value!,
-              //         siteName: _editedAccount.siteName,
-              //         siteUrl: _editedAccount.siteUrl,
-              //         password: _editedAccount.password,
-              //         userName: _editedAccount.userName);
-              //   },
-              //   onFieldSubmitted: (_) {
-              //     _saveForm();
-              //   },
-              // ),
-              Container(
-                padding: const EdgeInsets.all(20),
-              ),
-              SizedBox(
-                height: 60,
-                width: 200,
-                child: ElevatedButton(
-                  onPressed: () {
-                    _saveForm(context);
-                  },
-                  child: const Text(
-                    'Submit',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
+                      child: const Text(
+                        'Submit',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

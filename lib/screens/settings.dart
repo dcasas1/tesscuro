@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import './generator.dart';
 import '../main.dart';
-import './createaccount.dart';
+import './create_user.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});

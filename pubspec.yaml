@@ -44,6 +44,9 @@ dependencies:
   random_password_generator: ^0.2.1
   crypto: ^3.0.2
   flutter_session_manager: ^1.0.3
+  firebase_core: ^2.9.0
+  firebase_auth: ^4.2.0
+  cloud_firestore: ^4.5.0
 
 dev_dependencies:
   flutter_lints: ^2.0.1
