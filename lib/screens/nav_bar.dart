@@ -48,26 +48,8 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //leading: const Icon(Icons.menu),
         title: Text(_pages[_selectedPageIndex]['title'] as String),
         actions: [
-          IconButton(
-            onPressed: () {
-              if (_selectedPageIndex == 0) {
-                //  _refreshAccounts(context);
-              } else {
-                //  _refreshAccounts(context);
-                Navigator.of(context).pushReplacementNamed(NavBar.routeName);
-              }
-            },
-            icon: const Icon(
-              Icons.refresh,
-              size: 31,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4),
-          ),
           IconButton(
             onPressed: () => addRoute(context),
             icon: const Icon(
@@ -76,13 +58,10 @@ class _NavBarState extends State<NavBar> {
             ),
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14),
+            padding: EdgeInsets.symmetric(horizontal: 12.5),
           ),
         ],
-      ), //AppBar(
-      //leading: const Icon(Icons.menu),
-      //title: Text(_pages[_selectedPageIndex]['title'] as String),
-
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -143,7 +122,6 @@ class _NavBarState extends State<NavBar> {
           ],
         ),
       ),
-
       body: _pages[_selectedPageIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
