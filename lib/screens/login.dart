@@ -50,6 +50,9 @@ class _LoginPageState extends State<LoginPage> {
           .set({
         'email': email,
       });
+      if (ctx.mounted) {
+        Navigator.of(context).pushReplacementNamed(NavBar.routeName);
+      }
     } on FirebaseAuthException catch (err) {
       String message = 'An error occurred, please check your credentials!';
 
