@@ -46,14 +46,13 @@ class _AuthFormState extends State<AuthForm> {
     }
   }
 
-  Future<void> send_email() async {
+  Future<void> sendEmail() async {
     _formKey.currentState!.save();
-    final email_url = Uri.parse(
-        'https://cs.csub.edu/~mbuenonunez/Tesscuro/testing/email.php');
+    final emailUrl = Uri.parse(
+        'https://cs.csub.edu/~mbuenonunez/Tesscuro/flutter/email.php');
     var email = json.encode({'email': _userEmail});
-    print(json.decode(email));
     try {
-      await http.post(email_url,
+      await http.post(emailUrl,
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'accept': 'application/json'
@@ -213,7 +212,7 @@ class _AuthFormState extends State<AuthForm> {
                 width: 200,
                 child: ElevatedButton(
                   onPressed: () {
-                    send_email();
+                    sendEmail();
                     _tryCreateSubmit();
                   },
                   child: const Text(
