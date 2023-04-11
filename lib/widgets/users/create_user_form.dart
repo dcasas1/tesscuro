@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class AuthForm extends StatefulWidget {
   const AuthForm({
@@ -41,6 +43,24 @@ class _AuthFormState extends State<AuthForm> {
         _userName.trim(),
         context,
       );
+    }
+  }
+
+  Future<void> send_email() async {
+    _formKey.currentState!.save();
+    final email_url = Uri.parse(
+        'https://cs.csub.edu/~mbuenonunez/Tesscuro/testing/email.php');
+    var email = json.encode({'email': _userEmail});
+    print(json.decode(email));
+    try {
+      await http.post(email_url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'accept': 'application/json'
+          },
+          body: email);
+    } catch (error) {
+      rethrow;
     }
   }
 
@@ -193,6 +213,7 @@ class _AuthFormState extends State<AuthForm> {
                 width: 200,
                 child: ElevatedButton(
                   onPressed: () {
+                    send_email();
                     _tryCreateSubmit();
                   },
                   child: const Text(
