@@ -47,7 +47,7 @@ class _AddCredentialsState extends State<AddCredentials> {
     _form.currentState?.save();
 
     try {
-      await FirebaseFirestore.instance.collection('accounts').add({
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).collection('accounts').add({
         'password': _password,
         'siteName': _siteName,
         'userId': user.uid,

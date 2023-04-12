@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import './nav_bar.dart';
 
 class EditSettings extends StatefulWidget {
@@ -18,6 +19,7 @@ class _EditSettingsState extends State<EditSettings> {
   String _siteName = '';
   String _username = '';
   String _url = '';
+  var newId = '';
 
   void homeRoute(BuildContext ctx) {
     Navigator.of(ctx).pushReplacementNamed(NavBar.routeName);
@@ -46,9 +48,13 @@ class _EditSettingsState extends State<EditSettings> {
   }
 
   Future<DocumentSnapshot> getData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    newId = user!.uid;
     final docId = ModalRoute.of(context)!.settings.arguments as String;
 
     return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(newId)
         .collection('accounts')
         .doc(docId)
         .get();
@@ -59,18 +65,18 @@ class _EditSettingsState extends State<EditSettings> {
     final docId = ModalRoute.of(context)!.settings.arguments as String;
     final isValid = _form.currentState?.validate();
 
-    if(!isValid!) {
+    if (!isValid!) {
       return;
     }
     _form.currentState?.save();
-    await FirebaseFirestore.instance.collection('accounts').doc(docId).update({
+    await FirebaseFirestore.instance.collection('users').doc(newId).collection('accounts').doc(docId).update({
       'siteName': _siteName,
       'url': _url,
       'username': _username,
       'password': _password,
     });
 
-    if(context.mounted) {
+    if (context.mounted) {
       Navigator.of(context).pushReplacementNamed(NavBar.routeName);
     }
   }

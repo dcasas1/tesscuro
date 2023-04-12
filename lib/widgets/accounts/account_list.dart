@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../screens/editsettings.dart';
 
 enum AccountOptions {
@@ -16,7 +17,6 @@ class AccountList extends StatefulWidget {
     required this.userName,
     required this.password,
     required this.docId,
-    required this.isMe,
     required this.accountKey,
   });
 
@@ -25,7 +25,6 @@ class AccountList extends StatefulWidget {
   final String userName;
   final String password;
   final String docId;
-  final bool isMe;
 
   @override
   State<AccountList> createState() => _AccountListState();
@@ -33,9 +32,14 @@ class AccountList extends StatefulWidget {
 
 class _AccountListState extends State<AccountList> {
   var _passwordVisible = true;
+  var newId = '';
 
   void _deleteAccount() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    newId = user!.uid;
     FirebaseFirestore.instance
+        .collection('users')
+        .doc(newId)
         .collection('accounts')
         .doc(widget.docId)
         .delete();
@@ -112,7 +116,8 @@ class _AccountListState extends State<AccountList> {
               } else if (selection == AccountOptions.passInvisible) {
                 _passwordVisible = false;
               } else if (selection == AccountOptions.editAccount) {
-                Navigator.of(context).pushNamed(EditSettings.routeName, arguments: widget.docId);
+                Navigator.of(context)
+                    .pushNamed(EditSettings.routeName, arguments: widget.docId);
               } else {
                 showDialog(
                   context: context,
