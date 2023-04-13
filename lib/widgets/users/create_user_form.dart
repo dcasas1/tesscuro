@@ -46,23 +46,6 @@ class _AuthFormState extends State<AuthForm> {
     }
   }
 
-  Future<void> sendEmail() async {
-    _formKey.currentState!.save();
-    final emailUrl = Uri.parse(
-        'https://cs.csub.edu/~mbuenonunez/Tesscuro/flutter/email.php');
-    var email = json.encode({'email': _userEmail});
-    try {
-      await http.post(emailUrl,
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'accept': 'application/json'
-          },
-          body: email);
-    } catch (error) {
-      rethrow;
-    }
-  }
-
   @override
   void dispose() {
     _userFocusNode.dispose();
@@ -212,7 +195,6 @@ class _AuthFormState extends State<AuthForm> {
                 width: 200,
                 child: ElevatedButton(
                   onPressed: () {
-                    sendEmail();
                     _tryCreateSubmit();
                   },
                   child: const Text(
