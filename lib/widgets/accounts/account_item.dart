@@ -33,64 +33,63 @@ class Accounts extends StatelessWidget {
             );
           }
           final chatDocs = chatSnapshot.data?.docs;
-          return
-              chatDocs!.isEmpty
-                  ? Center(
-                      //Button to add account if no accounts are in db
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned.fill(
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: <Color>[
-                                      Color(0xFF0D47A1),
-                                      Color(0xFF1976D2),
-                                      Color(0xFF42A5F5),
-                                    ],
-                                  ),
-                                ),
+          return chatDocs!.isEmpty
+              ? Center(
+                  //Button to add account if no accounts are in db
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned.fill(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: <Color>[
+                                  Color(0xFF0D47A1),
+                                  Color(0xFF1976D2),
+                                  Color(0xFF42A5F5),
+                                ],
                               ),
                             ),
-                            TextButton(
-                              onPressed: () => addRoute(ctx),
-                              style: TextButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.all(16),
-                                textStyle: const TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              child: const Text('Tap Here To Add An Account'),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    )
-                  :
-              ListView.separated(
-            padding: const EdgeInsets.all(10),
-            separatorBuilder: (context, index) => const Divider(
-              thickness: 2,
-              color: Colors.grey,
-            ),
-            itemCount: chatDocs.length,
-            itemBuilder: ((context, index) => InkWell(
-                  onTap: () => Navigator.of(context).pushNamed(
-                    EditSettings.routeName,
-                    arguments: chatDocs[index].reference.id,
+                        TextButton(
+                          onPressed: () => addRoute(ctx),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.all(16),
+                            textStyle: const TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                          child: const Text('Tap Here To Add An Account'),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: AccountList(
-                    siteName: chatDocs[index]['siteName'],
-                    userName: chatDocs[index]['username'],
-                    password: chatDocs[index]['password'],
-                    docId: chatDocs[index].reference.id,
-                    accountKey: ValueKey(chatDocs[index].id),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.all(10),
+                  separatorBuilder: (context, index) => const Divider(
+                    thickness: 2,
+                    color: Colors.grey,
                   ),
-                )),
-          );
+                  itemCount: chatDocs.length,
+                  itemBuilder: ((context, index) => InkWell(
+                        onTap: () => Navigator.of(context).pushNamed(
+                          EditSettings.routeName,
+                          arguments: chatDocs[index].reference.id,
+                        ),
+                        child: AccountList(
+                          siteName: chatDocs[index]['siteName'],
+                          userName: chatDocs[index]['username'],
+                          password: chatDocs[index]['password'],
+                          docId: chatDocs[index].reference.id,
+                          accountKey: ValueKey(chatDocs[index].id),
+                          isFavorite: chatDocs[index]['isFavorite'],
+                        ),
+                      )),
+                );
         });
   }
 }

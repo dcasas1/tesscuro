@@ -62,6 +62,7 @@ class _AddCredentialsState extends State<AddCredentials> {
         'userId': user.uid,
         'username': _username,
         'url': _url,
+        'isFavorite': false
       });
     } catch (error) {
       await showDialog<void>(

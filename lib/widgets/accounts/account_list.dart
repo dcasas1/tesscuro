@@ -19,6 +19,7 @@ class AccountList extends StatefulWidget {
     required this.password,
     required this.docId,
     required this.accountKey,
+    required this.isFavorite,
   });
 
   final Key accountKey;
@@ -26,6 +27,7 @@ class AccountList extends StatefulWidget {
   final String userName;
   final String password;
   final String docId;
+  final bool isFavorite;
 
   @override
   State<AccountList> createState() => _AccountListState();
@@ -34,9 +36,10 @@ class AccountList extends StatefulWidget {
 class _AccountListState extends State<AccountList> {
   var _passwordVisible = true;
   var newId = '';
-  final aesKey = enc.Key.fromBase64('HpQm5JQ8ygKEUeQaYw1YfmpqeD55ySNmc1hT7yUoHhs=');
+  final aesKey =
+      enc.Key.fromBase64('HpQm5JQ8ygKEUeQaYw1YfmpqeD55ySNmc1hT7yUoHhs=');
   final iv = enc.IV.fromBase64('79dKds7g2qXoZEaHzpXokA==');
-  
+
   void _deleteAccount() async {
     User? user = FirebaseAuth.instance.currentUser;
     newId = user!.uid;
@@ -108,6 +111,11 @@ class _AccountListState extends State<AccountList> {
         _deleteAccount();
       },
       child: ListTile(
+        leading: IconButton(
+          icon: const Icon(Icons.star_outline),
+          onPressed: () {},
+        ),
+        horizontalTitleGap: 2,
         title: Text(widget.siteName),
         subtitle: _passwordVisible
             ? Text("Username: ${widget.userName}\nPassword: $decrypted")
