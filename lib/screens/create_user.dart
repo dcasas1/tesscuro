@@ -17,7 +17,6 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   final _auth = FirebaseAuth.instance;
   var _isLoading = false;
-  static String message = '';
 
   void _submitCreateForm(
     String email,
