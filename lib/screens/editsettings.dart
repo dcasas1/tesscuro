@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:encrypt/encrypt.dart' as enc;
 import './nav_bar.dart';
 import './generator.dart';
 
@@ -33,24 +34,19 @@ class _EditSettingsState extends State<EditSettings> {
   final _urlFocusNode = FocusNode();
   final _usernameFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
-  //final _confirmPassFocusNode = FocusNode();
+  final aesKey =
+      enc.Key.fromBase64('HpQm5JQ8ygKEUeQaYw1YfmpqeD55ySNmc1hT7yUoHhs=');
+  final iv = enc.IV.fromBase64('79dKds7g2qXoZEaHzpXokA==');
 
   @override
   void dispose() {
     _urlFocusNode.dispose();
     _usernameFocusNode.dispose();
     _passwordFocusNode.dispose();
-    //_confirmPassFocusNode.dispose();
     super.dispose();
   }
 
   bool _passwordVisible = false;
-
-  @override
-  void initState() {
-    _passwordVisible = false;
-    super.initState();
-  }
 
   Future<DocumentSnapshot> getData() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -93,6 +89,7 @@ class _EditSettingsState extends State<EditSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final encrypter = enc.Encrypter(enc.AES(aesKey));
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Settings')),
       body: Padding(
@@ -109,6 +106,8 @@ class _EditSettingsState extends State<EditSettings> {
                 child: CircularProgressIndicator(),
               );
             }
+            final decrypted =
+                encrypter.decrypt64(querySnapshot.data!['password'], iv: iv);
             return Form(
               key: _form,
               child: ListView(
@@ -170,7 +169,7 @@ class _EditSettingsState extends State<EditSettings> {
                     padding: const EdgeInsets.all(20),
                   ),
                   TextFormField(
-                    initialValue: querySnapshot.data!['password'],
+                    initialValue: decrypted,
                     obscureText: !_passwordVisible,
                     decoration: InputDecoration(
                         border: const OutlineInputBorder(),
