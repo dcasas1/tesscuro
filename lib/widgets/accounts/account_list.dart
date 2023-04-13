@@ -34,11 +34,12 @@ class AccountList extends StatefulWidget {
 }
 
 class _AccountListState extends State<AccountList> {
-  var _passwordVisible = true;
+  var _passwordVisible = false;
   var newId = '';
   final aesKey =
       enc.Key.fromBase64('HpQm5JQ8ygKEUeQaYw1YfmpqeD55ySNmc1hT7yUoHhs=');
   final iv = enc.IV.fromBase64('79dKds7g2qXoZEaHzpXokA==');
+  bool favorite = false;
 
   void _deleteAccount() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -51,16 +52,22 @@ class _AccountListState extends State<AccountList> {
         .delete();
   }
 
-  @override
-  void initState() {
-    _passwordVisible = false;
-    super.initState();
+  void _updateFavorite() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    newId = user!.uid;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(newId)
+        .collection('accounts')
+        .doc(widget.docId)
+        .update({'isFavorite': favorite});
   }
 
   @override
   Widget build(BuildContext context) {
     final encrypter = enc.Encrypter(enc.AES(aesKey));
     final decrypted = encrypter.decrypt64(widget.password, iv: iv);
+    favorite = widget.isFavorite;
     return Dismissible(
       key: ValueKey(widget.docId),
       direction: DismissDirection.endToStart,
@@ -111,10 +118,24 @@ class _AccountListState extends State<AccountList> {
         _deleteAccount();
       },
       child: ListTile(
-        leading: IconButton(
-          icon: const Icon(Icons.star_outline),
-          onPressed: () {},
-        ),
+        leading: favorite
+            ? IconButton(
+                onPressed: () {
+                  favorite = !favorite;
+                  _updateFavorite();
+                },
+                icon: const Icon(
+                  Icons.star,
+                  color: Color.fromARGB(255, 231, 210, 19),
+                ),
+              )
+            : IconButton(
+                icon: const Icon(Icons.star_outline),
+                onPressed: () {
+                  favorite = !favorite;
+                  _updateFavorite();
+                },
+              ),
         horizontalTitleGap: 2,
         title: Text(widget.siteName),
         subtitle: _passwordVisible
