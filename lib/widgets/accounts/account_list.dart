@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:encrypt/encrypt.dart' as enc;
 import '../../screens/editsettings.dart';
 
 enum AccountOptions {
@@ -33,7 +34,9 @@ class AccountList extends StatefulWidget {
 class _AccountListState extends State<AccountList> {
   var _passwordVisible = true;
   var newId = '';
-
+  final aesKey = enc.Key.fromBase64('HpQm5JQ8ygKEUeQaYw1YfmpqeD55ySNmc1hT7yUoHhs=');
+  final iv = enc.IV.fromBase64('79dKds7g2qXoZEaHzpXokA==');
+  
   void _deleteAccount() async {
     User? user = FirebaseAuth.instance.currentUser;
     newId = user!.uid;
@@ -53,6 +56,8 @@ class _AccountListState extends State<AccountList> {
 
   @override
   Widget build(BuildContext context) {
+    final encrypter = enc.Encrypter(enc.AES(aesKey));
+    final decrypted = encrypter.decrypt64(widget.password, iv: iv);
     return Dismissible(
       key: ValueKey(widget.docId),
       direction: DismissDirection.endToStart,
@@ -105,7 +110,7 @@ class _AccountListState extends State<AccountList> {
       child: ListTile(
         title: Text(widget.siteName),
         subtitle: _passwordVisible
-            ? Text("Username: ${widget.userName}\nPassword: ${widget.password}")
+            ? Text("Username: ${widget.userName}\nPassword: $decrypted")
             : Text(
                 "Username: ${widget.userName}\nPassword: ${widget.password.replaceAll(widget.password, "********")}"),
         trailing: PopupMenuButton(

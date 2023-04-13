@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:encrypt/encrypt.dart' as enc;
 import './generator.dart';
 import './nav_bar.dart';
 
@@ -31,6 +31,9 @@ class _AddCredentialsState extends State<AddCredentials> {
   final _confirmPassFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
   final _controller = TextEditingController();
+  final key =
+      enc.Key.fromBase64('HpQm5JQ8ygKEUeQaYw1YfmpqeD55ySNmc1hT7yUoHhs=');
+  final iv = enc.IV.fromBase64('79dKds7g2qXoZEaHzpXokA==');
   String _password = '';
   String _siteName = '';
   String _username = '';
@@ -45,10 +48,15 @@ class _AddCredentialsState extends State<AddCredentials> {
       return;
     }
     _form.currentState?.save();
-
+    final encrypter = enc.Encrypter(enc.AES(key));
+    final encrypted = encrypter.encrypt(_password, iv: iv);
     try {
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).collection('accounts').add({
-        'password': _password,
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('accounts')
+          .add({
+        'password': encrypted.base64,
         'siteName': _siteName,
         'userId': user.uid,
         'username': _username,
