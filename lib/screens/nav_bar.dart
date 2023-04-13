@@ -116,7 +116,6 @@ class _NavBarState extends State<NavBar> {
               title: const Text('Logout'),
               onTap: () {
                 FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
               },
             ),
           ],
