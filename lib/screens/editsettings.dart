@@ -190,8 +190,7 @@ class _EditSettingsState extends State<EditSettings> {
                     focusNode: _passwordFocusNode,
                     textInputAction: TextInputAction.done,
                     onFieldSubmitted: (_) {
-                      // FocusScope.of(context)
-                      //     .requestFocus(_confirmPassFocusNode);
+                      _updateAccount(context);
                     },
                     onSaved: (value) {
                       _password = value!;
