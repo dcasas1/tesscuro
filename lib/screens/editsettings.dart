@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './nav_bar.dart';
+import './generator.dart';
 
 class EditSettings extends StatefulWidget {
   const EditSettings({
@@ -23,6 +24,10 @@ class _EditSettingsState extends State<EditSettings> {
 
   void homeRoute(BuildContext ctx) {
     Navigator.of(ctx).pushReplacementNamed(NavBar.routeName);
+  }
+
+  void generateRoute(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(GeneratePassword.routeName);
   }
 
   final _urlFocusNode = FocusNode();
@@ -69,7 +74,12 @@ class _EditSettingsState extends State<EditSettings> {
       return;
     }
     _form.currentState?.save();
-    await FirebaseFirestore.instance.collection('users').doc(newId).collection('accounts').doc(docId).update({
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(newId)
+        .collection('accounts')
+        .doc(docId)
+        .update({
       'siteName': _siteName,
       'url': _url,
       'username': _username,
@@ -189,31 +199,30 @@ class _EditSettingsState extends State<EditSettings> {
                     },
                   ),
                   Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.only(
+                      top: 5,
+                      bottom: 10,
+                    ),
                   ),
-                  // TextFormField(
-                  //   obscureText: true,
-                  //   decoration: const InputDecoration(
-                  //     border: OutlineInputBorder(),
-                  //     labelText: 'Confirm Password',
-                  //     hintText: 'Confirm Password for Site',
-                  //   ),
-                  //   textInputAction: TextInputAction.done,
-                  //   focusNode: _confirmPassFocusNode,
-                  //   onSaved: (value) {
-                  //     _editedAccount = Accounts(
-                  //         id: value!,
-                  //         siteName: _editedAccount.siteName,
-                  //         siteUrl: _editedAccount.siteUrl,
-                  //         password: _editedAccount.password,
-                  //         userName: _editedAccount.userName);
-                  //   },
-                  //   onFieldSubmitted: (_) {
-                  //     _saveForm();
-                  //   },
-                  // ),
+                  SizedBox.square(
+                    //height: 50,
+                    //width: 150,
+                    child: ElevatedButton(
+                      onPressed: () => generateRoute(context),
+                      child: const Text(
+                        'Generate Random Password',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
                   Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.only(
+                      top: 5,
+                      bottom: 15,
+                    ),
                   ),
                   SizedBox(
                     height: 60,

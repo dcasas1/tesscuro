@@ -24,6 +24,7 @@ class _AuthFormState extends State<AuthForm> {
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
+  final _passwordController = TextEditingController();
   final _userFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
   final _passFocusNode = FocusNode();
@@ -127,6 +128,7 @@ class _AuthFormState extends State<AuthForm> {
                   }
                   return null;
                 },
+                controller: _passwordController,
                 obscureText: !_passwordVisible,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
@@ -158,6 +160,12 @@ class _AuthFormState extends State<AuthForm> {
                 padding: const EdgeInsets.all(20),
               ),
               TextFormField(
+                validator: (value) {
+                  if (value != _passwordController.text) {
+                    return 'Passwords do not match!';
+                  }
+                  return null;
+                },
                 obscureText: !_confirmPassVisible,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
@@ -179,7 +187,7 @@ class _AuthFormState extends State<AuthForm> {
                 focusNode: _confirmFocusNode,
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (_) {
-                  //_saveForm(context);
+                  _tryCreateSubmit();
                 },
               ),
               const SizedBox(

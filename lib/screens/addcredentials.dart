@@ -31,6 +31,7 @@ class _AddCredentialsState extends State<AddCredentials> {
   final _confirmPassFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
   final _controller = TextEditingController();
+  final _passwordController = TextEditingController();
   final key =
       enc.Key.fromBase64('HpQm5JQ8ygKEUeQaYw1YfmpqeD55ySNmc1hT7yUoHhs=');
   final iv = enc.IV.fromBase64('79dKds7g2qXoZEaHzpXokA==');
@@ -96,6 +97,7 @@ class _AddCredentialsState extends State<AddCredentials> {
   }
 
   bool _passwordVisible = false;
+  bool _confirmPassVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +138,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                 },
               ),
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(15),
               ),
               TextFormField(
                 key: const ValueKey('url'),
@@ -155,7 +157,7 @@ class _AddCredentialsState extends State<AddCredentials> {
                 },
               ),
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(15),
               ),
               TextFormField(
                 key: const ValueKey('username'),
@@ -174,11 +176,12 @@ class _AddCredentialsState extends State<AddCredentials> {
                 },
               ),
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(15),
               ),
               TextFormField(
                 key: const ValueKey('password'),
                 obscureText: !_passwordVisible,
+                controller: _passwordController,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   labelText: 'Password for Site',
@@ -197,39 +200,49 @@ class _AddCredentialsState extends State<AddCredentials> {
                   ),
                 ),
                 focusNode: _passwordFocusNode,
-                textInputAction: TextInputAction.done,
+                textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
-                  // FocusScope.of(context)
-                  //     .requestFocus(_confirmPassFocusNode);
+                  FocusScope.of(context).requestFocus(_confirmPassFocusNode);
                 },
                 onSaved: (value) {
                   _password = value!;
                 },
               ),
               Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(15),
               ),
-              // TextFormField(
-              //   obscureText: true,
-              //   decoration: const InputDecoration(
-              //     border: OutlineInputBorder(),
-              //     labelText: 'Confirm Password',
-              //     hintText: 'Confirm Password for Site',
-              //   ),
-              //   textInputAction: TextInputAction.done,
-              //   focusNode: _confirmPassFocusNode,
-              //   onSaved: (value) {
-              //     _editedAccount = Accounts(
-              //         id: value!,
-              //         siteName: _editedAccount.siteName,
-              //         siteUrl: _editedAccount.siteUrl,
-              //         password: _editedAccount.password,
-              //         userName: _editedAccount.userName);
-              //   },
-              //   onFieldSubmitted: (_) {
-              //     _saveForm();
-              //   },
-              // ),
+              TextFormField(
+                key: const ValueKey('confirmPass'),
+                obscureText: !_confirmPassVisible,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: 'Confirm Password',
+                  hintText: 'Confirm Password for Site',
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _confirmPassVisible = !_confirmPassVisible;
+                      });
+                    },
+                    icon: Icon(
+                      _confirmPassVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                  ),
+                ),
+                textInputAction: TextInputAction.done,
+                validator: (value) {
+                  if (value != _passwordController.text) {
+                    return 'Passwords do not match!';
+                  }
+                  return null;
+                },
+                focusNode: _confirmPassFocusNode,
+                onFieldSubmitted: (_) {
+                  _addAccount(context);
+                },
+              ),
               Container(
                 padding: const EdgeInsets.only(
                   top: 5,
