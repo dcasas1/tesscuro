@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,6 +30,16 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.of(ctx).pushNamed(CreateAccount.routeName);
   }
 
+  void _autoLogout() {
+    Timer? authTimer; 
+    if (authTimer != null) {
+      authTimer.cancel();
+    }
+
+    authTimer= Timer(
+        const Duration(minutes: 5), (() => FirebaseAuth.instance.signOut()));
+  }
+
   void _submitLoginForm(
     String email,
     String password,
@@ -50,9 +62,8 @@ class _LoginPageState extends State<LoginPage> {
           .set({
         'email': email,
       });
-      if (ctx.mounted) {
-        Navigator.of(context).pushReplacementNamed(NavBar.routeName);
-      }
+
+      _autoLogout();
     } on FirebaseAuthException catch (err) {
       String message = 'An error occurred, please check your credentials!';
 

@@ -84,7 +84,7 @@ class _AddCredentialsState extends State<AddCredentials> {
     _controller.clear();
 
     if (context.mounted) {
-      Navigator.of(context).pushReplacementNamed(NavBar.routeName);
+      Navigator.of(context).pop();
     }
   }
 
