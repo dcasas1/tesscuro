@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 
 class AuthForm extends StatefulWidget {
   const AuthForm({
@@ -29,11 +30,16 @@ class _AuthFormState extends State<AuthForm> {
   final _emailFocusNode = FocusNode();
   final _passFocusNode = FocusNode();
   final _confirmFocusNode = FocusNode();
+  RegExp emailCheck =
+      RegExp(r'^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)(\.[a-zA-Z]{2,5}){1,2}$');
+  RegExp passwordCheck = RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
+  RegExp userCheck = RegExp(r'^[a-zA-Z0-9_-]{3,20}$');
+  bool _isVisible = false;
 
   void _tryCreateSubmit() {
     final isValid = _formKey.currentState?.validate();
     FocusScope.of(context).unfocus();
-
     if (isValid!) {
       _formKey.currentState!.save();
       widget.submitFn(
@@ -43,6 +49,12 @@ class _AuthFormState extends State<AuthForm> {
         context,
       );
     }
+  }
+
+  Future<void> showRules() async {
+    setState(() {
+      _isVisible = !_isVisible;
+    });
   }
 
   @override
@@ -89,8 +101,8 @@ class _AuthFormState extends State<AuthForm> {
                   FocusScope.of(context).requestFocus(_emailFocusNode);
                 },
                 validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please provide a value.';
+                  if (value!.isEmpty || !userCheck.hasMatch(value)) {
+                    return 'Please provide a valid username.';
                   }
                   return null;
                 },
@@ -103,6 +115,12 @@ class _AuthFormState extends State<AuthForm> {
               ),
               TextFormField(
                 key: const ValueKey('email'),
+                validator: (value) {
+                  if (!emailCheck.hasMatch(value!) || value.isEmpty) {
+                    return 'Please enter a valid email address';
+                  }
+                  return null;
+                },
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
@@ -120,41 +138,69 @@ class _AuthFormState extends State<AuthForm> {
               Container(
                 padding: const EdgeInsets.all(20),
               ),
-              TextFormField(
-                key: const ValueKey('password'),
-                validator: (value) {
-                  if (value!.isEmpty || value.length < 8) {
-                    return 'Password must be at lease 8 characters long.';
-                  }
-                  return null;
-                },
-                controller: _passwordController,
-                obscureText: !_passwordVisible,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: 'Password',
-                  hintText: 'Please enter a strong password',
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _passwordVisible = !_passwordVisible;
-                      });
+              FocusScope(
+                child: Focus(
+                  onFocusChange: (value) {
+                    showRules();
+                  },
+                  child: TextFormField(
+                    onTap: () {},
+                    key: const ValueKey('password'),
+                    validator: (value) {
+                      if (value!.isEmpty || !passwordCheck.hasMatch(value)) {
+                        return 'Please enter a valid Password';
+                      }
+                      return null;
                     },
-                    icon: Icon(
-                      _passwordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                    controller: _passwordController,
+                    obscureText: !_passwordVisible,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: 'Password',
+                      hintText: 'Please enter a strong password',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                        icon: Icon(
+                          _passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                      ),
                     ),
+                    textInputAction: TextInputAction.next,
+                    focusNode: _passFocusNode,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(_confirmFocusNode);
+                    },
+                    onSaved: (value) {
+                      _userPassword = value!;
+                    },
                   ),
                 ),
-                textInputAction: TextInputAction.next,
-                focusNode: _passFocusNode,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_confirmFocusNode);
-                },
-                onSaved: (value) {
-                  _userPassword = value!;
-                },
+              ),
+              Visibility(
+                visible: _isVisible,
+                child: Container(
+                  height: 5,
+                ),
+              ),
+              Visibility(
+                visible: _isVisible,
+                child: FlutterPwValidator(
+                  width: 400,
+                  height: 130,
+                  minLength: 8,
+                  uppercaseCharCount: 1,
+                  numericCharCount: 1,
+                  specialCharCount: 1,
+                  successColor: Colors.green,
+                  onSuccess: () {},
+                  controller: _passwordController,
+                ),
               ),
               Container(
                 padding: const EdgeInsets.all(20),
@@ -206,7 +252,7 @@ class _AuthFormState extends State<AuthForm> {
                   child: const Text(
                     'Submit',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 20,
                     ),
                   ),
