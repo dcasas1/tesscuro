@@ -120,6 +120,8 @@ class _AccountListState extends State<AccountList> {
       child: ListTile(
         leading: favorite
             ? IconButton(
+                alignment: const Alignment(-1, 0),
+                padding: const EdgeInsets.only(right: 10),
                 onPressed: () {
                   favorite = !favorite;
                   _updateFavorite();
@@ -130,6 +132,8 @@ class _AccountListState extends State<AccountList> {
                 ),
               )
             : IconButton(
+                alignment: const Alignment(-1, 0),
+                padding: const EdgeInsets.only(right: 10),
                 icon: const Icon(Icons.star_outline),
                 onPressed: () {
                   favorite = !favorite;
