@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/create_user.dart';
+import '../screens/password_reset.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -82,6 +83,7 @@ class _LoginFormState extends State<LoginForm> {
             child: Form(
               key: _formKey,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
                     key: const ValueKey('email'),
@@ -142,36 +144,54 @@ class _LoginFormState extends State<LoginForm> {
                       _userPassword = newValue!;
                     },
                   ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(PasswordReset.routeName);
+                    },
+                    child: const Text(
+                      'Forgot your password?',
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontStyle: FontStyle.italic),
+                    ),
+                  ),
                   Container(
                     padding: const EdgeInsets.only(bottom: 30),
                   ),
 
                   //Login Button
-                  SizedBox(
-                    height: 60,
-                    width: 200,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _trySubmit();
-                      },
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
+                  Center(
                     child: SizedBox(
                       height: 60,
                       width: 200,
                       child: ElevatedButton(
                         onPressed: () {
-                          createRoute(context);
+                          _trySubmit();
                         },
                         child: const Text(
-                          'Create Account',
+                          'Login',
                           style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: SizedBox(
+                        height: 60,
+                        width: 200,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            createRoute(context);
+                          },
+                          child: const Text(
+                            'Create Account',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
                         ),
                       ),
                     ),

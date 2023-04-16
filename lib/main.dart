@@ -10,6 +10,7 @@ import './screens/editsettings.dart';
 import './screens/nav_bar.dart';
 import './screens/settings.dart';
 import './screens/generator.dart';
+import './screens/password_reset.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,6 +72,7 @@ class _MyAppState extends State<MyApp> {
         NavBar.routeName: (ctx) => const NavBar(),
         Settings.routeName: (ctx) => const Settings(),
         GeneratePassword.routeName: (ctx) => const GeneratePassword(),
+        PasswordReset.routeName: (ctx) => const PasswordReset(),
       },
     );
   }

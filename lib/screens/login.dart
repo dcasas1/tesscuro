@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     authTimer= Timer(
-        const Duration(minutes: 5), (() => FirebaseAuth.instance.signOut()));
+        const Duration(minutes: 30), (() => FirebaseAuth.instance.signOut()));
   }
 
   void _submitLoginForm(
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Login Page'),
+          title: const Text('Welcome to Tesscuro!'),
         ),
         body: LoginForm(
           submitFn: _submitLoginForm,
