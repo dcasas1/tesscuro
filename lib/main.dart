@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tesscuro/screens/favorites.dart';
 import './firebase_options.dart';
 import './screens/create_user.dart';
 import './screens/homepage.dart';
@@ -73,6 +74,7 @@ class _MyAppState extends State<MyApp> {
         Settings.routeName: (ctx) => const Settings(),
         GeneratePassword.routeName: (ctx) => const GeneratePassword(),
         PasswordReset.routeName: (ctx) => const PasswordReset(),
+        Favorites.routeName: (ctx) => const Favorites(),
       },
     );
   }
