@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tesscuro/screens/favorites.dart';
 import './generator.dart';
 import './homepage.dart';
 import './addcredentials.dart';
@@ -18,6 +19,7 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   final List<Map<String, Object>> _pages = const [
     {'page': HomePage(), 'title': 'Homepage'},
+    {'page': Favorites(), 'title': 'Favorites'},
     {'page': Settings(), 'title': 'Settings'},
   ];
   void addRoute(BuildContext ctx) {
@@ -34,6 +36,10 @@ class _NavBarState extends State<NavBar> {
 
   void generaterRoute(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(GeneratePassword.routeName);
+  }
+
+  void favoritesRoute(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(Favorites.routeName);
   }
 
   int _selectedPageIndex = 0;
@@ -124,15 +130,19 @@ class _NavBarState extends State<NavBar> {
       body: _pages[_selectedPageIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
-        selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: Theme.of(context).colorScheme.secondary,
+        selectedItemColor: Theme.of(context).colorScheme.secondary,
+        unselectedItemColor: Theme.of(context).colorScheme.primary,
         showUnselectedLabels: true,
         currentIndex: _selectedPageIndex,
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: 'Favorites',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
