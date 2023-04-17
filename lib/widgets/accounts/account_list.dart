@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:encrypt/encrypt.dart' as enc;
 import '../../screens/editsettings.dart';
+import 'package:flutter/services.dart';
 
 enum AccountOptions {
   passVisible,
@@ -118,6 +119,15 @@ class _AccountListState extends State<AccountList> {
         _deleteAccount();
       },
       child: ListTile(
+        enabled: true,
+          onLongPress: () {
+          Clipboard.setData(ClipboardData(text: decrypted));          
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Password Copied!'),
+      duration: Duration(seconds: 2),
+      ));
+ 
+      },
         leading: favorite
             ? IconButton(
                 alignment: const Alignment(-1, 0),
