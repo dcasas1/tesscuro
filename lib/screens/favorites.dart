@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/accounts/account_item.dart';
+import '../widgets/accounts/account_list.dart';
 //import './generator.dart';
 //import '../main.dart';
 //import './create_user.dart';
@@ -14,7 +14,6 @@ class Favorites extends StatefulWidget {
 }
 
 class _FavoritesState extends State<Favorites> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,11 +27,11 @@ class _FavoritesState extends State<Favorites> {
             padding: const EdgeInsets.all(5),
             margin: const EdgeInsets.all(5),
             //child: Text(
-              //'Tap \'+\' to add another account!',
-              //style: TextStyle(
-                //fontSize: 18,
-                //color: Theme.of(context).colorScheme.primary,
-              //),
+            //'Tap \'+\' to add another account!',
+            //style: TextStyle(
+            //fontSize: 18,
+            //color: Theme.of(context).colorScheme.primary,
+            //),
             //),
           ),
         ],

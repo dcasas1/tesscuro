@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/accounts/account_item.dart';
+import '../widgets/accounts/account_list.dart';
 import './addcredentials.dart';
 import './editsettings.dart';
 
