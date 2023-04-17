@@ -120,12 +120,17 @@ class _AccountListState extends State<AccountList> {
       },
       child: ListTile(
         enabled: true,
+        onTap: () => Navigator.of(context).pushNamed(
+          EditSettings.routeName,
+          arguments: widget.docId,
+        ),
           onLongPress: () {
           Clipboard.setData(ClipboardData(text: decrypted));          
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text('Password Copied!'),
       duration: Duration(seconds: 2),
       ));
+      
  
       },
         leading: favorite
