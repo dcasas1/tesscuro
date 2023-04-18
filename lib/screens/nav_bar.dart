@@ -93,6 +93,7 @@ class _NavBarState extends State<NavBar> {
               ),
               title: const Text('Home Page'),
               onTap: () {
+                _selectPage(0);
                 Navigator.of(context).pop();
               },
             ),
