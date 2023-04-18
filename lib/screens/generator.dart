@@ -98,7 +98,7 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                       ),
                   //filled: true,
                   //fillColor: Colors.grey[300],
-                  labelText: '(Optional) Password Length',
+                  labelText: '(Optional) Password Length (Max 100)',
                   hintText: 'Enter Length',
                   //labelStyle: TextStyle(color: Colors.blue),
                 ),
@@ -114,27 +114,30 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                     _numberCharPassword =
                         double.parse(_passwordLength.text.trim());
                   }
-
-                  newPassword = password.randomPassword(
-                      letters: _isWithLetters,
-                      numbers: _isWithNumbers,
-                      passwordLength: _numberCharPassword,
-                      specialChar: _isWithSpecial,
-                      uppercase: _isWithUppercase);
-
-                  double passwordstrength =
-                      password.checkPassword(password: newPassword);
-                  if (passwordstrength < 0.3) {
-                    _color = Colors.red;
-                    isOk = 'This password is weak!';
-                  } else if (passwordstrength < 0.7) {
-                    _color = Colors.blue;
-                    isOk = 'This password is Good';
+                  if (_numberCharPassword > 100) {
+                    newPassword = '';
+                    isOk = 'Requested Length is too long';
                   } else {
-                    _color = Colors.green;
-                    isOk = 'This passsword is Strong';
-                  }
+                    newPassword = password.randomPassword(
+                        letters: _isWithLetters,
+                        numbers: _isWithNumbers,
+                        passwordLength: _numberCharPassword,
+                        specialChar: _isWithSpecial,
+                        uppercase: _isWithUppercase);
 
+                    double passwordstrength =
+                        password.checkPassword(password: newPassword);
+                    if (passwordstrength < 0.3) {
+                      _color = Colors.red;
+                      isOk = 'This password is weak!';
+                    } else if (passwordstrength < 0.7) {
+                      _color = Colors.blue;
+                      isOk = 'This password is Good';
+                    } else {
+                      _color = Colors.green;
+                      isOk = 'This passsword is Strong';
+                    }
+                  }
                   setState(() {});
                 },
                 child: const Padding(
@@ -168,7 +171,18 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                     style: TextStyle(color: _color, fontSize: 25),
                   ),
                 ),
-              ))
+              )),
+            if (newPassword.isEmpty)
+              Center(
+                  child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    isOk,
+                    style: TextStyle(color: _color, fontSize: 25),
+                  ),
+                ),
+              )),
           ],
         )),
       ),
