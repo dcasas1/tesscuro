@@ -1,7 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import './generator.dart';
-import '../main.dart';
 import './create_user.dart';
 
 class Settings extends StatefulWidget {
@@ -36,9 +35,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     bool response = _checkIfDarkModeEnabled();
-    //print(response);
     bool check = response;
-    //print(response);
     return Scaffold(
       body: (response == false)
           ? Container(
@@ -63,11 +60,9 @@ class _SettingsState extends State<Settings> {
                             setState(() {
                               check = value;
                               if (light == true) {
-                                // MyApp.of(context)?.changeTheme(ThemeMode.dark);
                                 AdaptiveTheme.of(context).setDark();
                               }
                               if (light == false) {
-                                // MyApp.of(context)?.changeTheme(ThemeMode.light);
                                 AdaptiveTheme.of(context).setLight();
                               }
                             });
@@ -118,13 +113,9 @@ class _SettingsState extends State<Settings> {
                             setState(() {
                               check = value;
                               if (light == false) {
-                                //print("Dark Mode");
-                                // MyApp.of(context)?.changeTheme(ThemeMode.dark);
                                 AdaptiveTheme.of(context).setDark();
                               }
                               if (light == true) {
-                                //print("Light Mode");
-                                // MyApp.of(context)?.changeTheme(ThemeMode.light);
                                 AdaptiveTheme.of(context).setLight();
                               }
                             });
