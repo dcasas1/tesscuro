@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import './generator.dart';
 import '../main.dart';
@@ -62,10 +63,12 @@ class _SettingsState extends State<Settings> {
                             setState(() {
                               check = value;
                               if (light == true) {
-                                MyApp.of(context)?.changeTheme(ThemeMode.dark);
+                                // MyApp.of(context)?.changeTheme(ThemeMode.dark);
+                                AdaptiveTheme.of(context).setDark();
                               }
                               if (light == false) {
-                                MyApp.of(context)?.changeTheme(ThemeMode.light);
+                                // MyApp.of(context)?.changeTheme(ThemeMode.light);
+                                AdaptiveTheme.of(context).setLight();
                               }
                             });
                           },
@@ -116,11 +119,13 @@ class _SettingsState extends State<Settings> {
                               check = value;
                               if (light == false) {
                                 //print("Dark Mode");
-                                MyApp.of(context)?.changeTheme(ThemeMode.dark);
+                                // MyApp.of(context)?.changeTheme(ThemeMode.dark);
+                                AdaptiveTheme.of(context).setDark();
                               }
                               if (light == true) {
                                 //print("Light Mode");
-                                MyApp.of(context)?.changeTheme(ThemeMode.light);
+                                // MyApp.of(context)?.changeTheme(ThemeMode.light);
+                                AdaptiveTheme.of(context).setLight();
                               }
                             });
                           },
