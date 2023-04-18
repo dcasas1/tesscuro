@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       dark: ThemeData.dark(),
-      initial: widget.savedThemeMode ?? AdaptiveThemeMode.light,
+      initial: widget.savedThemeMode ?? AdaptiveThemeMode.system,
       builder: (theme, darkTheme) => MaterialApp(
         title: 'Tesscuro',
         theme: theme,
