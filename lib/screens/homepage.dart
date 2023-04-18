@@ -24,7 +24,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //Waits for accounts to be grabbed from backend before loading
       body: Column(
         children: <Widget>[
           const Expanded(
