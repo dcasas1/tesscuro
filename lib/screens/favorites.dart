@@ -22,9 +22,9 @@ class _FavoritesState extends State<Favorites> {
             padding: const EdgeInsets.all(5),
             margin: const EdgeInsets.all(5),
             child: Text(
-              'Add Your Favorite Accounts on the Homepage!',
+              'All Your Favorited Accounts Here!',
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 18,
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),

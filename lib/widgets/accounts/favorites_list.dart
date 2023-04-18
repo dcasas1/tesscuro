@@ -32,10 +32,10 @@ class FavoritesList extends StatelessWidget {
               ? const Center(
                   //Button to add account if no accounts are in db
                   child: Text(
-                  'Add Favorites On The Homepage!',
+                  'Add Your Favorite Accounts On The Homepage!',
                   style: TextStyle(
                     color: Colors.blue,
-                    fontSize: 25,
+                    fontSize: 18,
                   ),
                 ))
               : ListView.separated(
