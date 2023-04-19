@@ -1,7 +1,9 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:encrypt/encrypt.dart' as enc;
+import 'package:libcrypto/libcrypto.dart';
 import './nav_bar.dart';
 import './generator.dart';
 
@@ -21,7 +23,9 @@ class _EditSettingsState extends State<EditSettings> {
   String _siteName = '';
   String _username = '';
   String _url = '';
+  String pass = '';
   var newId = '';
+  bool _isInit = true;
 
   void homeRoute(BuildContext ctx) {
     Navigator.of(ctx).pushReplacementNamed(NavBar.routeName);
@@ -34,9 +38,6 @@ class _EditSettingsState extends State<EditSettings> {
   final _urlFocusNode = FocusNode();
   final _usernameFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
-  final aesKey =
-      enc.Key.fromBase64('HpQm5JQ8ygKEUeQaYw1YfmpqeD55ySNmc1hT7yUoHhs=');
-  final iv = enc.IV.fromBase64('79dKds7g2qXoZEaHzpXokA==');
 
   @override
   void dispose() {
@@ -47,6 +48,36 @@ class _EditSettingsState extends State<EditSettings> {
   }
 
   bool _passwordVisible = false;
+
+  Future<void> getPass() async {
+    final user = FirebaseAuth.instance.currentUser!;
+    final docId = ModalRoute.of(context)!.settings.arguments as String;
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+    final accountData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('accounts')
+        .doc(docId)
+        .get();
+    final secret = userData['password'];
+    final salt = Uint8List.fromList(utf8.encode(userData['userID'].toString()));
+    final hasher = Pbkdf2(iterations: 1000);
+    final sha256Hash = await hasher.sha256(secret, salt);
+    final aesCbc = AesCbc();
+    final decrypted =
+        await aesCbc.decrypt(accountData['password'], secretKey: sha256Hash);
+    if (_isInit) {
+      if (mounted) {
+        setState(() {
+          pass = decrypted;
+        });
+      }
+    }
+    _isInit = false;
+  }
 
   Future<DocumentSnapshot> getData() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -65,11 +96,23 @@ class _EditSettingsState extends State<EditSettings> {
     FocusScope.of(context).unfocus();
     final docId = ModalRoute.of(context)!.settings.arguments as String;
     final isValid = _form.currentState?.validate();
+    final user = FirebaseAuth.instance.currentUser!;
 
     if (!isValid!) {
       return;
     }
     _form.currentState?.save();
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+    final secret = userData['password'];
+    final salt = Uint8List.fromList(utf8.encode(userData['userID'].toString()));
+    final hasher = Pbkdf2(iterations: 1000);
+    final sha256Hash = await hasher.sha256(secret, salt);
+    final clearText = _password;
+    final aesCbc = AesCbc();
+    final cipherText = await aesCbc.encrypt(clearText, secretKey: sha256Hash);
     await FirebaseFirestore.instance
         .collection('users')
         .doc(newId)
@@ -79,7 +122,7 @@ class _EditSettingsState extends State<EditSettings> {
       'siteName': _siteName,
       'url': _url,
       'username': _username,
-      'password': _password,
+      'password': cipherText.toString(),
     });
 
     if (context.mounted) {
@@ -89,7 +132,7 @@ class _EditSettingsState extends State<EditSettings> {
 
   @override
   Widget build(BuildContext context) {
-    final encrypter = enc.Encrypter(enc.AES(aesKey));
+    getPass();
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Settings')),
       body: Padding(
@@ -106,8 +149,6 @@ class _EditSettingsState extends State<EditSettings> {
                 child: CircularProgressIndicator(),
               );
             }
-            final decrypted =
-                encrypter.decrypt64(querySnapshot.data!['password'], iv: iv);
             return Form(
               key: _form,
               child: ListView(
@@ -169,7 +210,7 @@ class _EditSettingsState extends State<EditSettings> {
                     padding: const EdgeInsets.all(20),
                   ),
                   TextFormField(
-                    initialValue: decrypted,
+                    initialValue: pass,
                     obscureText: !_passwordVisible,
                     decoration: InputDecoration(
                         border: const OutlineInputBorder(),

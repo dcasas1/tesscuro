@@ -1,4 +1,6 @@
+import 'dart:math';
 import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,6 +27,10 @@ class _CreateAccountState extends State<CreateAccount> {
     BuildContext ctx,
   ) async {
     UserCredential authResult;
+    Random random = Random.secure();
+    int randomNumber = random.nextInt(1000000000);
+    var bytes = utf8.encode(password);
+    var digest = sha256.convert(bytes);
     final emailUrl = Uri.parse(
         'https://cs.csub.edu/~mbuenonunez/Tesscuro/flutter/email.php');
     var sendEmail = json.encode({'email': email});
@@ -44,6 +50,8 @@ class _CreateAccountState extends State<CreateAccount> {
           .set({
         'username': username,
         'email': email,
+        'password': digest.toString(),
+        'userID': randomNumber,
       });
 
       await http.post(emailUrl,

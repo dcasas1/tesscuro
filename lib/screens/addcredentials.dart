@@ -1,7 +1,9 @@
+import 'dart:typed_data';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:encrypt/encrypt.dart' as enc;
+import 'package:libcrypto/libcrypto.dart';
 import './generator.dart';
 
 class AddCredentials extends StatefulWidget {
@@ -31,9 +33,6 @@ class _AddCredentialsState extends State<AddCredentials> {
   final _form = GlobalKey<FormState>();
   final _controller = TextEditingController();
   final _passwordController = TextEditingController();
-  final key =
-      enc.Key.fromBase64('HpQm5JQ8ygKEUeQaYw1YfmpqeD55ySNmc1hT7yUoHhs=');
-  final iv = enc.IV.fromBase64('79dKds7g2qXoZEaHzpXokA==');
   String _password = '';
   String _siteName = '';
   String _username = '';
@@ -48,15 +47,26 @@ class _AddCredentialsState extends State<AddCredentials> {
       return;
     }
     _form.currentState?.save();
-    final encrypter = enc.Encrypter(enc.AES(key));
-    final encrypted = encrypter.encrypt(_password, iv: iv);
+
     try {
+      final userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      final secret = userData['password'];
+      final salt =
+          Uint8List.fromList(utf8.encode(userData['userID'].toString()));
+      final hasher = Pbkdf2(iterations: 1000);
+      final sha256Hash = await hasher.sha256(secret, salt);
+      final clearText = _password;
+      final aesCbc = AesCbc();
+      final cipherText = await aesCbc.encrypt(clearText, secretKey: sha256Hash);
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .collection('accounts')
           .add({
-        'password': encrypted.base64,
+        'password': cipherText.toString(),
         'siteName': _siteName,
         'userId': user.uid,
         'username': _username,

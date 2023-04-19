@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:encrypt/encrypt.dart' as enc;
+import 'package:libcrypto/libcrypto.dart';
 import '../../screens/editsettings.dart';
 
 enum AccountOptions {
@@ -38,9 +40,33 @@ class _FavItemsState extends State<FavItems> {
   var _passwordVisible = false;
   var newId = '';
   bool favorite = false;
-  final aesKey =
-      enc.Key.fromBase64('HpQm5JQ8ygKEUeQaYw1YfmpqeD55ySNmc1hT7yUoHhs=');
-  final iv = enc.IV.fromBase64('79dKds7g2qXoZEaHzpXokA==');
+  String pass = '';
+
+  Future<void> _getPass() async {
+    final user = FirebaseAuth.instance.currentUser!;
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+    final accountData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('accounts')
+        .doc(widget.docId)
+        .get();
+    final secret = userData['password'];
+    final salt = Uint8List.fromList(utf8.encode(userData['userID'].toString()));
+    final hasher = Pbkdf2(iterations: 1000);
+    final sha256Hash = await hasher.sha256(secret, salt);
+    final aesCbc = AesCbc();
+    final decryptedText =
+        await aesCbc.decrypt(accountData['password'], secretKey: sha256Hash);
+    if (mounted) {
+      setState(() {
+        pass = decryptedText;
+      });
+    }
+  }
 
   void _deleteAccount() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -66,8 +92,7 @@ class _FavItemsState extends State<FavItems> {
 
   @override
   Widget build(BuildContext context) {
-    final encrypter = enc.Encrypter(enc.AES(aesKey));
-    final decrypted = encrypter.decrypt64(widget.password, iv: iv);
+    _getPass();
     favorite = widget.isFavorite;
     return Dismissible(
       key: ValueKey(widget.docId),
@@ -121,7 +146,7 @@ class _FavItemsState extends State<FavItems> {
       child: ListTile(
         enabled: true,
         onTap: () {
-          Clipboard.setData(ClipboardData(text: decrypted));
+          Clipboard.setData(ClipboardData(text: pass));
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Password ${widget.siteName} Copied!'),
             duration: const Duration(seconds: 2),
@@ -156,7 +181,7 @@ class _FavItemsState extends State<FavItems> {
         horizontalTitleGap: 2,
         title: Text(widget.siteName),
         subtitle: _passwordVisible
-            ? Text("Username: ${widget.userName}\nPassword: $decrypted")
+            ? Text("Username: ${widget.userName}\nPassword: $pass")
             : Text(
                 "Username: ${widget.userName}\nPassword: ${widget.password.replaceAll(widget.password, "********")}"),
         trailing: PopupMenuButton(
