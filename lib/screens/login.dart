@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'create_user.dart';
 import './nav_bar.dart';
 import '../widgets/login_form.dart';
@@ -45,23 +44,16 @@ class _LoginPageState extends State<LoginPage> {
     String password,
     BuildContext ctx,
   ) async {
-    UserCredential authResult;
+    // UserCredential authResult;
     try {
       setState(() {
         _isLoading = true;
       });
 
-      authResult = await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(authResult.user!.uid)
-          .set({
-        'email': email,
-      });
 
       _autoLogout();
     } on FirebaseAuthException catch (err) {

@@ -35,7 +35,7 @@ class FavoritesList extends StatelessWidget {
                   'Add Your Favorite Accounts On The Homepage!',
                   style: TextStyle(
                     color: Colors.blue,
-                    fontSize: 18,
+                    fontSize: 16,
                   ),
                 ))
               : ListView.separated(
