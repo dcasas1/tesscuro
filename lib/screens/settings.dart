@@ -38,110 +38,114 @@ class _SettingsState extends State<Settings> {
     bool check = response;
     return Scaffold(
       body: (response == false)
-          ? Container(
-              padding: const EdgeInsets.only(top: 75),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      if (check == false)
-                        const Text(
-                          "Dark Mode Disabled",
+          ? SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.only(top: 75),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        if (check == false)
+                          const Text(
+                            "Dark Mode Disabled",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        if (check == true) const Text("Dark Mode Enabled"),
+                        Transform.scale(
+                          scale: 1.5,
+                          child: Switch(
+                            value: check,
+                            onChanged: (value) {
+                              setState(() {
+                                check = value;
+                                if (light == true) {
+                                  AdaptiveTheme.of(context).setDark();
+                                }
+                                if (light == false) {
+                                  AdaptiveTheme.of(context).setLight();
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 75,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(elevation: 10),
+                      onPressed: () => generateRoute(context),
+                      child: const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Generate Password',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      if (check == true) const Text("Dark Mode Enabled"),
-                      Transform.scale(
-                        scale: 1.5,
-                        child: Switch(
-                          value: check,
-                          onChanged: (value) {
-                            setState(() {
-                              check = value;
-                              if (light == true) {
-                                AdaptiveTheme.of(context).setDark();
-                              }
-                              if (light == false) {
-                                AdaptiveTheme.of(context).setLight();
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 75,
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(elevation: 10),
-                    onPressed: () => generateRoute(context),
-                    child: const Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text(
-                        'Generate Password',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
-          : Container(
-              padding: const EdgeInsets.only(top: 75),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      if (check == false) const Text("Dark Mode Disabled"),
-                      if (check == true)
-                        const Text(
-                          "Dark Mode Enabled",
+          : SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.only(top: 75),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        if (check == false) const Text("Dark Mode Disabled"),
+                        if (check == true)
+                          const Text(
+                            "Dark Mode Enabled",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        Transform.scale(
+                          scale: 1.5,
+                          child: Switch(
+                            value: check,
+                            onChanged: (value) {
+                              setState(() {
+                                check = value;
+                                if (light == false) {
+                                  AdaptiveTheme.of(context).setDark();
+                                }
+                                if (light == true) {
+                                  AdaptiveTheme.of(context).setLight();
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 75,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(elevation: 10),
+                      onPressed: () => generateRoute(context),
+                      child: const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Generate Password',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      Transform.scale(
-                        scale: 1.5,
-                        child: Switch(
-                          value: check,
-                          onChanged: (value) {
-                            setState(() {
-                              check = value;
-                              if (light == false) {
-                                AdaptiveTheme.of(context).setDark();
-                              }
-                              if (light == true) {
-                                AdaptiveTheme.of(context).setLight();
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 75,
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(elevation: 10),
-                    onPressed: () => generateRoute(context),
-                    child: const Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text(
-                        'Generate Password',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
     );
