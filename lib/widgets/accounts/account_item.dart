@@ -11,6 +11,7 @@ enum AccountOptions {
   passVisible,
   passInvisible,
   editAccount,
+  copyPass,
   deleteAccount,
 }
 
@@ -194,6 +195,12 @@ class _AccountListState extends State<AccountList> {
               } else if (selection == AccountOptions.editAccount) {
                 Navigator.of(context)
                     .pushNamed(EditSettings.routeName, arguments: widget.docId);
+              } else if (selection == AccountOptions.copyPass) {
+                Clipboard.setData(ClipboardData(text: pass));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Password for ${widget.siteName} Copied!'),
+                  duration: const Duration(seconds: 2),
+                ));
               } else {
                 showDialog(
                   context: context,
@@ -239,6 +246,11 @@ class _AccountListState extends State<AccountList> {
             const PopupMenuItem(
               value: AccountOptions.editAccount,
               child: Text('Edit Account'),
+            ),
+            const PopupMenuDivider(),
+            const PopupMenuItem(
+              value: AccountOptions.copyPass,
+              child: Text("Copy Password"),
             ),
             const PopupMenuDivider(),
             const PopupMenuItem(
