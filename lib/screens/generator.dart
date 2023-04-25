@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:random_password_generator/random_password_generator.dart';
+import 'package:flutter/services.dart';
 
 class GeneratePassword extends StatefulWidget {
   static const routeName = '/generate-password';
@@ -15,6 +16,7 @@ class _GeneratePasswordState extends State<GeneratePassword> {
   bool _isWithUppercase = false;
   bool _isWithNumbers = false;
   bool _isWithSpecial = false;
+  bool _isVisible = false;
   double _numberCharPassword = 8;
   String newPassword = '';
   Color _color = Colors.blue;
@@ -110,6 +112,7 @@ class _GeneratePasswordState extends State<GeneratePassword> {
             FloatingActionButton.large(
                 backgroundColor: Colors.blue,
                 onPressed: () {
+                  _isVisible = true;
                   if (_passwordLength.text.trim().isNotEmpty) {
                     _numberCharPassword =
                         double.parse(_passwordLength.text.trim());
@@ -174,15 +177,28 @@ class _GeneratePasswordState extends State<GeneratePassword> {
               )),
             if (newPassword.isEmpty)
               Center(
-                  child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    isOk,
-                    style: TextStyle(color: _color, fontSize: 25),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      isOk,
+                      style: TextStyle(color: _color, fontSize: 25),
+                    ),
                   ),
                 ),
-              )),
+              ),
+            Visibility(
+              visible: _isVisible,
+              child: ElevatedButton(
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: newPassword));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('Password for Copied!'),
+                      duration: Duration(seconds: 2),
+                    ));
+                  },
+                  child: const Text('Copy Password')),
+            ),
           ],
         )),
       ),
