@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:libcrypto/libcrypto.dart';
-import './generator.dart';
+import '../widgets/passwordGen/pass_gen.dart';
 
 class AddCredentials extends StatefulWidget {
   const AddCredentials({super.key});
@@ -19,11 +19,6 @@ class _AddCredentialsState extends State<AddCredentials> {
   //Homepage route
   void homeRoute(BuildContext ctx) {
     Navigator.of(ctx).pop();
-  }
-
-  //Generator route
-  void generateRoute(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(GeneratePassword.routeName);
   }
 
   final _urlFocusNode = FocusNode();
@@ -95,6 +90,17 @@ class _AddCredentialsState extends State<AddCredentials> {
     if (context.mounted) {
       Navigator.of(context).pop();
     }
+  }
+
+  void _generatePass() {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return GestureDetector(
+            onTap: () {},
+            child: const GenPass(),
+          );
+        });
   }
 
   @override
@@ -263,7 +269,9 @@ class _AddCredentialsState extends State<AddCredentials> {
                 //height: 50,
                 //width: 150,
                 child: ElevatedButton(
-                  onPressed: () => generateRoute(context),
+                  onPressed: () {
+                    _generatePass();
+                  },
                   child: const Text(
                     'Generate Random Password',
                     style: TextStyle(
