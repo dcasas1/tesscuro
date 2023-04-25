@@ -80,6 +80,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       dark: ThemeData.dark(),
       initial: widget.savedThemeMode ?? AdaptiveThemeMode.system,
       builder: (theme, darkTheme) => MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Tesscuro',
         theme: theme,
         home: StreamBuilder(
