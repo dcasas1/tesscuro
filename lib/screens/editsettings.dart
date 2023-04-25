@@ -92,6 +92,22 @@ class _EditSettingsState extends State<EditSettings> {
         .get();
   }
 
+  void deleteAccount(BuildContext context) async {
+    final docId = ModalRoute.of(context)!.settings.arguments as String;
+    final user = FirebaseAuth.instance.currentUser!;
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('accounts')
+        .doc(docId)
+        .delete();
+
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+
   void _updateAccount(BuildContext context) async {
     FocusScope.of(context).unfocus();
     final docId = ModalRoute.of(context)!.settings.arguments as String;
@@ -277,6 +293,48 @@ class _EditSettingsState extends State<EditSettings> {
                           fontSize: 20,
                         ),
                       ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(
+                      top: 5,
+                      bottom: 15,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: ((ctx) => AlertDialog(
+                              title: const Text(
+                                'Are you sure?',
+                              ),
+                              content: const Text(
+                                'Do you want to remove this account?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(ctx).pop(false);
+                                  },
+                                  child: const Text('No'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(ctx).pop();
+                                    deleteAccount(context);
+                                  },
+                                  child: const Text('Yes'),
+                                )
+                              ],
+                            )),
+                      );
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red)),
+                    child: const Text(
+                      'Delete Account',
+                      style: TextStyle(fontSize: 20),
                     ),
                   ),
                 ],
