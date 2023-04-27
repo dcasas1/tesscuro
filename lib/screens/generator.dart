@@ -107,51 +107,54 @@ class _GeneratePasswordState extends State<GeneratePassword> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 35,
             ),
-            FloatingActionButton.large(
-                backgroundColor: Colors.blue,
-                onPressed: () {
-                  _isVisible = true;
-                  if (_passwordLength.text.trim().isNotEmpty) {
-                    _numberCharPassword =
-                        double.parse(_passwordLength.text.trim());
-                  }
-                  if (_numberCharPassword > 100) {
-                    newPassword = '';
-                    isOk = 'Requested Length is too long';
-                  } else {
-                    newPassword = password.randomPassword(
-                        letters: _isWithLetters,
-                        numbers: _isWithNumbers,
-                        passwordLength: _numberCharPassword,
-                        specialChar: _isWithSpecial,
-                        uppercase: _isWithUppercase);
-
-                    double passwordstrength =
-                        password.checkPassword(password: newPassword);
-                    if (passwordstrength < 0.3) {
-                      _color = Colors.red;
-                      isOk = 'This password is weak!';
-                    } else if (passwordstrength < 0.7) {
-                      _color = Colors.blue;
-                      isOk = 'This password is Good';
-                    } else {
-                      _color = Colors.green;
-                      isOk = 'This passsword is Strong';
+            Transform.scale(
+              scale: 1.3,
+              child: FloatingActionButton.large(
+                  backgroundColor: Colors.blue,
+                  onPressed: () {
+                    _isVisible = true;
+                    if (_passwordLength.text.trim().isNotEmpty) {
+                      _numberCharPassword =
+                          double.parse(_passwordLength.text.trim());
                     }
-                  }
-                  setState(() {});
-                },
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Generate',
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                  ),
-                )),
+                    if (_numberCharPassword > 100) {
+                      newPassword = '';
+                      isOk = 'Requested Length is too long';
+                    } else {
+                      newPassword = password.randomPassword(
+                          letters: _isWithLetters,
+                          numbers: _isWithNumbers,
+                          passwordLength: _numberCharPassword,
+                          specialChar: _isWithSpecial,
+                          uppercase: _isWithUppercase);
+            
+                      double passwordstrength =
+                          password.checkPassword(password: newPassword);
+                      if (passwordstrength < 0.3) {
+                        _color = Colors.red;
+                        isOk = 'This password is weak!';
+                      } else if (passwordstrength < 0.7) {
+                        _color = Colors.blue;
+                        isOk = 'This password is Good';
+                      } else {
+                        _color = Colors.green;
+                        isOk = 'This passsword is Strong';
+                      }
+                    }
+                    setState(() {});
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Generate',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  )),
+            ),
             const SizedBox(
-              height: 20,
+              height: 35,
             ),
             if (newPassword.isNotEmpty)
               Center(
@@ -168,7 +171,7 @@ class _GeneratePasswordState extends State<GeneratePassword> {
               Center(
                   child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: SelectableText(
                     newPassword,
                     style: TextStyle(color: _color, fontSize: 25),
@@ -187,9 +190,17 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                   ),
                 ),
               ),
+            Container(
+              margin: const EdgeInsets.all(13),
+            ),
             Visibility(
               visible: _isVisible,
               child: ElevatedButton(
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all(
+                    const Size(180, 50),
+                  ),
+                ),
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: newPassword));
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -197,7 +208,10 @@ class _GeneratePasswordState extends State<GeneratePassword> {
                       duration: Duration(seconds: 2),
                     ));
                   },
-                  child: const Text('Copy Password')),
+                  child: const Text('Copy Password',
+                    style: TextStyle(fontSize: 19),
+                  ),
+                ),
             ),
           ],
         )),
