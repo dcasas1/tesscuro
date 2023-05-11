@@ -33,7 +33,7 @@ class _AddCredentialsState extends State<AddCredentials> {
   String _username = '';
   String _url = '';
 
-  //Asyn function to add account to Firebase on Submit
+  //Async function to add account to Firebase on Submit
   Future<void> _addAccount(BuildContext context) async {
     FocusScope.of(context).unfocus();
 
@@ -68,8 +68,7 @@ class _AddCredentialsState extends State<AddCredentials> {
       final aesCbc = AesCbc();
       final cipherText = await aesCbc.encrypt(clearText, secretKey: sha256Hash);
 
-      //Uploads all the info from the forms to firebase, with the encrypted password
-      //Stored as a collection in a document under the logged in user's main collection
+      //Uploads all the information to firebase associated to the user
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
