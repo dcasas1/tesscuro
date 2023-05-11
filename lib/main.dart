@@ -17,11 +17,14 @@ import './screens/generator.dart';
 import './screens/password_reset.dart';
 
 void main() async {
+  //Ensures Firebase is bound to the application and started before building
+  //Lets app connect to Firebase with individual instances
   WidgetsFlutterBinding.ensureInitialized();
   final app = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseAuth.instanceFor(app: app);
+  //Grabs theme for light and dark mode depending on OS
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   runApp(MyApp(savedThemeMode: savedThemeMode));
 }
@@ -50,6 +53,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    //Timer for auto-logout depending on if app is in foreground or background
     if (state == AppLifecycleState.paused) {
       if (_backTimer != null) {
         _backTimer!.cancel();

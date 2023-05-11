@@ -31,10 +31,15 @@ class _LoginFormState extends State<LoginForm> {
   var _userPassword = '';
   final _passFocusNode = FocusNode();
 
+  //Function that runs when selecting Login
   void _trySubmit() {
+    //Validates an email and password are entered
     final isValid = _formKey.currentState?.validate();
+
+    //Removes keyboard from screen if still up
     FocusScope.of(context).unfocus();
 
+    //If valid, submits form
     if (isValid!) {
       _formKey.currentState!.save();
       widget.submitFn(
@@ -85,12 +90,14 @@ class _LoginFormState extends State<LoginForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  //Email input field
                   TextFormField(
                     key: const ValueKey('email'),
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Email',
                         hintText: 'Enter Email'),
+                    //Has keyboard show next on screen
                     textInputAction: TextInputAction.next,
                     onFieldSubmitted: (_) {
                       FocusScope.of(context).requestFocus(_passFocusNode);
@@ -112,6 +119,8 @@ class _LoginFormState extends State<LoginForm> {
                       bottom: 20,
                     ),
                   ),
+
+                  //Password field
                   TextFormField(
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -120,11 +129,13 @@ class _LoginFormState extends State<LoginForm> {
                       return null;
                     },
                     key: const ValueKey('password'),
+                    //Starts obscured
                     obscureText: !_passwordVisible,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       labelText: 'Password',
                       hintText: 'Enter password',
+                      //Button to dynamically change if password is visible
                       suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {
@@ -144,6 +155,8 @@ class _LoginFormState extends State<LoginForm> {
                       _userPassword = newValue!;
                     },
                   ),
+
+                  //Forgot password button
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pushNamed(PasswordReset.routeName);
@@ -175,6 +188,8 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                     ),
                   ),
+
+                  //Create Account Button
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 20),

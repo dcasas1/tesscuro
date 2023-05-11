@@ -30,14 +30,24 @@ class _AuthFormState extends State<AuthForm> {
   final _emailFocusNode = FocusNode();
   final _passFocusNode = FocusNode();
   final _confirmFocusNode = FocusNode();
+
+  //Regex validates email, case insensitive with a few metacharacters
   RegExp emailCheck =
       RegExp(r'^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)(\.[a-zA-Z]{2,5}){1,2}$');
+
+  //Regex validates password and allows only certain metacharacters
+  //Positive lookahead for any character but line break, min 8 characters
+  //Only allows metacharacters @$!%*?&
   RegExp passwordCheck = RegExp(
       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
+
+  //Regex validates username. Only allows letters, numbers, and two metacharacters
   RegExp userCheck = RegExp(r'^[a-zA-Z0-9_-]{3,20}$');
   bool _isVisible = false;
 
+  //Function to run when submit is selected
   void _tryCreateSubmit() {
+    //Validates all fields have something valid entered
     final isValid = _formKey.currentState?.validate();
     FocusScope.of(context).unfocus();
     if (isValid!) {
@@ -51,6 +61,7 @@ class _AuthFormState extends State<AuthForm> {
     }
   }
 
+  //Dynamically show and hide password validator widget
   Future<void> showRules() async {
     setState(() {
       _isVisible = !_isVisible;
@@ -89,6 +100,7 @@ class _AuthFormState extends State<AuthForm> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
+              //Username input field
               TextFormField(
                 key: const ValueKey('username'),
                 decoration: const InputDecoration(
@@ -100,6 +112,7 @@ class _AuthFormState extends State<AuthForm> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_emailFocusNode);
                 },
+                //Validates username with regex when submitted
                 validator: (value) {
                   if (value!.isEmpty || !userCheck.hasMatch(value)) {
                     return 'Please provide a valid username.';
@@ -113,8 +126,10 @@ class _AuthFormState extends State<AuthForm> {
               Container(
                 padding: const EdgeInsets.all(20),
               ),
+              //Email input field
               TextFormField(
                 key: const ValueKey('email'),
+                //Validates email with regex when submitted
                 validator: (value) {
                   if (!emailCheck.hasMatch(value!) || value.isEmpty) {
                     return 'Please enter a valid email address';
@@ -138,26 +153,33 @@ class _AuthFormState extends State<AuthForm> {
               Container(
                 padding: const EdgeInsets.all(20),
               ),
+
+              //When password field selected, validator shows. Hides when deselected
               FocusScope(
                 child: Focus(
                   onFocusChange: (value) {
                     showRules();
                   },
+                  //Password input field
                   child: TextFormField(
                     onTap: () {},
                     key: const ValueKey('password'),
+                    //Validates password with regex when submitted
                     validator: (value) {
                       if (value!.isEmpty || !passwordCheck.hasMatch(value)) {
                         return 'Please enter a valid Password';
                       }
                       return null;
                     },
+                    //Stores password in memory while page is open
                     controller: _passwordController,
+                    //Starts obscured
                     obscureText: !_passwordVisible,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       labelText: 'Password',
                       hintText: 'Please enter a strong password',
+                      //Icon to dynamically change if password is obscured
                       suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {
@@ -190,6 +212,7 @@ class _AuthFormState extends State<AuthForm> {
               ),
               Visibility(
                 visible: _isVisible,
+                //Password validator with bar under input field
                 child: FlutterPwValidator(
                   width: 400,
                   height: 130,
@@ -205,7 +228,9 @@ class _AuthFormState extends State<AuthForm> {
               Container(
                 padding: const EdgeInsets.all(20),
               ),
+              //Confirm password field
               TextFormField(
+                //Compares value with what is stored in memory on page to validate
                 validator: (value) {
                   if (value != _passwordController.text) {
                     return 'Passwords do not match!';
@@ -217,6 +242,7 @@ class _AuthFormState extends State<AuthForm> {
                   border: const OutlineInputBorder(),
                   labelText: 'Confirm Password',
                   hintText: 'Please confirm your password',
+                  //Button to dynamically change if field is obscured
                   suffixIcon: IconButton(
                     onPressed: () {
                       setState(() {
@@ -242,6 +268,8 @@ class _AuthFormState extends State<AuthForm> {
               Container(
                 padding: const EdgeInsets.all(20),
               ),
+
+              //Submit button
               SizedBox(
                 height: 60,
                 width: 200,

@@ -16,6 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  //The user instance
   final _auth = FirebaseAuth.instance;
   var _isLoading = false;
 
@@ -29,22 +30,24 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.of(ctx).pushNamed(CreateAccount.routeName);
   }
 
+  //Function to start a 30 minute timer. Logs user out after 30 minutes
   void _autoLogout() {
-    Timer? authTimer; 
+    Timer? authTimer;
+    //Check if timer is already running. If so, cancels and then restarts below
     if (authTimer != null) {
       authTimer.cancel();
     }
 
-    authTimer= Timer(
+    authTimer = Timer(
         const Duration(minutes: 30), (() => FirebaseAuth.instance.signOut()));
   }
 
+  //Function to run when Login button is submitted successfully
   void _submitLoginForm(
     String email,
     String password,
     BuildContext ctx,
   ) async {
-    // UserCredential authResult;
     try {
       setState(() {
         _isLoading = true;
@@ -55,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
         password: password,
       );
 
+      //Start logout timer if successfully logged in
       _autoLogout();
     } on FirebaseAuthException catch (err) {
       String message = 'An error occurred, please check your credentials!';
@@ -84,6 +88,7 @@ class _LoginPageState extends State<LoginPage> {
         appBar: AppBar(
           title: const Text('Welcome to Tesscuro!'),
         ),
+        //Body loads the login_form widget
         body: LoginForm(
           submitFn: _submitLoginForm,
           isLoading: _isLoading,
