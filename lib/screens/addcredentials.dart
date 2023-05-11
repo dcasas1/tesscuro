@@ -33,29 +33,47 @@ class _AddCredentialsState extends State<AddCredentials> {
   String _username = '';
   String _url = '';
 
+  //Asyn function to add account to Firebase on Submit
   Future<void> _addAccount(BuildContext context) async {
     FocusScope.of(context).unfocus();
+
+    //Grabs the ID of the current user logged in
     final user = FirebaseAuth.instance.currentUser!;
+
+    //Validates the form is filled in correctly
     final isValid = _form.currentState?.validate();
 
+    //If form is not valid, throws errors, if valid, saves all values to memory for upload to Firebase
     if (!isValid!) {
       return;
     }
     _form.currentState?.save();
 
     try {
+      //Grabs the user information stored in Firebase document
       final userData = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .get();
+
+      //Grabs the password that was hashed by sha256 and stored on Firebase
       final secret = userData['password'];
+      //Grabs the salt
       final salt =
           Uint8List.fromList(utf8.encode(userData['userID'].toString()));
+      //Initializes the password-based key derivation function
       final hasher = Pbkdf2(iterations: 1000);
+      //Creates AES key using password and salt
       final sha256Hash = await hasher.sha256(secret, salt);
+      //Grabs password entered in form
       final clearText = _password;
+      //Initializes AES encryption in CBC mode
       final aesCbc = AesCbc();
+      //Encrypts the password
       final cipherText = await aesCbc.encrypt(clearText, secretKey: sha256Hash);
+
+      //Uploads the all the info from the forms to firebase, with the encrypted password
+      //Stored as a collection in a document under the logged in user's main collection
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -69,6 +87,7 @@ class _AddCredentialsState extends State<AddCredentials> {
         'isFavorite': false
       });
     } catch (error) {
+      //If error, shows a pop up
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -92,6 +111,7 @@ class _AddCredentialsState extends State<AddCredentials> {
     }
   }
 
+  //Slides a screen from the bottom to generate password without leaving add account screen
   void _generatePass() {
     showModalBottomSheet(
         context: context,
@@ -131,6 +151,7 @@ class _AddCredentialsState extends State<AddCredentials> {
           key: _form,
           child: ListView(
             children: <Widget>[
+              //Site Name field
               TextFormField(
                 key: const ValueKey('siteName'),
                 textCapitalization: TextCapitalization.sentences,
@@ -153,9 +174,12 @@ class _AddCredentialsState extends State<AddCredentials> {
                   _siteName = value!;
                 },
               ),
+
               Container(
                 padding: const EdgeInsets.all(15),
               ),
+
+              //URL for the website
               TextFormField(
                 key: const ValueKey('url'),
                 decoration: const InputDecoration(
@@ -172,9 +196,12 @@ class _AddCredentialsState extends State<AddCredentials> {
                   _url = value!;
                 },
               ),
+
               Container(
                 padding: const EdgeInsets.all(15),
               ),
+
+              //Username field
               TextFormField(
                 key: const ValueKey('username'),
                 decoration: const InputDecoration(
@@ -191,17 +218,23 @@ class _AddCredentialsState extends State<AddCredentials> {
                   _username = value!;
                 },
               ),
+
               Container(
                 padding: const EdgeInsets.all(15),
               ),
+
+              //Password input field
               TextFormField(
                 key: const ValueKey('password'),
+                //Starts obscured
                 obscureText: !_passwordVisible,
+                //Stores password in memory while page open for confirmation validation
                 controller: _passwordController,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   labelText: 'Password for Site',
                   hintText: 'Enter Password for Site',
+                  //Button to dynamically switch if password is obscured
                   suffixIcon: IconButton(
                     onPressed: () {
                       setState(() {
@@ -224,9 +257,12 @@ class _AddCredentialsState extends State<AddCredentials> {
                   _password = value!;
                 },
               ),
+
               Container(
                 padding: const EdgeInsets.all(15),
               ),
+
+              //Confirm password field
               TextFormField(
                 key: const ValueKey('confirmPass'),
                 obscureText: !_confirmPassVisible,
@@ -265,9 +301,9 @@ class _AddCredentialsState extends State<AddCredentials> {
                   bottom: 10,
                 ),
               ),
+
+              //Generate Random Password button
               SizedBox.square(
-                //height: 50,
-                //width: 150,
                 child: ElevatedButton(
                   onPressed: () {
                     _generatePass();
@@ -281,12 +317,15 @@ class _AddCredentialsState extends State<AddCredentials> {
                   ),
                 ),
               ),
+
               Container(
                 padding: const EdgeInsets.only(
                   top: 5,
                   bottom: 15,
                 ),
               ),
+
+              //Submit button
               SizedBox(
                 height: 60,
                 width: 200,

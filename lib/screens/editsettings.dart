@@ -45,26 +45,38 @@ class _EditSettingsState extends State<EditSettings> {
 
   bool _passwordVisible = false;
 
+  //Function to decrypt password to autofill current password field
   Future<void> getPass() async {
+    //Grabs the ID of the currently logged in user
     final user = FirebaseAuth.instance.currentUser!;
+    //Accepts the document ID passed as an argument to select the correct account
     final docId = ModalRoute.of(context)!.settings.arguments as String;
+    //Grabs the user data from Firebase
     final userData = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .get();
+    //Grabs the selected account's data from Firebase
     final accountData = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .collection('accounts')
         .doc(docId)
         .get();
+    //Grabs the user's hashed password
     final secret = userData['password'];
+    //Grabs the salt
     final salt = Uint8List.fromList(utf8.encode(userData['userID'].toString()));
+    //Initialized the password based key derivation function
     final hasher = Pbkdf2(iterations: 1000);
+    //Creates the AES key
     final sha256Hash = await hasher.sha256(secret, salt);
+    //Initializes AES in CBC mode
     final aesCbc = AesCbc();
+    //Decrypts password
     final decrypted =
         await aesCbc.decrypt(accountData['password'], secretKey: sha256Hash);
+    //Ensures function runs once to fill in the current password field
     if (_isInit) {
       if (mounted) {
         setState(() {
@@ -75,6 +87,7 @@ class _EditSettingsState extends State<EditSettings> {
     _isInit = false;
   }
 
+  //Function to grab selected account's information to autofill all the form fields
   Future<DocumentSnapshot> getData() async {
     User? user = FirebaseAuth.instance.currentUser;
     newId = user!.uid;
@@ -88,6 +101,7 @@ class _EditSettingsState extends State<EditSettings> {
         .get();
   }
 
+  //Function to delete the account if button is selected
   void deleteAccount(BuildContext context) async {
     final docId = ModalRoute.of(context)!.settings.arguments as String;
     final user = FirebaseAuth.instance.currentUser!;
@@ -104,12 +118,17 @@ class _EditSettingsState extends State<EditSettings> {
     }
   }
 
+  //Function to update account on Firebase if submitted
   void _updateAccount(BuildContext context) async {
     FocusScope.of(context).unfocus();
+    //Grabs selected account's ID that was passed as an argument
     final docId = ModalRoute.of(context)!.settings.arguments as String;
+    //Validates all fields are filled in and valid
     final isValid = _form.currentState?.validate();
+    //Grabs logged in user's ID
     final user = FirebaseAuth.instance.currentUser!;
 
+    //If form is invalid, throws errors
     if (!isValid!) {
       return;
     }
@@ -118,6 +137,7 @@ class _EditSettingsState extends State<EditSettings> {
         .collection('users')
         .doc(user.uid)
         .get();
+    //Encrypts password submitted to upload ciphertext
     final secret = userData['password'];
     final salt = Uint8List.fromList(utf8.encode(userData['userID'].toString()));
     final hasher = Pbkdf2(iterations: 1000);
@@ -142,6 +162,7 @@ class _EditSettingsState extends State<EditSettings> {
     }
   }
 
+  //Slides a screen from the bottom to generate password without leaving add account screen
   void _generatePass() {
     showModalBottomSheet(
         context: context,
@@ -155,6 +176,7 @@ class _EditSettingsState extends State<EditSettings> {
 
   @override
   Widget build(BuildContext context) {
+    //Decrypts the password of the selected account to autofill below
     getPass();
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Settings')),
@@ -164,9 +186,11 @@ class _EditSettingsState extends State<EditSettings> {
           left: 10,
           right: 10,
         ),
+        //Waits for data to be grabbed before building UI
         child: FutureBuilder(
           future: getData(),
           builder: (context, querySnapshot) {
+            //Loading circle while information is grabbed
             if (querySnapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -176,7 +200,9 @@ class _EditSettingsState extends State<EditSettings> {
               key: _form,
               child: ListView(
                 children: <Widget>[
+                  //Site Name Input Field
                   TextFormField(
+                    //Autofills with current site name of account selected
                     initialValue: querySnapshot.data!['siteName'],
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -191,10 +217,14 @@ class _EditSettingsState extends State<EditSettings> {
                       _siteName = value!;
                     },
                   ),
+
                   Container(
                     padding: const EdgeInsets.all(20),
                   ),
+
+                  //URL input field
                   TextFormField(
+                    //Autofills with current url of account selected
                     initialValue: querySnapshot.data!['url'],
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -210,10 +240,14 @@ class _EditSettingsState extends State<EditSettings> {
                       _url = value!;
                     },
                   ),
+
                   Container(
                     padding: const EdgeInsets.all(20),
                   ),
+
+                  //Username input field
                   TextFormField(
+                    //Autofills with current username of account selected
                     initialValue: querySnapshot.data!['username'],
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -229,10 +263,14 @@ class _EditSettingsState extends State<EditSettings> {
                       _username = value!;
                     },
                   ),
+
                   Container(
                     padding: const EdgeInsets.all(20),
                   ),
+
+                  //Password input field
                   TextFormField(
+                    //Autofills with decrypted password of currently selected account
                     initialValue: pass,
                     obscureText: !_passwordVisible,
                     decoration: InputDecoration(
@@ -266,9 +304,9 @@ class _EditSettingsState extends State<EditSettings> {
                       bottom: 10,
                     ),
                   ),
+
+                  //Generate Password button
                   SizedBox.square(
-                    //height: 50,
-                    //width: 150,
                     child: ElevatedButton(
                       onPressed: () {
                         _generatePass();
@@ -282,12 +320,15 @@ class _EditSettingsState extends State<EditSettings> {
                       ),
                     ),
                   ),
+
                   Container(
                     padding: const EdgeInsets.only(
                       top: 5,
                       bottom: 15,
                     ),
                   ),
+
+                  //Submit button
                   SizedBox(
                     height: 60,
                     width: 200,
@@ -304,14 +345,18 @@ class _EditSettingsState extends State<EditSettings> {
                       ),
                     ),
                   ),
+
                   Container(
                     padding: const EdgeInsets.only(
                       top: 5,
                       bottom: 15,
                     ),
                   ),
+
+                  //Delete Account Button
                   ElevatedButton(
                     onPressed: () {
+                      //Shows confirmation popup dialog if selected
                       showDialog(
                         context: context,
                         builder: ((ctx) => AlertDialog(

@@ -17,11 +17,13 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
+  //Pages to load from the Navbar
   final List<Map<String, Object>> _pages = const [
     {'page': HomePage(), 'title': 'Homepage'},
     {'page': Favorites(), 'title': 'Favorites'},
     {'page': Settings(), 'title': 'Settings'},
   ];
+
   void addRoute(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(AddCredentials.routeName);
   }
@@ -42,8 +44,10 @@ class _NavBarState extends State<NavBar> {
     Navigator.of(ctx).pushNamed(Favorites.routeName);
   }
 
+  //Start on homepage
   int _selectedPageIndex = 0;
 
+  //Update which page to load when selecting one
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
@@ -54,8 +58,10 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        //Title dynamically changes based on selected page
         title: Text(_pages[_selectedPageIndex]['title'] as String),
         actions: [
+          //Button to go to add account screen
           IconButton(
             onPressed: () => addRoute(context),
             icon: const Icon(
@@ -68,10 +74,12 @@ class _NavBarState extends State<NavBar> {
           ),
         ],
       ),
+      //Hamburger Icon for an app drawer
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
+            //Title in app drawer 
             const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
@@ -86,6 +94,8 @@ class _NavBarState extends State<NavBar> {
                 ),
               ),
             ),
+
+            //Home Page button
             ListTile(
               leading: const Icon(
                 Icons.home,
@@ -97,6 +107,8 @@ class _NavBarState extends State<NavBar> {
                 Navigator.of(context).pop();
               },
             ),
+
+            //Favorites button
             ListTile(
               leading: const Icon(
                 Icons.star,
@@ -108,6 +120,8 @@ class _NavBarState extends State<NavBar> {
                 Navigator.of(context).pop();
               },
             ),
+
+            //Password Generator button
             ListTile(
               leading: const Icon(
                 Icons.lock_reset_outlined,
@@ -116,6 +130,8 @@ class _NavBarState extends State<NavBar> {
               title: const Text('Password Generator'),
               onTap: () => generaterRoute(context),
             ),
+
+            //Logout button
             ListTile(
               leading: const Icon(
                 Icons.logout,
@@ -129,7 +145,9 @@ class _NavBarState extends State<NavBar> {
           ],
         ),
       ),
+      //Loads the page selected
       body: _pages[_selectedPageIndex]['page'] as Widget,
+      //Creates the navbar on the bottom of the screen
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
         selectedItemColor: Theme.of(context).colorScheme.secondary,

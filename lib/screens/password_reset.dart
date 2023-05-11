@@ -16,9 +16,11 @@ class _PasswordResetState extends State<PasswordReset> {
   final _form = GlobalKey<FormState>();
   var _userEmail = '';
   bool _isVisible = true;
+  //Regex to validate a proper email address
   RegExp emailCheck =
       RegExp(r'^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)(\.[a-zA-Z]{2,5}){1,2}$');
 
+  //Function to return to login page after sending email
   void sent() {
     setState(() {
       _isVisible = !_isVisible;
@@ -32,6 +34,7 @@ class _PasswordResetState extends State<PasswordReset> {
     });
   }
 
+  //Send reset email link
   void _reset() {
     final isValid = _form.currentState?.validate();
     FocusScope.of(context).unfocus();
