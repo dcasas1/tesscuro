@@ -18,6 +18,7 @@ class Accounts extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
     newId = user!.uid;
 
+    //Stream allows constant communication so UI updates when Firebase updates
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('users')
@@ -31,6 +32,7 @@ class Accounts extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
+          //Grabs all the accounts associated to the user logged in
           final chatDocs = chatSnapshot.data?.docs;
           return chatDocs!.isEmpty
               ? Center(
@@ -67,7 +69,10 @@ class Accounts extends StatelessWidget {
                     ),
                   ),
                 )
-              : ListView.separated(
+                
+              :
+              //Passes each account to account_item file to build a tile for each 
+              ListView.separated(
                   padding: const EdgeInsets.all(10),
                   separatorBuilder: (context, index) => const Divider(
                     thickness: 2,

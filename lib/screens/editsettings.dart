@@ -63,17 +63,14 @@ class _EditSettingsState extends State<EditSettings> {
         .collection('accounts')
         .doc(docId)
         .get();
-    //Grabs the user's hashed password
+    //Grabs the user's hashed password and salt
     final secret = userData['password'];
-    //Grabs the salt
     final salt = Uint8List.fromList(utf8.encode(userData['userID'].toString()));
-    //Initialized the password based key derivation function
+    //Initialized the password based key derivation function and creates the AES key
     final hasher = Pbkdf2(iterations: 1000);
-    //Creates the AES key
     final sha256Hash = await hasher.sha256(secret, salt);
-    //Initializes AES in CBC mode
+    //Initializes AES in CBC mode and decrypts the password
     final aesCbc = AesCbc();
-    //Decrypts password
     final decrypted =
         await aesCbc.decrypt(accountData['password'], secretKey: sha256Hash);
     //Ensures function runs once to fill in the current password field

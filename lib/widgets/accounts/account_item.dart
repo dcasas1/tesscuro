@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:libcrypto/libcrypto.dart';
 import '../../screens/editsettings.dart';
 
+//Fixed values for popup menu
 enum AccountOptions {
   passVisible,
   passInvisible,
@@ -43,18 +44,23 @@ class _AccountListState extends State<AccountList> {
   var newId = '';
   bool favorite = false;
 
+  //Grabs and decrypts the password to show on homescreen
   Future<void> _getPass() async {
+    //Grabs the ID of the currently logged in user
     final user = FirebaseAuth.instance.currentUser!;
+    //Gets the user information
     final userData = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .get();
+    //Gets the individual account information
     final accountData = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .collection('accounts')
         .doc(widget.docId)
         .get();
+    //Decrypts the password to display on homepage
     final secret = userData['password'];
     final salt = Uint8List.fromList(utf8.encode(userData['userID'].toString()));
     final hasher = Pbkdf2(iterations: 1000);
@@ -69,6 +75,7 @@ class _AccountListState extends State<AccountList> {
     }
   }
 
+  //Function to delete account
   void _deleteAccount() async {
     User? user = FirebaseAuth.instance.currentUser;
     newId = user!.uid;
@@ -80,6 +87,7 @@ class _AccountListState extends State<AccountList> {
         .delete();
   }
 
+  //Function to add or remove as favorite
   void _updateFavorite() async {
     User? user = FirebaseAuth.instance.currentUser;
     newId = user!.uid;
@@ -93,11 +101,16 @@ class _AccountListState extends State<AccountList> {
 
   @override
   Widget build(BuildContext context) {
+    //Grabs the decrypted password of the account
     _getPass();
+    //Displays whether account is a favorite or not
     favorite = widget.isFavorite;
+
+    //Allows swipe to delete
     return Dismissible(
       key: ValueKey(widget.docId),
       direction: DismissDirection.endToStart,
+      //Shows confirmation to delete
       confirmDismiss: (direction) {
         return showDialog(
           context: context,
@@ -125,6 +138,7 @@ class _AccountListState extends State<AccountList> {
           ),
         );
       },
+      //Background for swipe action
       background: Container(
         color: Theme.of(context).colorScheme.error,
         alignment: Alignment.centerRight,
@@ -144,8 +158,11 @@ class _AccountListState extends State<AccountList> {
       onDismissed: (direction) {
         _deleteAccount();
       },
+      
+      //Tile to display the information
       child: ListTile(
         enabled: true,
+        //Allows tap to copy password
         onTap: () {
           Clipboard.setData(ClipboardData(text: pass));
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -153,10 +170,12 @@ class _AccountListState extends State<AccountList> {
             duration: const Duration(seconds: 2),
           ));
         },
+        //Press and hold to edit account
         onLongPress: () => Navigator.of(context).pushNamed(
           EditSettings.routeName,
           arguments: widget.docId,
         ),
+        //Favorites icon
         leading: favorite
             ? IconButton(
                 alignment: const Alignment(-1, 0),
@@ -180,12 +199,16 @@ class _AccountListState extends State<AccountList> {
                 },
               ),
         horizontalTitleGap: 2,
+        //Site name as title
         title: Text(widget.siteName),
+        //Password under title. Initially obscured with option to show as plaintext
         subtitle: _passwordVisible
             ? Text("Username: ${widget.userName}\nPassword: $pass")
             : Text(
                 "Username: ${widget.userName}\nPassword: ${widget.password.replaceAll(widget.password, "********")}"),
+        //Button to bring up more options
         trailing: PopupMenuButton(
+          //Different code to run depening on selection made below
           onSelected: (AccountOptions selection) {
             setState(() {
               if (selection == AccountOptions.passVisible) {
@@ -231,6 +254,7 @@ class _AccountListState extends State<AccountList> {
               }
             });
           },
+          //Builds menu for user to select one
           itemBuilder: (BuildContext context) =>
               <PopupMenuEntry<AccountOptions>>[
             !_passwordVisible

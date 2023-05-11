@@ -43,7 +43,6 @@ class _AddCredentialsState extends State<AddCredentials> {
     //Validates the form is filled in correctly
     final isValid = _form.currentState?.validate();
 
-    //If form is not valid, throws errors, if valid, saves all values to memory for upload to Firebase
     if (!isValid!) {
       return;
     }
@@ -56,23 +55,20 @@ class _AddCredentialsState extends State<AddCredentials> {
           .doc(user.uid)
           .get();
 
-      //Grabs the password that was hashed by sha256 and stored on Firebase
+      //Grabs the password and salt
       final secret = userData['password'];
-      //Grabs the salt
       final salt =
           Uint8List.fromList(utf8.encode(userData['userID'].toString()));
-      //Initializes the password-based key derivation function
+      //Initializes the password-based key derivation function and creates AES key
       final hasher = Pbkdf2(iterations: 1000);
-      //Creates AES key using password and salt
       final sha256Hash = await hasher.sha256(secret, salt);
       //Grabs password entered in form
       final clearText = _password;
-      //Initializes AES encryption in CBC mode
+      //Initializes AES encryption in CBC mode and encrypts password
       final aesCbc = AesCbc();
-      //Encrypts the password
       final cipherText = await aesCbc.encrypt(clearText, secretKey: sha256Hash);
 
-      //Uploads the all the info from the forms to firebase, with the encrypted password
+      //Uploads all the info from the forms to firebase, with the encrypted password
       //Stored as a collection in a document under the logged in user's main collection
       await FirebaseFirestore.instance
           .collection('users')
