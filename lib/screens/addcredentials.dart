@@ -149,6 +149,7 @@ class _AddCredentialsState extends State<AddCredentials> {
               //Site Name field
               TextFormField(
                 key: const ValueKey('siteName'),
+                keyboardType: TextInputType.text,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -177,6 +178,7 @@ class _AddCredentialsState extends State<AddCredentials> {
               //URL for the website
               TextFormField(
                 key: const ValueKey('url'),
+                keyboardType: TextInputType.url,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'URL',
@@ -199,6 +201,7 @@ class _AddCredentialsState extends State<AddCredentials> {
               //Username field
               TextFormField(
                 key: const ValueKey('username'),
+                keyboardType: TextInputType.name,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Username',
@@ -221,6 +224,7 @@ class _AddCredentialsState extends State<AddCredentials> {
               //Password input field
               TextFormField(
                 key: const ValueKey('password'),
+                keyboardType: TextInputType.visiblePassword,
                 //Starts obscured
                 obscureText: !_passwordVisible,
                 //Stores password in memory while page open for confirmation validation
@@ -260,6 +264,7 @@ class _AddCredentialsState extends State<AddCredentials> {
               //Confirm password field
               TextFormField(
                 key: const ValueKey('confirmPass'),
+                keyboardType: TextInputType.visiblePassword,
                 obscureText: !_confirmPassVisible,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),

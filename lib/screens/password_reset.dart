@@ -63,6 +63,7 @@ class _PasswordResetState extends State<PasswordReset> {
                   key: _form,
                   child: TextFormField(
                     key: const ValueKey('email'),
+                    keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email Address',

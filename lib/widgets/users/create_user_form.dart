@@ -103,6 +103,7 @@ class _AuthFormState extends State<AuthForm> {
               //Username input field
               TextFormField(
                 key: const ValueKey('username'),
+                keyboardType: TextInputType.name,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter Username',
@@ -129,6 +130,7 @@ class _AuthFormState extends State<AuthForm> {
               //Email input field
               TextFormField(
                 key: const ValueKey('email'),
+                keyboardType: TextInputType.emailAddress,
                 //Validates email with regex when submitted
                 validator: (value) {
                   if (!emailCheck.hasMatch(value!) || value.isEmpty) {
@@ -164,6 +166,7 @@ class _AuthFormState extends State<AuthForm> {
                   child: TextFormField(
                     onTap: () {},
                     key: const ValueKey('password'),
+                    keyboardType: TextInputType.visiblePassword,
                     //Validates password with regex when submitted
                     validator: (value) {
                       if (value!.isEmpty || !passwordCheck.hasMatch(value)) {
@@ -237,6 +240,7 @@ class _AuthFormState extends State<AuthForm> {
                   }
                   return null;
                 },
+                keyboardType: TextInputType.visiblePassword,
                 obscureText: !_confirmPassVisible,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),

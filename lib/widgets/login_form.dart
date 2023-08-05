@@ -93,10 +93,12 @@ class _LoginFormState extends State<LoginForm> {
                   //Email input field
                   TextFormField(
                     key: const ValueKey('email'),
+                    keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Email',
-                        hintText: 'Enter Email'),
+                      border: OutlineInputBorder(),
+                      labelText: 'Email',
+                      hintText: 'Enter Email',
+                    ),
                     //Has keyboard show next on screen
                     textInputAction: TextInputAction.next,
                     onFieldSubmitted: (_) {
@@ -129,6 +131,7 @@ class _LoginFormState extends State<LoginForm> {
                       return null;
                     },
                     key: const ValueKey('password'),
+                    keyboardType: TextInputType.visiblePassword,
                     //Starts obscured
                     obscureText: !_passwordVisible,
                     decoration: InputDecoration(
@@ -161,11 +164,18 @@ class _LoginFormState extends State<LoginForm> {
                     onPressed: () {
                       Navigator.of(context).pushNamed(PasswordReset.routeName);
                     },
-                    child: const Text(
-                      'Forgot your password?',
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontStyle: FontStyle.italic),
+                    child: Transform.scale(
+                      scale: 1.23,
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 13, vertical: 10),
+                        child: Text(
+                          'Forgot your password?',
+                          style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontStyle: FontStyle.italic),
+                        ),
+                      ),
                     ),
                   ),
                   Container(
