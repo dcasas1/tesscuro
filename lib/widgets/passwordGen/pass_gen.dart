@@ -89,6 +89,11 @@ class _GenPassState extends State<GenPass> {
               padding: const EdgeInsets.all(15.0),
               child: TextField(
                 controller: _passwordLength,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(3),
+                ],
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(
                       //borderRadius: BorderRadius.circular(25.0),
@@ -125,7 +130,7 @@ class _GenPassState extends State<GenPass> {
                           passwordLength: _numberCharPassword,
                           specialChar: _isWithSpecial,
                           uppercase: _isWithUppercase);
-            
+
                       double passwordstrength =
                           password.checkPassword(password: newPassword);
                       if (passwordstrength < 0.3) {
